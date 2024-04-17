@@ -16,12 +16,12 @@
 			<a href="index.php?page=orders" class="nav-item nav-orders"><span class='icon-field'><i class="fa fa-clipboard-list mr-3"></i></span> Orders</a>
 			<a href="billing/index.php" class="nav-item nav-takeorders"><span class='icon-field'><i class="fa fa-list-ol mr-3"></i></span> Take Orders</a>
 			<?php if($_SESSION['login_type'] == 1): ?>
-<!--  Orginal Author Name: Mayuri K. 
- for any PHP, Codeignitor, Laravel OR Python work contact me at mayuri.infospace@gmail.com  
- Visit website : www.mayurik.com -->  
+				
 			<!-- <div class="mx-2 text-white">Master List</div> -->
 			<a href="index.php?page=categories" class="nav-item nav-categories"><span class='icon-field'><i class="fa fa-list-alt mr-3"></i></span>Manage Categories</a>
+			<a href="index.php?page=add-category" class="nav-item nav-add-category"><span class='icon-field'><i class="fa fa-list-alt mr-3"></i></span>Add Categories</a>
 			<a href="index.php?page=products" class="nav-item nav-products"><span class='icon-field'><i class="fa fa-th-list mr-3"></i></span>Manage Products</a>
+				<a href="index.php?page=add-product" class="nav-item nav-add-product"><span class='icon-field'><i class="fa fa-th-list mr-3"></i></span>Add Products</a>
 			<?php endif; ?>
 			<!-- <div class="mx-2 text-white">Report</div> -->
 			<a href="index.php?page=sales_report" class="nav-item nav-sales_report"><span class='icon-field'><i class="fa fa-th-list mr-3"></i></span> Sales Report</a>
