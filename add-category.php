@@ -9,9 +9,9 @@
 			<form action="" id="manage-category">
 				<div class="card">
 					<div class="card-header">
-						    Category Form
+						    <b>Category Form</b>
 				  	</div>
-					<div class="card-body">
+					<div class="card-body2">
 							<input type="hidden" name="id">
 							<div class="form-group">
 								<label class="control-label">Name</label>
@@ -26,8 +26,8 @@
 					<div class="card-footer">
 						<div class="row">
 							<div class="col-md-12">
-								<button class="btn btn-primary "> Save</button>
-								<a class="btn btn-default" type="button" onclick="$('#manage-category').get(0).reset()" href="index.php?page=categories"> Cancel</a>
+								<button class="btn btn-secondary "> Save</button>
+								<button class="btn btn-default" type="button" onclick="$('#manage-category').get(0).reset()"> Cancel</button>
 							</div>
 						</div>
 					</div>
@@ -113,6 +113,3 @@
 	}
 	$('table').dataTable()
 </script>
-<!--  Orginal Author Name: Mayuri K. 
- for any PHP, Codeignitor, Laravel OR Python work contact me at mayuri.infospace@gmail.com  
- Visit website : www.mayurik.com -->  
