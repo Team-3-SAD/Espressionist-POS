@@ -94,14 +94,14 @@ endif;
                       <!--    <b>Category</b> -->
                         <div class=" row justify-content-start align-items-center" id="cat-list">
                             <div class="mx-3 cat-item" data-id = 'all'>    
-                                <button class="btn btn-primary"><b class="text-white">All</b></button>
+                                <button class="btn btn-secondary"><b class="text-white">All</b></button>
                             </div>
                             <?php 
                             $qry = $conn->query("SELECT * FROM categories order by name asc");
                             while($row=$qry->fetch_assoc()):
                             ?>
                             <div class="mx-3 cat-item"  data-id = '<?php echo $row['id'] ?>'>
-                                <button class="btn btn-primary"><?php echo ucwords($row['name']) ?></button>
+                                <button class="btn btn-secondary"><?php echo ucwords($row['name']) ?></button>
                             </div>
                             <?php endwhile; ?>
                         </div>
@@ -114,7 +114,7 @@ endif;
                             ?>
                             <div class="col-md-2 mb-2">
                                 <div class="prod-item text-center " data-json = '<?php echo json_encode($row) ?>' data-category-id="<?php echo $row['category_id'] ?>">
-                                    <img src="<?php echo $row['product_image'];?>" class="rounded" width="100%">
+                                    <img src="../assets/uploads/element-banner2-right.jpg" class="rounded" width="100%">
                                         <span> 
                                             <?php echo $row['name'] ?>
                                         </span>
@@ -126,8 +126,8 @@ endif;
                 </div>
             <div class="card-footer">
                 <div class="row justify-content-center">
-                    <div class="btn btn btn-sm col-sm-3 btn-primary mr-2" type="button" id="pay">Pay</div>
-                    <div class="btn btn btn-sm col-sm-3 btn-primary" type="button" id="save_order">Pay later</div>
+                    <div class="btn btn btn-sm col-sm-3 btn-secondary mr-2" type="button" id="pay">Pay</div>
+                    <div class="btn btn btn-sm col-sm-3 btn-secondary" type="button" id="save_order">Pay later</div>
                 </div>
             </div>
             </div>      			
@@ -136,19 +136,19 @@ endif;
            <div class="card">
                 <div class="card-header text-dark">
                     <b>Order List</b>
-                <span class="float:right"><a class="btn btn-primary btn-sm col-sm-3 float-right" href="../index.php" id="">
+                <span class="float:right"><a class="btn btn-secondary btn-sm col-sm-3 float-right" href="../index.php" id="">
                     <i class="fa fa-home"></i> Home 
                 </a></span>
                 </div>
                <div class="card-body">
             <form action="" id="manage-order">
                 <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : '' ?>">
-                <div class="bg-white" id='o-list'>
-                            <div class="d-flex w-100 bg-white mb-1">
+                <div class="receipt" id='o-list'>
+                            <div class="d-flex w-100 mb-1">
                                 <label for="" class="text-dark"><b>Order No.</b></label>
                                 <input type="number" class="form-control-sm" name="order_number" value="<?php echo isset($order_number) ? $order_number : '' ?>" required>
                             </div>
-                   <table class="table bg-light mb-5" >
+                   <table class="table mb-5" >
                         <colgroup>
                             <col width="20%">
                             <col width="40%">
@@ -202,7 +202,7 @@ endif;
                        </tbody>
                    </table>
                 </div>
-                   <div class="d-block bg-white" id="calc">
+                   <div class="d-block" id="calc">
                        <table class="" width="100%">
                            <tbody>
                                 <tr>
@@ -248,8 +248,8 @@ endif;
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary btn-sm"  form="manage-order">Pay</button>
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-secondary btn-sm"  form="manage-order">Pay</button>
+        <button type="button" class="btn btn-sm" data-dismiss="modal">Cancel</button>
       </div>
       </div>
     </div>
