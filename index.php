@@ -19,7 +19,7 @@
   </head>
   <style>
   	body{
-          background: #f8f9fa;
+          background: #DFDAC6;
     }
     .modal-dialog.large {
       width: 80% !important;
@@ -40,18 +40,20 @@
       top: 0;
   }
   #viewer_modal .modal-dialog {
-          width: 80%;
+      width: 80%;
       max-width: unset;
       height: calc(90%);
       max-height: unset;
+      
   }
     #viewer_modal .modal-content {
-         background: black;
+      background: black;
       border: unset;
       height: calc(100%);
       display: flex;
       align-items: center;
       justify-content: center;
+
     }
     #viewer_modal img,#viewer_modal video{
       max-height: calc(100%);
@@ -68,8 +70,8 @@
       z-index: 2150;
       width: 100%;
       height: 100vh;
-      background-color: #fff;
-      background-image: url("assets/uploads/espressionist-logo-animation.gif");
+      background-color: #DFDAC6;
+      background-image: url("assets/uploads/espression.jpg");
       background-repeat: no-repeat;
       background-position: center;
       background-size:500px;
@@ -98,7 +100,7 @@
 
   <div class="modal fade" id="confirm_modal" role='dialog'>
       <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
+        <div class="modal-content mt-5">
           <div class="modal-header">
           <h5 class="modal-title">Confirmation</h5>
         </div>
@@ -106,15 +108,15 @@
           <div id="delete_content"></div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id='confirm' onclick="">Continue</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id='confirm' onclick="">Delete</button>
+          <button type="button" class="btn" data-dismiss="modal">Close</button>
         </div>
         </div>
       </div>
     </div>
     <div class="modal fade" id="uni_modal" role='dialog'>
       <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
+        <div class="modal-content mt-5">
           <div class="modal-header">
           <h5 class="modal-title"></h5>
         </div>
@@ -232,7 +234,7 @@ window._conf = function($msg='',$func='',$params = []){
   })
 
   </script>	
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  
 
 
 <script type="text/javascript">
