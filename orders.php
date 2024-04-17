@@ -15,26 +15,22 @@
 <div class="container-fluid">
 	
 	<div class="col-lg-12">
-		<div class="row mb-4 mt-4">
-			<div class="col-md-12">
-				
-			</div>
-		</div>
+		
 		<div class="row">
 			<!-- FORM Panel -->
 
 			<!-- Table Panel -->
 			<div class="col-md-12">
-				<div class="card">
+				<div class="card ">
 					<div class="card-header">
 						<b>List of Orders </b>
 
-						<span class="float:right"><a class="btn btn-primary btn-sm col-sm-2 float-right" href="billing/index.php" id="new_order">
+						<span class="float:right"><a class="btn btn-secondary btn-sm col-sm-2 float-right" href="billing/index.php" id="new_order">
 					<i class="fa fa-plus"></i> New 
 				</a></span>
 
 					</div>
-					<div class="card-body">
+					<div class="card-body2">
 						<table class="table table-hover">
 							<thead>
 								<tr>
@@ -65,7 +61,7 @@
 										<p><?php echo $row['order_number'] ?></p>
 									</td>
 									<td>
-										<p class="text-right"> <?php echo number_format($row['total_amount'],2) ?></p>
+										<p class="text-center"> <?php echo number_format($row['total_amount'],2) ?></p>
 									</td>
 									<td class="text-center">
 										<?php if($row['amount_tendered'] > 0): ?>
@@ -100,8 +96,8 @@
 		margin: unset
 	}
 	img{
-		max-width:100px;
-		max-height: :150px;
+		max-width: 100px;
+		max-height: 150px;
 	}
 </style>
 <script>
