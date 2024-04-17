@@ -13,8 +13,11 @@ body {
   color: #444444;
   width: 100%;
   height: calc(100%);
-  font-size: 12px;
+  font-size: 15px;
+  background: #DFDAC6;
+
 }
+
 
 a {
   color: #1977cc;
@@ -28,6 +31,82 @@ a:hover {
 h1, h2, h3, h4, h5, h6 {
   /*font-family: "Raleway", sans-serif;*/
 }
+
+.container-fluid1 {
+  position: absolute;
+  background-color: #DFDAC6;
+  padding: 0%;
+  margin:0%;
+  height: auto;
+  width: auto;
+  object-fit: cover;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(136, 125, 125, 0.88);
+  margin: 0 auto; /* Center the divider horizontally */
+
+  /* Use Bootstrap's responsive classes to set the width */
+  width: 100%;
+  max-width: 100%;
+  @media (min-width: 992px) {
+      max-width: 100%;
+  }
+  @media (min-width: 1200px) {
+      max-width: 70%;
+  }
+}
+
+.card-body {
+  padding: 0%;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
+}
+
+.card-body2 {
+  padding: 1%;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
+}
+.login-wrapper {
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  padding: 5rem;
+  border-radius: 8px; /* Optional: adds rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Optional: adds a subtle shadow */
+  height: 100vh;
+   /* Adjusts width to the content */
+  width: 100vw; /* Limits maximum width */
+}
+
+
+#login-center {
+  padding: 2%; /* Adds some spacing around the login center */
+}
+
+.card {
+  margin: auto; /* Centers the card in the available column space */
+  max-width: 90%;  /* Ensures the card does not exceed the width of the viewport */
+  background-color: #F2F2F2; 
+  
+  }
+  
+  @media (max-width: 768px) {
+  .card {
+    width: 100%; /* Makes the card full width on smaller screens */
+  }
+  }
+
+#cafe-logo{
+  width: 100px;
+  height: 100px;
+  align-self: center;
+}
+
 
 
 /*--------------------------------------------------------------
@@ -1541,12 +1620,14 @@ section {
   }
 }
 
+
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
 #footer {
     color: #000;
-    font-size: 14px;
+    color: black;
+    font-size: 15px;
     background: #fff;
     position: fixed;
     bottom: 0;
@@ -1561,8 +1642,13 @@ nav#sidebar {
     z-index: 99;
     left: 0;
     width: 225px;
-    font-size: 13px;
-    top: 5.9em;
+    font-size: 15px;
+    /* top: 5.9em; */
+}
+  @media screen and (max-width: 360px) {
+      .menubar {
+          color: red;
+      }
 }
 a.nav-item {
     position: relative;
@@ -1575,11 +1661,13 @@ a.nav-item {
     font-weight: 400;
 }
 .nav-item.active, .nav-item.active:hover{
-    background-color: #123e59;
-    color: #fffafa;
+    background-color: #332604;
+    opacity: 35%;
+    color: #ffffff;
 }
 a.nav-item:hover{
-    color: #123e59;
+    color: #000000;
+    font-weight: 600;
 }
 main#view-panel{
   margin-left: 200px; 
@@ -1678,6 +1766,7 @@ span.select2-selection__arrow {
     background-color: #123e59;
     border-color: #123e59;
 }
+
 table.dataTable.no-footer{
   border: 0 !important;
 }
@@ -1699,6 +1788,9 @@ input::placeholder{
 }
 .dashcard .card{
   box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+}
+.dashcard .card {
+
 }
 .circle-primary:before {
     background-color: #123e59;
