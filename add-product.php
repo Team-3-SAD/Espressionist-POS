@@ -1,44 +1,4 @@
-<?php include('db_connect.php');
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Handle other form inputs
-    $category_id = $_POST['category_id'];
-    $name = $_POST['name'];
-    $description = $_POST['description'];
-    $price = $_POST['price'];
-    $status = isset($_POST['status']) ? $_POST['status'] : 0;
-
-    // File upload handling
-    if (!empty($_FILES['product_image']['name'])) {
-        $target_dir = "uploads/";
-        $target_file = $target_dir . basename($_FILES["product_image"]["name"]);
-        $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-        // Check if image file is a actual image or fake image
-        $check = getimagesize($_FILES["product_image"]["tmp_name"]);
-        if ($check !== false) {
-            if (move_uploaded_file($_FILES["product_image"]["tmp_name"], $target_file)) {
-                $image_path = $target_file;
-            } else {
-                echo "Sorry, there was an error uploading your file.";
-            }
-        } else {
-            echo "File is not an image.";
-            $uploadOk = 0;
-        }
-    }
-
-    // Insert product data into database with image path
-    $sql = "INSERT INTO products (category_id, name, description, price, status, image_path) VALUES ('$category_id', '$name', '$description', '$price', '$status', '$image_path')";
-    if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-}
-
-?>
+<?php include('db_connect.php');?>
 
 <div class="container-fluid">
 	
@@ -46,12 +6,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		<div class="row">
 			<!-- FORM Panel -->
 			<div class="col-md-12">
-			<form action="" id="manage-product" method="post" enctype="multipart/form-data">
+			<form action="" id="manage-product">
 				<div class="card">
 					<div class="card-header">
-						   Product Form
+						   <b>Product Form</b>
 				  	</div>
-					<div class="card-body">
+					<div class="card-body2">
 							<input type="hidden" name="id">
 							<div class="form-group">
 								<label class="control-label">Category</label>
@@ -72,16 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 							</div>
 							<div class="form-group">
 								<label class="control-label">Description</label>
-								<textarea name="description" id="description" cols="30" rows="4" class="form-control"></textarea>
+								<textarea name="description" id="description" cols="30" rows="4" class="form-control" required></textarea>
 							</div>
-							<div class="form-group">
-    <label class="control-label">Product Image</label>
-    <div class="custom-file" style="border: 1px solid #ced4da; border-radius: 0.25rem; padding: 0.375rem 0.75rem;">
-        <input type="file" class="custom-file-input" id="product_image" name="product_image" accept="image/*" onchange="previewImage()" required>
-        <label class="custom-file-label" for="product_image">Choose file</label>
-    </div>
-</div>
-<div id="image_preview" class="mt-2"></div>
 							<div class="form-group">
 								<label class="control-label">Price</label>
 								<input type="number" class="form-control text-right" name="price" required>
@@ -92,13 +44,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 								  <label class="custom-control-label" for="status">Available</label>
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="control-label">Product Image</label>
+								<div class="custom-file" style="border: 1px solid #ced4da; border-radius: 0.25rem; padding: 0.375rem 0.75rem;">
+									<input type="file" class="custom-file-input" id="product_image" name="product_image" accept="image/*" onchange="previewImage()" required>
+									<label class="custom-file-label" for="product_image">Choose file</label>
+								</div>
+							</div>
+							<div id="image_preview" class="mt-2"></div>
 					</div>
 							
 					<div class="card-footer">
 						<div class="row">
 							<div class="col-md-12 text-center">
-								<button class="btn btn-primary"> Save</button>
-								<a class="btn btn-default" type="button" onclick="$('#manage-product').get(0).reset()" href="index.php?page=products"> Cancel</a>
+								<button class="btn btn-secondary"> Save</button>
+								<button class="btn btn-default" type="button" onclick="$('#manage-product').get(0).reset()"> Cancel</button>
 							</div>
 						</div>
 					</div>
@@ -113,11 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </div>
 <style>
-    #image_preview img {
-        max-width: 100px; /* Adjust the max-width as needed */
-        max-height: 100px; /* Adjust the max-height as needed */
-    }
-
+	
 	td{
 		vertical-align: middle !important;
 	}
@@ -227,6 +183,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 	$('table').dataTable()
 </script>
-<!--  Orginal Author Name: Mayuri K. 
- for any PHP, Codeignitor, Laravel OR Python work contact me at mayuri.infospace@gmail.com  
- Visit website : www.mayurik.com -->  
