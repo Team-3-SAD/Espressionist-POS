@@ -11,7 +11,7 @@
 
 <?php
  include('./header.php'); 
- // include('./auth.php');
+ // include('./auth.php'); 
  ?><!--  Orginal Author Name: Mayuri K. 
  for any PHP, Codeignitor, Laravel OR Python work contact me at mayuri.infospace@gmail.com  
  Visit website : www.mayurik.com -->  
@@ -19,7 +19,7 @@
 </head>
 <style>
 	body{
-        background: #f8f9fa;
+        background: #DFDAC6;
         position: fixed;
         width: calc(100%);
         height: calc(100%);
@@ -78,8 +78,8 @@
     z-index: 2150;
     width: 100%;
     height: 100vh;
-    background-color: #fff;
-    background-image: url("../assets/uploads/espressionist-logo-animation.gif");
+    background-color: #DFDAC6;
+    background-image: url("assets/uploads/espression.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size:500px;
@@ -132,7 +132,7 @@
         <div id="delete_content"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id='confirm' onclick="">Continue</button>
+        <button type="button" class="btn btn-secondary" id='confirm' onclick="">Continue</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
       </div>
