@@ -14,8 +14,7 @@
 </style>
 <div class="container-fluid">
 	
-	<div class="col-lg-12">
-		
+	<div class="col-lg-12">	
 		<div class="row">
 			<!-- FORM Panel -->
 

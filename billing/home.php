@@ -114,7 +114,7 @@ endif;
                             ?>
                             <div class="col-md-2 mb-2">
                                 <div class="prod-item text-center " data-json = '<?php echo json_encode($row) ?>' data-category-id="<?php echo $row['category_id'] ?>">
-                                    <img src="../assets/uploads/element-banner2-right.jpg" class="rounded" width="100%">
+                                    <img src="../assets/uploads/kopi.jpg" class="rounded" width="100%">
                                         <span> 
                                             <?php echo $row['name'] ?>
                                         </span>
@@ -126,8 +126,8 @@ endif;
                 </div>
             <div class="card-footer">
                 <div class="row justify-content-center">
-                    <div class="btn btn btn-sm col-sm-3 btn-secondary mr-2" type="button" id="pay">Pay</div>
-                    <div class="btn btn btn-sm col-sm-3 btn-secondary" type="button" id="save_order">Pay later</div>
+                    <div class="btn btn btn-sm col-sm-3 btn-secondary justify-content-center mr-2" type="button" id="pay">Pay</div>
+                    <!-- <div class="btn btn btn-sm col-sm-3 btn-secondary" type="button" id="save_order">Pay later</div> -->
                 </div>
             </div>
             </div>      			

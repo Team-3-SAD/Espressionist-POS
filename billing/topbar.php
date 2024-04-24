@@ -7,7 +7,6 @@
     border-radius: 50% 50%;
     color: #000000b3;
 }
-
 </style>
 
 <nav class="navbar navbar-light fixed-top bg-white">
@@ -16,13 +15,11 @@
       <div class="col-md-1 float-left" style="display: flex;">
       
       </div>
-      
       <div class="col-md-2 float-left text-dark">
         <!-- <large><b><?php echo isset($_SESSION['system']['name']) ? $_SESSION['system']['name'] : '' ?></b></large> -->
-        <img src="../assets/uploads/cafelogo.png" width="180px">
+          <img src="../assets/uploads/cafelogo.png" width="180px">
       </div>
      <div class="col-md-8 float-left text-dark mt-3">
-       <!-- <p style="color: red; font-size: 14px;"><b>Alert</b> This Project is developed for Academic study purpose only. | Never Sell or Distribute with your Name OR Branding. </p> -->
       </div>
                 <!-- <div id="google_translate_element"></div> -->
       <div class="float-right mt-3">

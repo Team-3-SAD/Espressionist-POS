@@ -17,13 +17,14 @@
   		</div>
       <div class="col-md-2 float-left text-dark">
         <!-- <large><b><?php echo isset($_SESSION['system']['name']) ? $_SESSION['system']['name'] : '' ?></b></large> -->
-         <img src="assets/uploads/espressionist-rectangle-logo(1).png" width="100px">
+         <img src="assets/uploads/cafelogo.png" width="180px">
       </div>
        <div class="col-md-8 float-left text-dark mt-3">
       </div>
+      <!-- <div id="google_translate_element"></div> -->
 	  	<div class="float-right mt-3">
         <div class=" dropdown mr-4">
-            <a href="#" class="text-dark dropdown-toggle"  id="account_settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['login_name'] ?> </a>
+            <a href="#" class="text-dark dropdown-toggle"  id="account_settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><b><?php echo $_SESSION['login_name'] ?></b> </a>
               <div class="dropdown-menu" aria-labelledby="account_settings">
                 <a class="dropdown-item" href="javascript:void(0)" id="manage_my_account"><i class="fa fa-cog"></i> Manage Account</a>
                 <a class="dropdown-item" href="ajax.php?action=logout"><i class="fa fa-power-off"></i> Logout</a>

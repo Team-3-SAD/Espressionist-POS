@@ -14,12 +14,12 @@
 					<div class="card-body2">
 							<input type="hidden" name="id">
 							<div class="form-group">
-								<label class="control-label">Name</label>
-								<input type="text" class="form-control" name="name">
+								<label class="control-label">Name <span class="asterisk">*</span></label>
+								<input type="text" class="form-control" name="name" autofocus required pattern="[a-zA-Z.]+(?:[\s][a-zA-Z.]+)*" title="Only letters, periods, and spaces are allowed" maxlength="30>
 							</div>
 							<div class="form-group">
-								<label class="control-label">Description</label>
-								<textarea name="description" id="description" cols="30" rows="4" class="form-control"></textarea>
+								<label class="control-label">Description <span class="asterisk">*</span></label>
+								<input name="description" id="description" class="form-control" autofocus required pattern="[a-zA-Z.]+(?:[\s][a-zA-Z.]+)*" title="Only letters, periods, and spaces are allowed" maxlength="30"></input>
 							</div>
 					</div>
 							

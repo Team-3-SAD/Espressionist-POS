@@ -13,11 +13,9 @@ body {
   color: #444444;
   width: 100%;
   height: calc(100%);
-  font-size: 15px;
+  font-size: 12px;
   background: #DFDAC6;
-
 }
-
 
 a {
   color: #1977cc;
@@ -68,6 +66,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-body2 {
   padding: 1%;
+  
   /* display: flex;
   flex-direction: column;
   justify-content: center;
@@ -88,26 +87,15 @@ h1, h2, h3, h4, h5, h6 {
   padding: 2%; /* Adds some spacing around the login center */
 }
 
-.card {
-  margin: auto; /* Centers the card in the available column space */
-  max-width: 90%;  /* Ensures the card does not exceed the width of the viewport */
-  background-color: #F2F2F2; 
-  
-  }
-  
-  @media (max-width: 768px) {
-  .card {
-    width: 100%; /* Makes the card full width on smaller screens */
-  }
-  }
-
-#cafe-logo{
+  #cafe-logo{
   width: 100px;
   height: 100px;
   align-self: center;
 }
 
-
+.asterisk {
+  color: red;
+}
 
 /*--------------------------------------------------------------
 # Back to top button

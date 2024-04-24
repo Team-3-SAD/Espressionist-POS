@@ -9,9 +9,9 @@
 			<form action="" id="manage-product">
 				<div class="card">
 					<div class="card-header">
-						   Edit Product Form
+						   <b>Edit Product Form</b>
 				  	</div>
-					<div class="card-body">
+					<div class="card-body2">
 							<input type="hidden" name="id">
 							<div class="form-group">
 								<label class="control-label">Category</label>
@@ -32,7 +32,7 @@
 							</div>
 							<div class="form-group">
 								<label class="control-label">Description</label>
-								<textarea name="description" id="description" cols="30" rows="4" class="form-control" required></textarea>
+								<input name="description" id="description" cols="30" rows="4" class="form-control" required></input>
 							</div>
 							<div class="form-group">
 								<label class="control-label">Price</label>
@@ -49,7 +49,7 @@
 					<div class="card-footer">
 						<div class="row">
 							<div class="col-md-12 text-center">
-								<button class="btn btn-primary"> Save</button>
+								<button class="btn btn-secondary"> Save</button>
 								<button class="btn btn-default" type="button" onclick="$('#manage-product').get(0).reset()"> Cancel</button>
 							</div>
 						</div>

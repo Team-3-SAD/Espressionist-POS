@@ -6,14 +6,18 @@
 	
 	<div class="row">
 	<div class="col-lg-12">
-			<button class="btn btn-primary float-right btn-sm" id="new_user"><i class="fa fa-plus"></i> New user</button>
+			<!-- <button class="btn btn-primary float-right btn-sm" id="new_user"><i class="fa fa-plus"></i> New user</button> -->
 	</div>
 	</div>
 	<br>
 	<div class="col-lg-12">
 		<div class="card ">
-			<div class="card-header"><b>User List</b></div>
-			<div class="card-body">
+			<div class="card-header"><b>User List</b>
+			<span class="float:right"><button class="btn btn-secondary btn-sm float-right" id="new_user">
+				<i class="fa fa-plus"></i> New User </a></span>
+		</div>
+
+			<div class="card-body2">
 				<table class="table table-hover">
 			<thead>
 				<tr>
@@ -24,9 +28,7 @@
 					<th>Action</th>
 				</tr>
 			</thead>
-			<!--  Orginal Author Name: Mayuri K. 
- for any PHP, Codeignitor, Laravel OR Python work contact me at mayuri.infospace@gmail.com  
- Visit website : www.mayurik.com -->  
+
 			<tbody>
 				<?php
  					include 'db_connect.php';
@@ -101,6 +103,3 @@ $('.delete_user').click(function(){
 		})
 	}
 </script>
-<!--  Orginal Author Name: Mayuri K. 
- for any PHP, Codeignitor, Laravel OR Python work contact me at mayuri.infospace@gmail.com  
- Visit website : www.mayurik.com -->  

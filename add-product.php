@@ -14,7 +14,7 @@
 					<div class="card-body2">
 							<input type="hidden" name="id">
 							<div class="form-group">
-								<label class="control-label">Category</label>
+								<label class="control-label">Category <span class="asterisk">*</span></label>
 								<select name="category_id" id="category_id" class="custom-select select2" required>
 									<option value=""></option>
 									<?php
@@ -27,16 +27,16 @@
 								</select>
 							</div>
 							<div class="form-group">
-								<label class="control-label">Name</label>
+								<label class="control-label">Name <span class="asterisk">*</span></label>
 								<input type="text" class="form-control" name="name" required>
 							</div>
 							<div class="form-group">
-								<label class="control-label">Description</label>
-								<textarea name="description" id="description" cols="30" rows="4" class="form-control" required></textarea>
+								<label class="control-label">Description <span class="asterisk">*</span></label>
+								<input name="description" id="description" cols="30" rows="4" class="form-control" required></input>
 							</div>
 							<div class="form-group">
-								<label class="control-label">Price</label>
-								<input type="number" class="form-control text-right" name="price" required>
+								<label class="control-label">Price <span class="asterisk">*</span></label>
+								<input type="number" class="form-control text-left" name="price" required>
 							</div>
 							<div class="form-group">
 								<div class="custom-control custom-switch">
@@ -51,7 +51,7 @@
 									<label class="custom-file-label" for="product_image">Choose file</label>
 								</div>
 							</div>
-							<div id="image_preview" class="mt-2"></div>
+							<!-- <div id="image_preview" class="mt-2"></div> -->
 					</div>
 							
 					<div class="card-footer">

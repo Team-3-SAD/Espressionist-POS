@@ -64,10 +64,10 @@
 				<div class="card">
 					<div class="card-header">
 						<b>Product List</b>
-						<!-- <span class="float:right"><a class="btn btn-primary btn-block btn-sm col-sm-2 float-right" href="index.php?page=add-product" id="new_order">
+						<!-- <span class="float:right"><a class="btn btn-secondary btn-block btn-sm col-sm-2 float-right" href="index.php?page=add-product" id="new_order">
 						<i class="fa fa-plus"></i> Add Product </a></span> -->
 					</div>
-					<div class="card-body">
+					<div class="card-body2 ">
 						<table class="table table-hover">
 							<thead>
 								<tr>
@@ -77,6 +77,7 @@
 									<th>Description</th>
 									<th>Price</th>
 									<th>Status</th>
+									
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -105,7 +106,6 @@
 									<td class="text-center">
 
 										<a class="btn btn-primary btn-sm edit_product" href="index.php?page=edit-product#<?php echo $row['id'] ?>" type="button" data-id="" data-description="<?php echo $row['description'] ?>" data-name="<?php echo $row['name'] ?>"  data-price="<?php echo $row['price'] ?>"  data-status="<?php echo $row['status'] ?>" data-category_id="<?php echo $row['category_id'] ?>"><i class="fa fa-edit"></i></a>
-
 										<button class="btn btn-danger btn-sm delete_product" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash-alt"></i></button>
 									</td>
 								</tr>
