@@ -44,8 +44,8 @@
 				<div class="card">
 					<div class="card-header">
 						<b>Category List</b>
-						<span class="float:right"><a class="btn btn-primary btn-block btn-sm col-sm-2 float-right" href="index.php?page=add-category" id="new_order">
-						<i class="fa fa-plus"></i> Add Category </a></span>
+						<!-- <span class="float:right"><a class="btn btn-primary btn-block btn-sm col-sm-2 float-right" href="index.php?page=add-category" id="new_order">
+						 <i class="fa fa-plus"></i> Add Category </a></span> -->
 					</div>
 					<div class="card-body">
 						<table class="table table-hover">

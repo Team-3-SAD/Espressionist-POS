@@ -64,8 +64,8 @@
 				<div class="card">
 					<div class="card-header">
 						<b>Product List</b>
-						<span class="float:right"><a class="btn btn-primary btn-block btn-sm col-sm-2 float-right" href="index.php?page=add-product" id="new_order">
-						<i class="fa fa-plus"></i> Add Product </a></span>
+						<!-- <span class="float:right"><a class="btn btn-primary btn-block btn-sm col-sm-2 float-right" href="index.php?page=add-product" id="new_order">
+						<i class="fa fa-plus"></i> Add Product </a></span> -->
 					</div>
 					<div class="card-body">
 						<table class="table table-hover">
@@ -77,7 +77,6 @@
 									<th>Description</th>
 									<th>Price</th>
 									<th>Status</th>
-									
 									<th>Action</th>
 								</tr>
 							</thead>
