@@ -4,42 +4,6 @@
 	
 	<div class="col-lg-12">
 		<div class="row">
-			<!--  Orginal Author Name: Mayuri K. 
- for any PHP, Codeignitor, Laravel OR Python work contact me at mayuri.infospace@gmail.com  
- Visit website : www.mayurik.com -->  
-			<!-- FORM Panel -->
-	<!-- 		<div class="col-md-4">
-			<form action="" id="manage-category">
-				<div class="card">
-					<div class="card-header">
-						    Category Form
-				  	</div>
-					<div class="card-body">
-							<input type="hidden" name="id">
-							<div class="form-group">
-								<label class="control-label">Name</label>
-								<input type="text" class="form-control" name="name">
-							</div>
-							<div class="form-group">
-								<label class="control-label">Description</label>
-								<textarea name="description" id="description" cols="30" rows="4" class="form-control"></textarea>
-							</div>
-					</div>
-							
-					<div class="card-footer">
-						<div class="row">
-							<div class="col-md-12">
-								<button class="btn btn-sm btn-primary col-sm-3 offset-md-3"> Save</button>
-								<button class="btn btn-sm btn-default col-sm-3" type="button" onclick="$('#manage-category').get(0).reset()"> Cancel</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
-			</div> -->
-			<!-- FORM Panel -->
-
-			<!-- Table Panel -->
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
