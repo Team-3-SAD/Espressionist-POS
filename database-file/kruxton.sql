@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2024 at 11:44 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Feb 09, 2023 at 06:49 PM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 7.4.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `categories` (
   `id` int(30) NOT NULL,
   `name` varchar(200) NOT NULL,
   `description` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `categories`
@@ -59,7 +59,7 @@ CREATE TABLE `orders` (
   `amount_tendered` float NOT NULL,
   `order_number` int(30) NOT NULL,
   `date_created` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `orders`
@@ -85,7 +85,7 @@ CREATE TABLE `order_items` (
   `qty` int(30) NOT NULL,
   `price` float NOT NULL,
   `amount` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `order_items`
@@ -121,7 +121,7 @@ CREATE TABLE `products` (
   `description` text NOT NULL,
   `price` float NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0=Unavailable,1=Available'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `products`
@@ -153,14 +153,14 @@ CREATE TABLE `system_settings` (
   `contact` varchar(20) NOT NULL,
   `cover_img` text NOT NULL,
   `about_content` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `system_settings`
 --
 
 INSERT INTO `system_settings` (`id`, `name`, `email`, `contact`, `cover_img`, `about_content`) VALUES
-(1, 'Espressionist System', 'espressionist.ph@gmail.com', '0995 965 9332', '', '&lt;p&gt;&lt;span dir=&quot;auto&quot;&gt;An art gallery-themed coffee shop offering espresso &amp;amp; specialty drinks, where art and coffee converge to awaken your senses and inspire your soul.&lt;/span&gt;&lt;/p&gt;');
+(1, 'Kruxton Bristo By Mayuri K', 'mayuri.infospace@gmail.com', '9000000000', '', '&lt;p&gt;Kruxton Bristo By Mayuri K&lt;/p&gt;');
 
 -- --------------------------------------------------------
 
@@ -174,16 +174,14 @@ CREATE TABLE `users` (
   `username` varchar(200) NOT NULL,
   `password` text NOT NULL,
   `type` tinyint(1) NOT NULL DEFAULT 3 COMMENT '1=Admin,2=Staff'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `password`, `type`) VALUES
-(3, 'Mayuri K.', 'mayuri.infospace@gmail.com', 'cd92a26534dba48cd785cdcc0b3e6bd1', 1),
-(4, 'Vince Matthew R. Resuena', 'vince123@email.com', 'd2bc2f8d09990ebe87c809684fd78c66', 1),
-(5, 'Dave', 'dave123@email.com', '202cb962ac59075b964b07152d234b70', 2);
+(3, 'Mayuri K.', 'mayuri.infospace@gmail.com', 'cd92a26534dba48cd785cdcc0b3e6bd1', 1);
 
 --
 -- Indexes for dumped tables
@@ -263,7 +261,7 @@ ALTER TABLE `system_settings`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
