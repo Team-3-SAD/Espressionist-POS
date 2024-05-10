@@ -15,11 +15,11 @@
 							<input type="hidden" name="id">
 							<div class="form-group">
 								<label class="control-label">Name</label>
-								<input type="text" class="form-control" name="name">
+								<input type="text" class="form-control" name="name" required>
 							</div>
 							<div class="form-group">
 								<label class="control-label">Description</label>
-								<input name="description" id="description" cols="30" rows="4" class="form-control"></input>
+								<input name="description" id="description" cols="30" rows="4" class="form-control" required></input>
 							</div>
 					</div>
 							
@@ -27,7 +27,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<button class="btn btn-secondary"> Save</button>
-								<button class="btn btn-default" type="button" onclick="$('#manage-category').get(0).reset()"> Cancel</button>
+								<a class="btn btn-default" type="button" href="index.php?page=categories"> Back to Category Forms</a>
 							</div>
 						</div>
 					</div>

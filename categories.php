@@ -3,10 +3,7 @@
 <div class="container-fluid">
 	
 	<div class="col-lg-12">
-		<div class="row">
-			<!--  Orginal Author Name: Mayuri K. 
- for any PHP, Codeignitor, Laravel OR Python work contact me at mayuri.infospace@gmail.com  
- Visit website : www.mayurik.com -->  
+		<div class="row"> 
 			<!-- FORM Panel -->
 	<!-- 		<div class="col-md-4">
 			<form action="" id="manage-category">
@@ -67,7 +64,7 @@
 									<td class="text-center"><?php echo $i++ ?></td>
 									<td class=""><?php echo $row['name'] ?></td>
 									<td><?php echo $row['description'] ?></td>
-									<td class="text-center">
+									<td class="text-left">
 										<a class="btn btn-sm btn-primary edit_category" href="index.php?page=edit-category#<?php echo $row['id'] ?>" type="button" data-id="<?php echo $row['id'] ?>" data-description="<?php echo $row['description'] ?>" data-name="<?php echo $row['name'] ?>" ><i class="fa fa-edit"></i></a>
 										<button class="btn btn-sm btn-danger delete_category" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash-alt"></i></button>
 									</td>

@@ -9,17 +9,17 @@
 			<form action="" id="manage-category">
 				<div class="card">
 					<div class="card-header">
-						    <b>Category Form</b>
+							<b>Category Form</b>
 				  	</div>
 					<div class="card-body2">
 							<input type="hidden" name="id">
 							<div class="form-group">
 								<label class="control-label">Name <span class="asterisk">*</span></label>
-								<input type="text" class="form-control" name="name" autofocus required pattern="[a-zA-Z.]+(?:[\s][a-zA-Z.]+)*" title="Only letters, periods, and spaces are allowed" maxlength="30>
+								<input type="text" class="form-control" name="name"  pattern="[a-zA-ZñÑ. ]{2,}[a-zA-ZñÑ.\s]*" title= "Only Letters are allowed" oninput="this.value = this.value.replace(/[^a-zA-ZñÑ.\-\s]/g, '')" minlength="3" maxlength="30"/ required></input>
 							</div>
 							<div class="form-group">
 								<label class="control-label">Description <span class="asterisk">*</span></label>
-								<input name="description" id="description" class="form-control" autofocus required pattern="[a-zA-Z.]+(?:[\s][a-zA-Z.]+)*" title="Only letters, periods, and spaces are allowed" maxlength="30"></input>
+								<input name="description" id="description" class="form-control"  pattern="[a-zA-ZñÑ. ]{2,}[a-zA-ZñÑ.\s]*" title= "Only Letters are allowed" oninput="this.value = this.value.replace(/[^a-zA-ZñÑ.\-\s]/g, '')" minlength="3" maxlength="30"/ required></input>
 							</div>
 					</div>
 							
@@ -27,7 +27,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<button class="btn btn-secondary "> Save</button>
-								<button class="btn btn-default" type="button" onclick="$('#manage-category').get(0).reset()"> Cancel</button>
+								<a class="btn btn-default" type="button" onclick="$('#manage-category').get(0).reset()" href="index.php?page=categories"> Cancel</a>
 							</div>
 						</div>
 					</div>

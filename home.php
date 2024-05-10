@@ -139,28 +139,28 @@
 
                               var data = [{
                                 "year": "2022",
-                                "chinese": 2.5,
-                                "mexican": 2.5,
-                                "pizza": 2.1,
-                                "japanese": 1,
-                                "korean": 0.8,
-                                "thai": 0.4
+                                "espresso-based": 2.5,
+                                "ice-blended": 2.5,
+                                "non-caffeinated": 2.1,
+                                "iced-teas": 1,
+                                "pastries": 0.8,
+                                "pasta": 0.4
                               }, {
                                 "year": "2023",
-                                "chinese": 2.6,
-                                "mexican": 2.7,
-                                "pizza": 2.2,
-                                "japanese": 5,
-                                "korean": 2.4,
-                                "thai": 2.3
+                                "espresso-based": 2.6,
+                                "ice-blended": 2.7,
+                                "non-caffeinated": 2.2,
+                                "iced-teas": 5,
+                                "pastries": 2.4,
+                                "pasta": 2.3
                               }, {
                                 "year": "2024",
-                                "chinese": 2.8,
-                                "mexican": 2.4,
-                                "pizza": 2.4,
-                                "japanese": 0.3,
-                                "korean": 0.9,
-                                "thai": 0.5
+                                "espresso-based": 2.8,
+                                "ice-blended": 2.4,
+                                "non-caffeinated": 2.4,
+                                "iced-teas": 0.3,
+                                "pastries": 0.9,
+                                "pasta": 0.5
                               }]
 
 
@@ -231,12 +231,12 @@
                                 legend.data.push(series);
                               }
 
-                              makeSeries("Chinese", "chinese");
-                              makeSeries("Mexican", "mexican");
-                              makeSeries("Pizza", "pizza");
-                              makeSeries("Japanese", "japanese");
-                              makeSeries("Korean", "korean");
-                              makeSeries("Thai", "thai");
+                              makeSeries("Espresso-based", "espresso-based");
+                              makeSeries("Ice-blended", "ice-blended");
+                              makeSeries("Non-caffeinated", "non-caffeinated");
+                              makeSeries("Iced-teas", "iced-teas");
+                              makeSeries("Pastries", "pastries");
+                              makeSeries("Pasta", "Pasta");
 
 
                               // Make stuff animate on load
@@ -396,20 +396,23 @@
 
                               // Set data
                               var data = [{
-                                country: "Chinese",
+                                country: "Espresso-based",
                                 value: 24
                               }, {
-                                country: "Mexican",
+                                country: "Ice-blended",
                                 value: 22
                               }, {
-                                country: "Pizza",
+                                country: "Non-Caffeinated",
                                 value: 13
                               }, {
-                                country: "Japanese",
+                                country: "Iced-Teas",
                                 value: 12
                               }, {
-                                country: "Thai",
+                                country: "Pastries",
                                 value: 10
+                              },{
+                                country: "Pasta",
+                                value: 15
                               }];
 
                               xAxis.data.setAll(data);
@@ -433,63 +436,65 @@
                                   </div>
                               </div>
 
+                      <!-- Table Panel -->
+                      <div class="col-md-12 mb-5">
+                      <div class="card">
+              <div class="card-header">
+                  <b>List of Orders</b>
+              </div>
+              <div class="card-body2">
+                  <table class="table table-hover">
+                      <thead>
+                          <tr>
+                              <th>#</th>
+                              <th>Date</th>
+                              <th>Invoice</th>
+                              <th>Order Number</th>
+                              <th>Amount</th>
+                              <th>Status</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <?php 
+                          $i = 1;
+                          $order = $conn->query("SELECT * FROM orders ORDER BY unix_timestamp(date_created) DESC");
+                          if($order->num_rows > 0):  // Check if there are any orders
+                              while($row = $order->fetch_assoc()):
+                          ?>
+                          <tr>
+                              <td class="text-center"><?php echo $i++; ?></td>
+                              <td><p><?php echo date("M d, Y", strtotime($row['date_created'])); ?></p></td>
+                              <td><p><?php echo $row['amount_tendered'] > 0 ? $row['ref_no'] : 'N/A'; ?></p></td>
+                              <td><p><?php echo $row['order_number']; ?></p></td>
+                              <td class="text-center"><?php echo number_format($row['total_amount'], 2); ?></td>
+                              <td class="text-center">
+                                  <span class="badge <?php echo $row['amount_tendered'] > 0 ? 'badge-success' : 'badge-primary'; ?>">
+                                      <?php echo $row['amount_tendered'] > 0 ? 'Paid' : 'Unpaid'; ?>
+                                  </span>
+                              </td>
+                          </tr>
+                          <?php 
+                              endwhile;
+                          else:  // This part runs if no rows were returned
+                          ?>
+                          <tr>
+                            <td colspan="6" class="text-center mt-3 mb-4" style="pointer-events: none;"> <!-- Make sure to match colspan with the number of columns -->
+                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                    <img src="assets/uploads/no found.jpg" height="200px" width="200px">
+                                    <span style="font-size: 18px;"><b>No Data Available</b></span>
+                                    <span>No content has been added yet. Get started by adding orders.</span>
+                                </div>
+                            </td>
 
+                          </tr>
+                          <?php 
+                          endif;
+                          ?>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
 
-
-            <!-- Table Panel -->
-            <div class="col-md-12 mb-5">
-                <div class="card">
-                    <div class="card-header">
-                        <b>List of Orders </b>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Date</th>
-                                    <th>Invoice</th>
-                                    <th>Order Number</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php 
-                                $i = 1;
-                                $order = $conn->query("SELECT * FROM orders order by unix_timestamp(date_created) desc ");
-                                while($row=$order->fetch_assoc()):
-                                ?>
-                                <tr>
-                                    <td class="text-center"><?php echo $i++ ?></td>
-                                    <td>
-                                        <p> <?php echo date("M d,Y",strtotime($row['date_created'])) ?></p>
-                                    </td>
-                                    <td>
-                                        <p> <?php echo $row['amount_tendered'] > 0 ? $row['ref_no'] : 'N/A' ?></p>
-                                    </td>
-                                    <td>
-                                        <p><?php echo $row['order_number'] ?></p>
-                                    </td>
-                                    <td>
-                                        <p class="text-center"> <?php echo number_format($row['total_amount'],2) ?></p>
-                                    </td>
-                                    <td class="text-center">
-                                        <?php if($row['amount_tendered'] > 0): ?>
-                                            <span class="badge badge-success">Paid</span>
-                                        <?php else: ?>
-                                            <span class="badge badge-primary">Unpaid</span>
-                                        <?php endif; ?>
-                                    </td>
-                                   
-                                </tr>
-                                <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
             <!-- Table Panel -->
     </div>
 </div>

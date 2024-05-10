@@ -24,9 +24,6 @@
                             <th class="">Amount</th>
                         </tr>
                     </thead>
-                    <!--  Orginal Author Name: Mayuri K. 
- for any PHP, Codeignitor, Laravel OR Python work contact me at mayuri.infospace@gmail.com  
- Visit website : www.mayurik.com -->  
                     <tbody>
 			          <?php
                       $i = 1;
@@ -39,24 +36,30 @@
 			          <tr>
                         <td class="text-center"><?php echo $i++ ?></td>
                         <td>
-                            <p> <b><?php echo date("M d,Y",strtotime($row['date_created'])) ?></b></p>
+                            <p> <?php echo date("M d,Y",strtotime($row['date_created'])) ?></p>
                         </td>
                         <td>
-                            <p> <b><?php echo $row['amount_tendered'] > 0 ? $row['ref_no'] : 'N/A' ?></b></p>
+                            <p><?php echo $row['amount_tendered'] > 0 ? $row['ref_no'] : 'N/A' ?></p>
                         </td>
                         <td>
                             <p> <b><?php echo $row['order_number'] ?></b></p>
                         </td>
                         <td>
-                            <p class="text-right"> <b><?php echo number_format($row['total_amount'],2) ?></b></p>
+                            <p class="text-right"><?php echo number_format($row['total_amount'],2) ?></p>
                         </td>
                     </tr>
                     <?php 
                         endwhile;
                         else:
                     ?>
-                    <tr>
-                            <th class="text-center" colspan="5">No Data.</th>
+                    <tr>  
+                        <td colspan="6" class="text-center"> <!-- Make sure to match colspan with the number of columns -->
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <img src="assets/uploads/no found.jpg" height="200px" width="200px">
+                                <span style="font-size: 18px;"><b>No Data Available</b></span>
+                                <span>No content has been added yet. Get started by adding orders.</span>
+                            </div>
+                         </td>
                     </tr>
                     <?php 
                         endif;
@@ -72,7 +75,7 @@
                 <hr>
                 <div class="col-md-12 mb-4">
                     <center>
-                        <button class="btn btn-success btn-sm col-sm-3" type="button" id="print"><i class="fa fa-print"></i> Print</button>
+                        <button class="btn btn-secondary btn-sm col-sm-3" type="button" id="print"><i class="fa fa-print"></i> Generate</button>
                     </center>
                 </div>
             </div>

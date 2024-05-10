@@ -17,10 +17,13 @@
   		</div>
       <div class="col-md-2 float-left text-dark">
         <!-- <large><b><?php echo isset($_SESSION['system']['name']) ? $_SESSION['system']['name'] : '' ?></b></large> -->
-         <img src="assets/uploads/cafelogo.png" width="180px">
+         <img src="assets/uploads/cafelogo.png" width="190px">
       </div>
-       <div class="col-md-8 float-left text-dark mt-3">
-      </div>
+      
+      <!-- <div style="display: flex; justify-content: center;">
+        <a style="font-weight: bold; text-align: center;">EspressoInsights by Cafe Espressionist</a>
+      </div> -->
+
       <!-- <div id="google_translate_element"></div> -->
 	  	<div class="float-right mt-3">
         <div class=" dropdown mr-4">
