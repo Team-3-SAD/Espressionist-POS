@@ -28,12 +28,12 @@
 							</div>
 							<div class="form-group">
 								<label class="control-label">Name <span class="asterisk">*</span></label>
-								<input type="text" class="form-control" name="name" pattern="[a-zA-ZñÑ. ]{2,}[a-zA-ZñÑ.\s]*" title= "Only Letters are allowed" oninput="this.value = this.value.replace(/[^a-zA-ZñÑ.\-\s]/g, '')" minlength="3" maxlength="30"/ required></input>
+								<input type="text" class="form-control" name="name" pattern="[a-zA-ZñÑ-]+(?:[ \-]?[a-zA-ZñÑ-]+)*" title= "Only Letters are allowed" oninput="this.value = this.value.replace(/[^a-zA-ZñÑ \-]/g, '')" minlength="3" maxlength="30"/ required></input>
 							</div>
 
 							<div class="form-group">
 								<label class="control-label">Description <span class="asterisk">*</span></label>
-								<input name="description" id="description" class="form-control" pattern="[a-zA-ZñÑ. ]{2,}[a-zA-ZñÑ.\s]*" title= "Only Letters are allowed" oninput="this.value = this.value.replace(/[^a-zA-ZñÑ.\-\s]/g, '')" minlength="3" maxlength="30"/ required></input>
+								<input name="description" id="description" class="form-control" pattern="[a-zA-ZñÑ-]+(?:[ \-]?[a-zA-ZñÑ-]+)*" title= "Only Letters are allowed" oninput="this.value = this.value.replace(/[^a-zA-ZñÑ \-]/g, '')" minlength="3" maxlength="30"/ required></input>
 							</div>
 
 							<div class="form-group">
