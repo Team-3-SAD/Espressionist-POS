@@ -85,169 +85,167 @@
                         <div class="card-body">
                            <h6 class="text-center mt-1 mb-2"> <b>Favorite Orders for the Month</b></h6>
                            
-                            <!-- Styles -->
-                              <style>
-                              #chartdiv1 {
-                                width: 100%;
-                                height: 350px;
-                                background-color: white;
-                              }
-                              </style>
+                          <!-- Styles -->
+                            <style>
+                            #chartdiv1 {
+                              width: 100%;
+                              height: 350px;
+                              background-color: white;
+                            }
+                            </style>
 
-                              <!-- Resources -->
-                              <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-                              <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-                              <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+                            <!-- Resources -->
+                            <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+                            <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+                            <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
-                              <!-- Chart code -->
-                              <script>
-                              am5.ready(function() {
+                            <!-- Chart code -->
+                            <script>
+                            am5.ready(function() {
 
+                            // Create root element
+                            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+                            var root = am5.Root.new("chartdiv1");
 
-                              // Create root element
-                              // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                              var root = am5.Root.new("chartdiv1");
+                            // Set themes
+                            // https://www.amcharts.com/docs/v5/concepts/themes/
+                            root.setThemes([
+                              am5themes_Animated.new(root)
+                            ]);
 
+                            // Create chart
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                            var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                              panX: false,
+                              panY: false,
+                              paddingLeft: 0,
+                              wheelX: "panX",
+                              wheelY: "zoomX",
+                              layout: root.verticalLayout
+                            }));
 
-                              // Set themes
-                              // https://www.amcharts.com/docs/v5/concepts/themes/
-                              root.setThemes([
-                                am5themes_Animated.new(root)
-                              ]);
-
-
-                              // Create chart
-                              // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                              var chart = root.container.children.push(am5xy.XYChart.new(root, {
-                                panX: false,
-                                panY: false,
-                                paddingLeft: 0,
-                                wheelX: "panX",
-                                wheelY: "zoomX",
-                                layout: root.verticalLayout
-                              }));
-
-
-                              // Add legend
-                              // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
-                              var legend = chart.children.push(
-                                am5.Legend.new(root, {
-                                  centerX: am5.p50,
-                                  x: am5.p50
-                                })
-                              );
-
-                              var data = [{
-                                "year": "2022",
-                                "espresso-based": 2.5,
-                                "ice-blended": 2.5,
-                                "non-caffeinated": 2.1,
-                                "iced-teas": 1,
-                                "pastries": 0.8,
-                                "pasta": 0.4
-                              }, {
-                                "year": "2023",
-                                "espresso-based": 2.6,
-                                "ice-blended": 2.7,
-                                "non-caffeinated": 2.2,
-                                "iced-teas": 5,
-                                "pastries": 2.4,
-                                "pasta": 2.3
-                              }, {
-                                "year": "2024",
-                                "espresso-based": 2.8,
-                                "ice-blended": 2.4,
-                                "non-caffeinated": 2.4,
-                                "iced-teas": 0.3,
-                                "pastries": 0.9,
-                                "pasta": 0.5
-                              }]
-
-
-                              // Create axes
-                              // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-                              var xRenderer = am5xy.AxisRendererX.new(root, {
-                                cellStartLocation: 0.1,
-                                cellEndLocation: 0.9,
-                                minorGridEnabled: true
+                            // Add legend
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+                            var legend = chart.children.push(
+                              am5.Legend.new(root, {
+                                centerX: am5.p50,
+                                x: am5.p50
                               })
+                            );
 
-                              var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-                                categoryField: "year",
-                                renderer: xRenderer,
-                                tooltip: am5.Tooltip.new(root, {})
-                              }));
 
-                              xRenderer.grid.template.setAll({
-                                location: 1
+                            var data = [{
+                              "year": "2022",
+                              "chinese": 2.5,
+                              "mexican": 2.5,
+                              "pizza": 2.1,
+                              "japanese": 1,
+                              "korean": 0.8,
+                              "thai": 0.4
+                            }, {
+                              "year": "2023",
+                              "chinese": 2.6,
+                              "mexican": 2.7,
+                              "pizza": 2.2,
+                              "japanese": 0.5,
+                              "korean": 0.4,
+                              "thai": 0.3
+                            }, {
+                              "year": "2024",
+                              "chinese": 2.8,
+                              "mexican": 2.9,
+                              "pizza": 2.4,
+                              "japanese": 0.3,
+                              "korean": 0.9,
+                              "thai": 0.5
+                            }]
+
+                            // Create axes
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                            var xRenderer = am5xy.AxisRendererX.new(root, {
+                              cellStartLocation: 0.1,
+                              cellEndLocation: 0.9,
+                              minorGridEnabled: true
+                            })
+
+                            var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+                              categoryField: "year",
+                              renderer: xRenderer,
+                              tooltip: am5.Tooltip.new(root, {})
+                            }));
+
+                            xRenderer.grid.template.setAll({
+                              location: 1
+                            })
+
+                            xAxis.data.setAll(data);
+
+                            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                              renderer: am5xy.AxisRendererY.new(root, {
+                                strokeOpacity: 0.1
                               })
+                            }));
 
-                              xAxis.data.setAll(data);
-
-                              var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-                                renderer: am5xy.AxisRendererY.new(root, {
-                                  strokeOpacity: 0.1
-                                })
+                            // Add series
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+                            function makeSeries(name, fieldName, color) {
+                              var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+                                name: name,
+                                xAxis: xAxis,
+                                yAxis: yAxis,
+                                valueYField: fieldName,
+                                categoryXField: "year",
+                                fill: color,
+                                stroke: color
                               }));
 
+                              series.columns.template.setAll({
+                                tooltipText: "{name}, {categoryX}:{valueY}",
+                                width: am5.percent(90),
+                                tooltipY: 0,
+                                strokeOpacity: 0
+                              });
 
-                              // Add series
-                              // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                              function makeSeries(name, fieldName) {
-                                var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-                                  name: name,
-                                  xAxis: xAxis,
-                                  yAxis: yAxis,
-                                  valueYField: fieldName,
-                                  categoryXField: "year"
-                                }));
-
-                                series.columns.template.setAll({
-                                  tooltipText: "{name}, {categoryX}:{valueY}",
-                                  width: am5.percent(90),
-                                  tooltipY: 0,
-                                  strokeOpacity: 0
-                                });
-
-                                series.data.setAll(data);
-
-                                // Make stuff animate on load
-                                // https://www.amcharts.com/docs/v5/concepts/animations/
-                                series.appear();
-
-                                series.bullets.push(function () {
-                                  return am5.Bullet.new(root, {
-                                    locationY: 0,
-                                    sprite: am5.Label.new(root, {
-                                      text: "{valueY}",
-                                      fill: root.interfaceColors.get("alternativeText"),
-                                      centerY: 0,
-                                      centerX: am5.p50,
-                                      populateText: true
-                                    })
-                                  });
-                                });
-
-                                legend.data.push(series);
-                              }
-
-                              makeSeries("Espresso-based", "espresso-based");
-                              makeSeries("Ice-blended", "ice-blended");
-                              makeSeries("Non-caffeinated", "non-caffeinated");
-                              makeSeries("Iced-teas", "iced-teas");
-                              makeSeries("Pastries", "pastries");
-                              makeSeries("Pasta", "Pasta");
-
+                              series.data.setAll(data);
 
                               // Make stuff animate on load
                               // https://www.amcharts.com/docs/v5/concepts/animations/
-                              chart.appear(1000, 100);
+                              series.appear();
 
-                              }); // end am5.ready()
-                              </script>
+                              series.bullets.push(function () {
+                                return am5.Bullet.new(root, {
+                                  locationY: 0,
+                                  sprite: am5.Label.new(root, {
+                                    text: "{valueY}",
+                                    fill: root.interfaceColors.get("alternativeText"),
+                                    centerY: 0,
+                                    centerX: am5.p50,
+                                    populateText: true
+                                  })
+                                });
+                              });
 
-                              <!-- HTML -->
-                              <div id="chartdiv1"></div>
+                              legend.data.push(series);
+                            }
+
+                            makeSeries("Chinese", "chinese", am5.color(0x73556E));
+                            makeSeries("Mexican", "mexican", am5.color(0x9FA1A6));
+                            makeSeries("Pizza", "pizza", am5.color(0xF2AA6B));
+                            makeSeries("Japanese", "japanese", am5.color(0xF28F6B));
+                            makeSeries("Korean", "korean", am5.color(0xA95A52));
+                            makeSeries("Thai", "thai", am5.color(0xE35B5D));
+                            
+
+                            // Make stuff animate on load
+                            // https://www.amcharts.com/docs/v5/concepts/animations/
+                            chart.appear(1000, 100);
+
+                            }); // end am5.ready()
+                            </script>
+
+                            <!-- HTML -->
+                            <div id="chartdiv1"></div>
+
                                                           
                                                       </div>
                                                   </div>
@@ -265,7 +263,7 @@
                             <div id="doughnut" "></div> <!-- Ensure height has 'px' -->
                             <!-- Styles -->
                               <style>
-                              #chartdiv {
+                              #chartdiv2 {
                                 width: 100%;
                                 height: 350px;
                                 background-color: white;
@@ -283,7 +281,7 @@
 
                               // Create root element
                               // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                              var root = am5.Root.new("chartdiv");
+                              var root = am5.Root.new("chartdiv2");
 
 
                               // Set themes
@@ -396,23 +394,20 @@
 
                               // Set data
                               var data = [{
-                                country: "Espresso-based",
+                                country: "Chinese",
                                 value: 24
                               }, {
-                                country: "Ice-blended",
+                                country: "Mexican",
                                 value: 22
                               }, {
-                                country: "Non-Caffeinated",
+                                country: "Pizza",
                                 value: 13
                               }, {
-                                country: "Iced-Teas",
+                                country: "Japanese",
                                 value: 12
                               }, {
-                                country: "Pastries",
+                                country: "Thai",
                                 value: 10
-                              },{
-                                country: "Pasta",
-                                value: 15
                               }];
 
                               xAxis.data.setAll(data);
@@ -427,7 +422,7 @@
                               </script>
 
                               <!-- HTML -->
-                              <div id="chartdiv"></div>
+                              <div id="chartdiv2"></div>
                                                       </div>
                                                   </div>
                                               </div>

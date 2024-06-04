@@ -77,10 +77,10 @@
     width: 100%;
     height: 100vh;
     background-color: #DFDAC6;
-    background-image: url("../assets/uploads/espression.jpg");
+    background-image: url("../assets/uploads/loading.gif");
     background-repeat: no-repeat;
     background-position: center;
-    background-size:500px;
+    background-size:300px;
 }
 .goog-logo-link {
         display:none !important;

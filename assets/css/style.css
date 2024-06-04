@@ -72,10 +72,10 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center; */
 }
 .login-wrapper {
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  background-color: rgba(0, 0, 0, 0.39); /* Semi-transparent black */
   padding: 5rem;
   border-radius: 8px; /* Optional: adds rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Optional: adds a subtle shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0); /* Optional: adds a subtle shadow */
   height: 100vh;
    /* Adjusts width to the content */
   width: 100vw; /* Limits maximum width */
