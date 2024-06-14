@@ -56,6 +56,33 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Adjusted CSS for .divider2 */
+.divider2 {
+  width: 1px;
+  background: rgba(136, 125, 125, 0.88);
+  margin: 0 auto; /* Center the divider vertically */
+  height: 100%; /* Ensure the divider covers the entire height of its parent row */
+}
+
+/* Adjusted CSS for the parent row */
+.row.with-divider {
+  height: 400px; /* Set a fixed height for the parent row */
+}
+
+/* Adjusted CSS for different screen sizes */
+@media (min-width: 992px) {
+  .row.with-divider {
+      height: 500px; /* Adjust height for medium screens */
+  }
+}
+
+@media (min-width: 1200px) {
+  .row.with-divider {
+      height: 600px; /* Adjust height for large screens */
+  }
+}
+
+
 .card-body {
   padding: 0%;
   /* display: flex;

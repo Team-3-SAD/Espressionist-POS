@@ -15,19 +15,19 @@
                             <input type="hidden" name="id">
                             <div class="form-group">
                                 <label class="control-label">Name <span class="asterisk">*</span></label>
-                                <input type="text" class="form-control" name="name"  pattern="[a-zA-ZñÑ-]+(?:[ \-]?[a-zA-ZñÑ-]+)*" title= "Only Letters are allowed" oninput="this.value = this.value.replace(/[^a-zA-ZñÑ \-]/g, '')" minlength="3" maxlength="30" required></input>
+                                <input type="text" class="form-control" name="name" pattern="[a-zA-ZñÑ-]+(?:[ \-]?[a-zA-ZñÑ-]+)*" title="Only Letters are allowed" oninput="this.value = this.value.replace(/[^a-zA-ZñÑ \-]/g, ''); checkForm()" minlength="3" maxlength="30" required></input>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Description <span class="asterisk">*</span></label>
-                                <input name="description" id="description" class="form-control"  pattern="[a-zA-ZñÑ-]+(?:[ \-]?[a-zA-ZñÑ-]+)*" title= "Only Letters are allowed" oninput="this.value = this.value.replace(/[^a-zA-ZñÑ \-]/g, '')" minlength="3" maxlength="30" required></input>
+                                <input name="description" id="description" class="form-control" pattern="[a-zA-ZñÑ-]+(?:[ \-]?[a-zA-ZñÑ-]+)*" title="Only Letters are allowed" oninput="this.value = this.value.replace(/[^a-zA-ZñÑ \-]/g, ''); checkForm()" minlength="3" maxlength="30" required></input>
                             </div>
                     </div>
                             
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-md-12">
-                                <button class="btn btn-secondary "> Save</button>
-                                <a class="btn btn-default" type="button" onclick="$('#manage-category').get(0).reset()" href="index.php?page=categories"> Cancel</a>
+                                <button id="save-btn" class="btn btn-secondary" disabled> Save</button>
+                                <a class="btn btn-default" type="button" onclick="$('#manage-category').get(0).reset(); checkForm()" href="index.php?page=categories"> Cancel</a>
                             </div>
                         </div>
                     </div>
@@ -40,7 +40,6 @@
 
 </div>
 <style>
-    
     td{
         vertical-align: middle !important;
     }
@@ -49,6 +48,18 @@
     }
 </style>
 <script>
+    function checkForm() {
+        var name = document.querySelector('input[name="name"]').value;
+        var description = document.querySelector('input[name="description"]').value;
+        var saveBtn = document.getElementById('save-btn');
+        
+        if (name && description && name.length >= 3 && description.length >= 3) {
+            saveBtn.disabled = false;
+        } else {
+            saveBtn.disabled = true;
+        }
+    }
+
     $('#manage-category').on('reset',function(){
         $('input:hidden').val('')
     })
@@ -110,22 +121,35 @@
     }
     $('table').dataTable()
 
+    var formChanged = false;
+    var pendingNavigationUrl = null;
 
-    $('#manage-category').data('serialize', $('#manage-category').serialize()); // On load save form current state
-
-    $(window).bind('beforeunload', function(e) {
-        if ($('#manage-category').serialize() != $('#manage-category').data('serialize')) {
-            var hasInput = false;
-            $('#manage-category input, #manage-category textarea').each(function() {
-                if ($(this).val() != '') {
-                    hasInput = true;
-                    return false;
-                }
-            });
-            if (hasInput) {
-                return true;
-            }
+$(document).ready(function() {
+    // Intercept all link clicks
+    $('a').on('click', function(event) {
+        if (formChanged) {
+            event.preventDefault();
+            pendingNavigationUrl = $(this).attr('href');
+            $('#warning-modal').modal('show');
         }
-        e = null; // i.e; if form state change show warning box, else don't show it.
     });
+
+    // Intercept form submissions
+    $('form').on('submit', function() {
+        formChanged = false;
+    });
+
+    $('#manage-category input, #manage-category textarea').on('input', function() {
+        formChanged = true;
+    });
+
+    $('#leave-page-btn').click(function() {
+        $('#warning-modal').modal('hide');
+        if (pendingNavigationUrl) {
+            window.location.href = pendingNavigationUrl;
+        }
+    });
+});
+
+
 </script>

@@ -38,7 +38,7 @@
 
 			<!-- Table Panel -->
 			<div class="col-md-12">
-				<div class="card">
+				<div class="card mb-5 mt-3">
 					<div class="card-header">
 						<b>Category List</b>
 						<!-- <span class="float:right"><a class="btn btn-secondary btn-block btn-sm col-sm-2 float-right" href="index.php?page=add-category" id="new_order">

@@ -6,7 +6,7 @@
 		<div class="row">
 			<!-- FORM Panel -->
 			<div class="col-md-12">
-			<form action="" id="manage-product">
+			<form action="" id="edit-product">
 				<div class="card">
 					<div class="card-header">
 						   <b>Edit Product Form</b>

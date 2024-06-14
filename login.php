@@ -79,12 +79,12 @@ header("location:index.php?page=home");
 									<div class="input-group-prepend">
 										<div class="input-group-text border-0"><i class="fa fa-lock"></i></div>
 									</div>
-									<input type="password" id="password" name="password" class="form-control border-0" placeholder="Password" required>
+									<input type="password" id="passwordInput" name="password" class="form-control border-0" placeholder="Password" required>
 								</div>
 							</div>
-							<div class="form-check py-3">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
-								<label class="form-check-label mt-1" for="exampleCheck1"> Remember me</label>
+							<div class="ShowPass">
+								<input type="checkbox" class="form-check-input" onclick="showPassword()" id="showPasswordCheckbox">
+								<label class="form-check-label mt-1"> Show Password</label>
 							</div>
 							<center><button type="submit" class="btn col-md-4 btn-secondary" disabled>Login</button></center>
 						</form>
@@ -98,13 +98,22 @@ header("location:index.php?page=home");
 </body>
 
 <script>
+	function showPassword(){
+		var password = document.getElementById('passwordInput');
+		if (password.type === 'password') {
+			password.type = 'text';
+		} else {
+			password.type = 'password';
+		}
+	}
+
 $(document).ready(function() {
     // Initially disable the login button
     $('#login-form button[type="submit"]').attr('disabled', true);
 
     // Enable the button when there's input in both the username and password fields
     $('#login-form input').on('input', function() {
-        var isEmpty = $('#username').val().trim() === '' || $('#password').val().trim() === '';
+        var isEmpty = $('#username').val().trim() === '' || $('#passwordInput').val().trim() === '';
         $('#login-form button[type="submit"]').attr('disabled', isEmpty);
     });
 

@@ -6,7 +6,7 @@
 		<div class="row">
 			<!-- FORM Panel -->
 			<div class="col-md-12">
-			<form action="" id="manage-category">
+			<form action="" id="edit-category">
 				<div class="card">
 					<div class="card-header">
 						    <b>Edit Category Form</b>
@@ -15,11 +15,11 @@
 							<input type="hidden" name="id">
 							<div class="form-group">
 								<label class="control-label">Name</label>
-								<input type="text" class="form-control" name="name" required>
+								<input type="text" class="form-control" name="name">
 							</div>
 							<div class="form-group">
 								<label class="control-label">Description</label>
-								<input name="description" id="description" cols="30" rows="4" class="form-control" required></input>
+								<input name="description" id="description" cols="30" rows="4" class="form-control"></input>
 							</div>
 					</div>
 							
