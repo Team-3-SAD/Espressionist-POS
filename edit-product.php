@@ -6,7 +6,7 @@
 		<div class="row">
 			<!-- FORM Panel -->
 			<div class="col-md-12">
-			<form action="" id="manage-product">
+			<form action="" id="edit-product">
 				<div class="card">
 					<div class="card-header">
 						   <b>Edit Product Form</b>
@@ -48,9 +48,9 @@
 							
 					<div class="card-footer">
 						<div class="row">
-							<div class="col-md-12 text-center">
+							<div class="col-md-12 text-left">
 								<button class="btn btn-secondary"> Save</button>
-								<button class="btn btn-default" type="button" onclick="$('#manage-product').get(0).reset()"> Cancel</button>
+								<a class="btn btn-default" type="button" href="index.php?page=categories"> Back to Product Forms</a>
 							</div>
 						</div>
 					</div>

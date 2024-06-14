@@ -20,7 +20,7 @@
 
 			<!-- Table Panel -->
 			<div class="col-md-12">
-				<div class="card ">
+				<div class="card mb-5 mt-3">
 					<div class="card-header">
 						<b>List of Orders </b>
 
@@ -95,8 +95,8 @@
 		margin: unset
 	}
 	img{
-		max-width: 100px;
-		max-height: 150px;
+		/* max-width: 100px;
+		max-height: 150px; */
 	}
 </style>
 <script>

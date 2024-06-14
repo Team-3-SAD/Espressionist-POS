@@ -71,10 +71,10 @@
       width: 100%;
       height: 100vh;
       background-color: #DFDAC6;
-      background-image: url("assets/uploads/espression.jpg");
+      background-image: url("assets/uploads/loading.gif");
       background-repeat: no-repeat;
       background-position: center;
-      background-size:500px;
+      background-size:300px;
   }
   </style>
 
@@ -123,8 +123,8 @@
         <div class="modal-body">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-secondary" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
+          <button type="button" class="btn" data-dismiss="modal">Cancel</button>
         </div>
         </div>
       </div>
@@ -137,7 +137,27 @@
         </div>
       </div>
     </div>
-    
+    <!-- Warning Modal -->
+    <div id="warning-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="warningModalLabel">Unsaved Changes</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+           You have unsaved changes. Are you sure you want to leave this page?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+            <button type="button" id="leave-page-btn" class="btn btn-warning">Leave</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </body>
 
   <script>
@@ -233,6 +253,7 @@ window._conf = function($msg='',$func='',$params = []){
     width: "100%"
   })
 
+</script>  
   </script>	
   
 

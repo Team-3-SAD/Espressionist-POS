@@ -1,6 +1,4 @@
-<?php include '../db_connect.php' ?><!--  Orginal Author Name: Mayuri K. 
- for any PHP, Codeignitor, Laravel OR Python work contact me at mayuri.infospace@gmail.com  
- Visit website : www.mayurik.com -->  
+<?php include '../db_connect.php' ?>
 <style>
    span.float-right.summary_icon {
     font-size: 3rem;
@@ -114,7 +112,7 @@ endif;
                             ?>
                             <div class="col-md-2 mb-2">
                                 <div class="prod-item text-center " data-json = '<?php echo json_encode($row) ?>' data-category-id="<?php echo $row['category_id'] ?>">
-                                    <img src="../assets/uploads/kopi.jpg" class="rounded" width="100%">
+                                    <img src="../assets/uploads/espression.jpg" class="rounded" width="100%">
                                         <span> 
                                             <?php echo $row['name'] ?>
                                         </span>

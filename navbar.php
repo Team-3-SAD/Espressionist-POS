@@ -13,8 +13,8 @@
 		<div class="sidebar-list">
 			<a href="index.php?page=home" class="nav-item nav-home"><span class='icon-field'><i class="fa fa-tachometer-alt mr-3"></i></span> Dashboard</a>
 			
-			<a href=".." class="nav-item nav-orders"><span class='icon-field'><i class="fa fa-clipboard-list mr-3"></i></span> Orders</a>
-			<a href=".." class="nav-item nav-takeorders"><span class='icon-field'><i class="fa fa-list-ol mr-3"></i></span> Take Orders</a>
+			<a href="index.php?page=orders" class="nav-item nav-orders"><span class='icon-field'><i class="fa fa-clipboard-list mr-3"></i></span> Orders</a>
+			<a href="billing/index.php" class="nav-item nav-takeorders"><span class='icon-field'><i class="fa fa-list-ol mr-3"></i></span> Take Orders</a>
 			<?php if($_SESSION['login_type'] == 1): ?>
 				
 			<!-- <div class="mx-2 text-white">Master List</div> -->
@@ -24,7 +24,7 @@
 				<a href="index.php?page=add-product" class="nav-item nav-add-product"><span class='icon-field'><i class="fa fa-th-list mr-3"></i></span>Add Products</a>
 			<?php endif; ?>
 			<!-- <div class="mx-2 text-white">Report</div> -->
-			<a href="index.php?page=sales_report" class="nav-item nav-sales_report"><span class='icon-field'><i class="fa fa-th-list mr-3"></i></span> Sales Report</a>
+			<a href="index.php?page=sales_report" class="nav-item nav-sales_report"><span class='icon-field'><i class="fa fa-file mr-3"></i></span> Sales Report</a>
 			<?php if($_SESSION['login_type'] == 1): ?>
 			<!-- <div class="mx-2 text-white">Systems</div> -->
 			<a href="index.php?page=users" class="nav-item nav-users"><span class='icon-field'><i class="fa fa-users mr-3"></i></span> Users</a>

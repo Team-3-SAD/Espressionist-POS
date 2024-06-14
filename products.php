@@ -61,7 +61,7 @@
 
 			<!-- Table Panel -->
 			<div class="col-md-12">
-				<div class="card">
+				<div class="card mb-5 mt-3">
 					<div class="card-header">
 						<b>Product List</b>
 						<!-- <span class="float:right"><a class="btn btn-secondary btn-block btn-sm col-sm-2 float-right" href="index.php?page=add-product" id="new_order">
@@ -103,7 +103,7 @@
 										
 										 <?php echo $row['status'] == 1 ? " Available" : "Unavailable" ?>
 									</td>
-									<td class="text-center">
+									<td class="text-left">
 
 										<a class="btn btn-primary btn-sm edit_product" href="index.php?page=edit-product#<?php echo $row['id'] ?>" type="button" data-id="" data-description="<?php echo $row['description'] ?>" data-name="<?php echo $row['name'] ?>"  data-price="<?php echo $row['price'] ?>"  data-status="<?php echo $row['status'] ?>" data-category_id="<?php echo $row['category_id'] ?>"><i class="fa fa-edit"></i></a>
 										<button class="btn btn-danger btn-sm delete_product" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash-alt"></i></button>

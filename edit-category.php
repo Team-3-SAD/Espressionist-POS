@@ -6,7 +6,7 @@
 		<div class="row">
 			<!-- FORM Panel -->
 			<div class="col-md-12">
-			<form action="" id="manage-category">
+			<form action="" id="edit-category">
 				<div class="card">
 					<div class="card-header">
 						    <b>Edit Category Form</b>
@@ -27,7 +27,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<button class="btn btn-secondary"> Save</button>
-								<button class="btn btn-default" type="button" onclick="$('#manage-category').get(0).reset()"> Cancel</button>
+								<a class="btn btn-default" type="button" href="index.php?page=categories"> Back to Category Forms</a>
 							</div>
 						</div>
 					</div>

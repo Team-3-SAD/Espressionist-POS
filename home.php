@@ -1,68 +1,7 @@
 <?php include 'db_connect.php' ?>
-<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
-
-        var data = google.visualization.arrayToDataTable([
-          ['Category', 'Sold Per Day'],
-          ['Chinese',     11],
-          ['Mexican',      2],
-          ['Pizza',  2],
-          ['Japanese', 2],
-          ['Thai',    7]
-        ]);
-
-        var options = {
-          
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-        chart.draw(data, options);
-      }
-    </script>
-<style>
-   span.float-right.summary_icon {
-    font-size: 3rem;
-    position: absolute;
-    right: 1rem;
-    top: 0;
-}
-.imgs{
-		margin: .5em;
-		max-width: calc(100%);
-		max-height: calc(100%);
-	}
-	.imgs img{
-		max-width: calc(100%);
-		max-height: calc(100%);
-		cursor: pointer;
-	}
-	#imagesCarousel,#imagesCarousel .carousel-inner,#imagesCarousel .carousel-item{
-		height: 60vh !important;background: black;
-	}
-	#imagesCarousel .carousel-item.active{
-		display: flex !important;
-	}
-	#imagesCarousel .carousel-item-next{
-		display: flex !important;
-	}
-	#imagesCarousel .carousel-item img{
-		margin: auto;
-	}
-	#imagesCarousel img{
-		width: auto!important;
-		height: auto!important;
-		max-height: calc(100%)!important;
-		max-width: calc(100%)!important;
-	}
-</style> -->
-
-<div class="container-fluid1">
-	<div class="row mt-3 ml-3 mr-3 dashcard">
+<div class="container-fluid1 mr-5 ml-5">
+	<div class="row mt-3 ml-5 mr-5 dashcard">
         <!-- <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
@@ -85,169 +24,167 @@
                         <div class="card-body">
                            <h6 class="text-center mt-1 mb-2"> <b>Favorite Orders for the Month</b></h6>
                            
-                            <!-- Styles -->
-                              <style>
-                              #chartdiv1 {
-                                width: 100%;
-                                height: 350px;
-                                background-color: white;
-                              }
-                              </style>
+                          <!-- Styles -->
+                            <style>
+                            #chartdiv1 {
+                              width: 100%;
+                              height: 350px;
+                              background-color: white;
+                            }
+                            </style>
 
-                              <!-- Resources -->
-                              <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-                              <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-                              <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+                            <!-- Resources -->
+                            <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+                            <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+                            <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
-                              <!-- Chart code -->
-                              <script>
-                              am5.ready(function() {
+                            <!-- Chart code -->
+                            <script>
+                            am5.ready(function() {
 
+                            // Create root element
+                            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+                            var root = am5.Root.new("chartdiv1");
 
-                              // Create root element
-                              // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                              var root = am5.Root.new("chartdiv1");
+                            // Set themes
+                            // https://www.amcharts.com/docs/v5/concepts/themes/
+                            root.setThemes([
+                              am5themes_Animated.new(root)
+                            ]);
 
+                            // Create chart
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                            var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                              panX: false,
+                              panY: false,
+                              paddingLeft: 0,
+                              wheelX: "panX",
+                              wheelY: "zoomX",
+                              layout: root.verticalLayout
+                            }));
 
-                              // Set themes
-                              // https://www.amcharts.com/docs/v5/concepts/themes/
-                              root.setThemes([
-                                am5themes_Animated.new(root)
-                              ]);
-
-
-                              // Create chart
-                              // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                              var chart = root.container.children.push(am5xy.XYChart.new(root, {
-                                panX: false,
-                                panY: false,
-                                paddingLeft: 0,
-                                wheelX: "panX",
-                                wheelY: "zoomX",
-                                layout: root.verticalLayout
-                              }));
-
-
-                              // Add legend
-                              // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
-                              var legend = chart.children.push(
-                                am5.Legend.new(root, {
-                                  centerX: am5.p50,
-                                  x: am5.p50
-                                })
-                              );
-
-                              var data = [{
-                                "year": "2022",
-                                "chinese": 2.5,
-                                "mexican": 2.5,
-                                "pizza": 2.1,
-                                "japanese": 1,
-                                "korean": 0.8,
-                                "thai": 0.4
-                              }, {
-                                "year": "2023",
-                                "chinese": 2.6,
-                                "mexican": 2.7,
-                                "pizza": 2.2,
-                                "japanese": 5,
-                                "korean": 2.4,
-                                "thai": 2.3
-                              }, {
-                                "year": "2024",
-                                "chinese": 2.8,
-                                "mexican": 2.4,
-                                "pizza": 2.4,
-                                "japanese": 0.3,
-                                "korean": 0.9,
-                                "thai": 0.5
-                              }]
-
-
-                              // Create axes
-                              // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-                              var xRenderer = am5xy.AxisRendererX.new(root, {
-                                cellStartLocation: 0.1,
-                                cellEndLocation: 0.9,
-                                minorGridEnabled: true
+                            // Add legend
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+                            var legend = chart.children.push(
+                              am5.Legend.new(root, {
+                                centerX: am5.p50,
+                                x: am5.p50
                               })
+                            );
 
-                              var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-                                categoryField: "year",
-                                renderer: xRenderer,
-                                tooltip: am5.Tooltip.new(root, {})
-                              }));
 
-                              xRenderer.grid.template.setAll({
-                                location: 1
+                            var data = [{
+                              "year": "2022",
+                              "chinese": 2.5,
+                              "mexican": 2.5,
+                              "pizza": 2.1,
+                              "japanese": 1,
+                              "korean": 0.8,
+                              "thai": 0.4
+                            }, {
+                              "year": "2023",
+                              "chinese": 2.6,
+                              "mexican": 2.7,
+                              "pizza": 2.2,
+                              "japanese": 0.5,
+                              "korean": 0.4,
+                              "thai": 0.3
+                            }, {
+                              "year": "2024",
+                              "chinese": 2.8,
+                              "mexican": 2.9,
+                              "pizza": 2.4,
+                              "japanese": 0.3,
+                              "korean": 0.9,
+                              "thai": 0.5
+                            }]
+
+                            // Create axes
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                            var xRenderer = am5xy.AxisRendererX.new(root, {
+                              cellStartLocation: 0.1,
+                              cellEndLocation: 0.9,
+                              minorGridEnabled: true
+                            })
+
+                            var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+                              categoryField: "year",
+                              renderer: xRenderer,
+                              tooltip: am5.Tooltip.new(root, {})
+                            }));
+
+                            xRenderer.grid.template.setAll({
+                              location: 1
+                            })
+
+                            xAxis.data.setAll(data);
+
+                            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                              renderer: am5xy.AxisRendererY.new(root, {
+                                strokeOpacity: 0.1
                               })
+                            }));
 
-                              xAxis.data.setAll(data);
-
-                              var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-                                renderer: am5xy.AxisRendererY.new(root, {
-                                  strokeOpacity: 0.1
-                                })
+                            // Add series
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+                            function makeSeries(name, fieldName, color) {
+                              var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+                                name: name,
+                                xAxis: xAxis,
+                                yAxis: yAxis,
+                                valueYField: fieldName,
+                                categoryXField: "year",
+                                fill: color,
+                                stroke: color
                               }));
 
+                              series.columns.template.setAll({
+                                tooltipText: "{name}, {categoryX}:{valueY}",
+                                width: am5.percent(90),
+                                tooltipY: 0,
+                                strokeOpacity: 0
+                              });
 
-                              // Add series
-                              // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                              function makeSeries(name, fieldName) {
-                                var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-                                  name: name,
-                                  xAxis: xAxis,
-                                  yAxis: yAxis,
-                                  valueYField: fieldName,
-                                  categoryXField: "year"
-                                }));
-
-                                series.columns.template.setAll({
-                                  tooltipText: "{name}, {categoryX}:{valueY}",
-                                  width: am5.percent(90),
-                                  tooltipY: 0,
-                                  strokeOpacity: 0
-                                });
-
-                                series.data.setAll(data);
-
-                                // Make stuff animate on load
-                                // https://www.amcharts.com/docs/v5/concepts/animations/
-                                series.appear();
-
-                                series.bullets.push(function () {
-                                  return am5.Bullet.new(root, {
-                                    locationY: 0,
-                                    sprite: am5.Label.new(root, {
-                                      text: "{valueY}",
-                                      fill: root.interfaceColors.get("alternativeText"),
-                                      centerY: 0,
-                                      centerX: am5.p50,
-                                      populateText: true
-                                    })
-                                  });
-                                });
-
-                                legend.data.push(series);
-                              }
-
-                              makeSeries("Chinese", "chinese");
-                              makeSeries("Mexican", "mexican");
-                              makeSeries("Pizza", "pizza");
-                              makeSeries("Japanese", "japanese");
-                              makeSeries("Korean", "korean");
-                              makeSeries("Thai", "thai");
-
+                              series.data.setAll(data);
 
                               // Make stuff animate on load
                               // https://www.amcharts.com/docs/v5/concepts/animations/
-                              chart.appear(1000, 100);
+                              series.appear();
 
-                              }); // end am5.ready()
-                              </script>
+                              series.bullets.push(function () {
+                                return am5.Bullet.new(root, {
+                                  locationY: 0,
+                                  sprite: am5.Label.new(root, {
+                                    text: "{valueY}",
+                                    fill: root.interfaceColors.get("alternativeText"),
+                                    centerY: 0,
+                                    centerX: am5.p50,
+                                    populateText: true
+                                  })
+                                });
+                              });
 
-                              <!-- HTML -->
-                              <div id="chartdiv1"></div>
+                              legend.data.push(series);
+                            }
+
+                            makeSeries("Chinese", "chinese", am5.color(0x73556E));
+                            makeSeries("Mexican", "mexican", am5.color(0x9FA1A6));
+                            makeSeries("Pizza", "pizza", am5.color(0xF2AA6B));
+                            makeSeries("Japanese", "japanese", am5.color(0xF28F6B));
+                            makeSeries("Korean", "korean", am5.color(0xA95A52));
+                            makeSeries("Thai", "thai", am5.color(0xE35B5D));
+                            
+
+                            // Make stuff animate on load
+                            // https://www.amcharts.com/docs/v5/concepts/animations/
+                            chart.appear(1000, 100);
+
+                            }); // end am5.ready()
+                            </script>
+
+                            <!-- HTML -->
+                            <div id="chartdiv1"></div>
+
                                                           
                                                       </div>
                                                   </div>
@@ -265,7 +202,7 @@
                             <div id="doughnut" "></div> <!-- Ensure height has 'px' -->
                             <!-- Styles -->
                               <style>
-                              #chartdiv {
+                              #chartdiv2 {
                                 width: 100%;
                                 height: 350px;
                                 background-color: white;
@@ -283,7 +220,7 @@
 
                               // Create root element
                               // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                              var root = am5.Root.new("chartdiv");
+                              var root = am5.Root.new("chartdiv2");
 
 
                               // Set themes
@@ -424,7 +361,7 @@
                               </script>
 
                               <!-- HTML -->
-                              <div id="chartdiv"></div>
+                              <div id="chartdiv2"></div>
                                                       </div>
                                                   </div>
                                               </div>
@@ -432,65 +369,42 @@
                                       </div>
                                   </div>
                               </div>
+                             
+                              
+                                <div class="col-md-12 mb-5">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12 mb-5">
+                                        <div class="card border-0">
+                                            <div class="card-body text-center">
+                                                <h6 class="text-center mt-1 mb-2"><b>Mix 'N Match</b></h6>
 
+                                                <div class="row">
+                                                    <div class="col-md-6 mt-3 ">
+                                                        <div class="Mix1 mb-3">
+                                                            <img src="assets/uploads/espression.jpg" class="rounded" width="60%">
+                                                            <h6 class="card-title mt-2">Matcha Milktea</h6>
+                                                            <p class="card-text">Description of Matcha Milktea</p>
+                                                        </div>
+                                                    </div>
 
+                                                    <div class="row justify-content-center with-divider">
+                                                      <div class="divider2"></div>
+                                                    </div>
 
+                                                    <div class="col-md-6 mt-3 ">
+                                                        <div class="Mix2 mb-3">
+                                                            <img src="assets/uploads/espression.jpg" class="rounded" width="60%">
+                                                            <h6 class="card-title mt-2">Creamy Carbonara</h6>
+                                                            <p class="card-text">Description of Match</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <center><a href="billing/index.php" class="btn col-md-3 btn-secondary mb-4" >Order</a> </center>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
 
-            <!-- Table Panel -->
-            <div class="col-md-12 mb-5">
-                <div class="card">
-                    <div class="card-header">
-                        <b>List of Orders </b>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Date</th>
-                                    <th>Invoice</th>
-                                    <th>Order Number</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php 
-                                $i = 1;
-                                $order = $conn->query("SELECT * FROM orders order by unix_timestamp(date_created) desc ");
-                                while($row=$order->fetch_assoc()):
-                                ?>
-                                <tr>
-                                    <td class="text-center"><?php echo $i++ ?></td>
-                                    <td>
-                                        <p> <?php echo date("M d,Y",strtotime($row['date_created'])) ?></p>
-                                    </td>
-                                    <td>
-                                        <p> <?php echo $row['amount_tendered'] > 0 ? $row['ref_no'] : 'N/A' ?></p>
-                                    </td>
-                                    <td>
-                                        <p><?php echo $row['order_number'] ?></p>
-                                    </td>
-                                    <td>
-                                        <p class="text-center"> <?php echo number_format($row['total_amount'],2) ?></p>
-                                    </td>
-                                    <td class="text-center">
-                                        <?php if($row['amount_tendered'] > 0): ?>
-                                            <span class="badge badge-success">Paid</span>
-                                        <?php else: ?>
-                                            <span class="badge badge-primary">Unpaid</span>
-                                        <?php endif; ?>
-                                    </td>
-                                   
-                                </tr>
-                                <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!-- Table Panel -->
     </div>
 </div>
 
