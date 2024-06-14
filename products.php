@@ -105,7 +105,7 @@
 									</td>
 									<td class="text-left">
 
-										<a class="btn btn-primary btn-sm edit_product" href="index.php?page=edit-product#<?php echo $row['id'] ?>" type="button" data-id="" data-description="<?php echo $row['description'] ?>" data-name="<?php echo $row['name'] ?>"  data-price="<?php echo $row['price'] ?>"  data-status="<?php echo $row['status'] ?>" data-category_id="<?php echo $row['category_id'] ?>"><i class="fa fa-edit"></i></a>
+										<a class="btn btn-primary btn-sm edit_product" href="index.php?page=edit-product&id=<?php echo $row['id'] ?>" type="button" data-id="<?php echo $row['id'] ?>" data-description="<?php echo $row['description'] ?>" data-name="<?php echo $row['name'] ?>"  data-price="<?php echo $row['price'] ?>"  data-status="<?php echo $row['status'] ?>" data-category_id="<?php echo $row['category_id'] ?>"><i class="fa fa-edit"></i></a>
 										<button class="btn btn-danger btn-sm delete_product" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash-alt"></i></button>
 									</td>
 								</tr>
