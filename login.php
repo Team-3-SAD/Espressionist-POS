@@ -154,6 +154,22 @@ ob_end_flush();
             });
         });
     });
+
+    
+    function maskPassword(input) {
+    input.addEventListener('input', function() {
+        this.type = 'text';
+        setTimeout(() => {
+            this.type = 'password';
+        }, 500); // Mask after 500ms
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var passwordInput = document.getElementById('passwordInput');
+    maskPassword(passwordInput);
+});
+
 </script>
 
 </html>

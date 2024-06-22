@@ -250,6 +250,7 @@ endif;
         <button type="button" class="btn btn-sm" data-dismiss="modal">Cancel</button>
       </div>
       </div>
+      
     </div>
   </div>
 <script>
@@ -415,4 +416,5 @@ endif;
             }
         })
     })
+
 </script>

@@ -55,7 +55,7 @@ if (isset($_GET['id'])) {
 							</div>
 							<div class="form-group">
 								<label class="control-label">Price</label>
-								<input type="number" class="form-control text-right" name="price" value="<?php echo isset($product_price) ? $product_price : ''; ?>" required>
+								<input type="number" class="form-control text-left" name="price" value="<?php echo isset($product_price) ? $product_price : ''; ?>" required>
 							</div>
 							<div class="form-group">
 								<div class="custom-control custom-switch">
