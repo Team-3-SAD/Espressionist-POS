@@ -25,6 +25,10 @@
         padding: 5px;
         position: relative;
     }
+    main .card-footer{
+        background-color: none;
+    }
+    
     main .container-fluid, main .container-fluid>.row,main .container-fluid>.row>div{
         /*height:calc(100%);*/
     }
@@ -68,353 +72,621 @@
     }
     .cat-item:hover{
         opacity: .8;
+    } 
+
+    .discount {
+        border-radius: 4px;
+    }
+
+    .discounted {
+        background-color: #d4edda;
+    }
+
+    .discount-badge {
+        display: inline-block;
+        padding: 2px 6px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #28a745;
+        border-radius: 12px;
+        margin-left: 10px;
+    }
+
+    .original-price {
+        text-decoration: line-through;
+        color: red;
+        margin-right: 5px;
     }
 </style>
-<?php 
-if(isset($_GET['id'])):
-$order = $conn->query("SELECT * FROM orders where id = {$_GET['id']}");
-foreach($order->fetch_array() as $k => $v){
-    $$k= $v;
-}
-$items = $conn->query("SELECT o.*,p.name FROM order_items o inner join products p on p.id = o.product_id where o.order_id = $id ");
+
+<?php
+if (isset($_GET['id'])) :
+    $order = $conn->query("SELECT * FROM orders where id = {$_GET['id']}");
+    foreach ($order->fetch_array() as $k => $v) {
+        $$k = $v;
+    }
+    $items = $conn->query("SELECT o.*,p.name FROM order_items o inner join products p on p.id = o.product_id where o.order_id = $id ");
 endif;
 ?>
 <div class="container-fluid o-field">
-	<div class="row mt-3 ml-3 mr-3">
-      
-        <div class="col-lg-8  p-field">
-            <div class="card ">
+    <div class="row mt-3 ml-3 mr-3">
+        <div class="col-lg-8 col-md-12 p-field">
+            <div class="card">
                 <div class="card-header text-dark">
-                    <b>Products</b>
+                    <h5>Products</h5>
                 </div>
                 <div class="card-body row" id='prod-list'>
                     <div class="col-md-12">
-                      <!--    <b>Category</b> -->
-                        <div class=" row justify-content-start align-items-center" id="cat-list">
-                            <div class="mx-3 cat-item" data-id = 'all'>    
+                        <div class="row mx-auto" id="cat-list">
+                            <div class="mt-3 mx-auto cat-item" data-id='all'>
                                 <button class="btn btn-secondary"><b class="text-white">All</b></button>
                             </div>
-                            <?php 
+                            <?php
                             $qry = $conn->query("SELECT * FROM categories order by name asc");
-                            while($row=$qry->fetch_assoc()):
+                            while ($row = $qry->fetch_assoc()) :
                             ?>
-                            <div class="mx-3 cat-item"  data-id = '<?php echo $row['id'] ?>'>
-                                <button class="btn btn-secondary"><?php echo ucwords($row['name']) ?></button>
-                            </div>
+                                <div class="mt-3 mx-auto cat-item" data-id='<?php echo $row['id'] ?>'>
+                                    <button class="btn btn-secondary"><?php echo ucwords($row['name']) ?></button>
+                                </div>
                             <?php endwhile; ?>
                         </div>
-                   
                         <hr>
                         <div class="row">
                             <?php
                             $prod = $conn->query("SELECT * FROM products where status = 1 order by name asc");
-                            while($row=$prod->fetch_assoc()):
+                            if ($prod->num_rows <= 0) {
                             ?>
-                            <div class="col-md-2 mb-2">
-                                <div class="prod-item text-center " data-json = '<?php echo json_encode($row) ?>' data-category-id="<?php echo $row['category_id'] ?>">
-                                    <img src="../assets/uploads/espression.jpg" class="rounded" width="100%">
-                                        <span> 
-                                            <?php echo $row['name'] ?>
-                                        </span>
+                                <div class="col-md-12 text-center mt-5">
+                                    <h5>No products available</h5>
+                                    <a href="#" class="btn btn-primary" id="add_product_btn">Add Product</a>
                                 </div>
-                            </div>
-                        <?php endwhile; ?>
+                            <?php
+                            } else {
+                                while ($row = $prod->fetch_assoc()) :
+                            ?>
+                                    <div class="col-lg-2 col-md-4 col-6 mb-2">
+                                        <div class="prod-item text-center mx-auto" data-json='<?php echo json_encode($row) ?>' data-category-id="<?php echo $row['category_id'] ?>">
+                                            <img src="../assets/uploads/espression.jpg" class="rounded img-fluid" alt="<?php echo $row['name'] ?>">
+                                            <span class="mx-auto">
+                                                <?php echo $row['name'] ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                            <?php endwhile;
+                            }
+                            ?>
                         </div>
-                    </div>   
+                    </div>
                 </div>
-            <div class="card-footer">
-                <div class="row justify-content-center">
-                    <div class="btn btn btn-sm col-sm-3 btn-secondary justify-content-center mr-2" type="button" id="pay">Pay</div>
-                    <!-- <div class="btn btn btn-sm col-sm-3 btn-secondary" type="button" id="save_order">Pay later</div> -->
+                <div class="card-footer">
+                    <div class="row justify-content-center">
+                        <button class="btn btn-sm col-md-4 col-sm-5 col-6 btn-secondary mr-2" type="button" id="pay">Pay</button>
+                        <!-- <button class="btn btn-sm col-md-4 col-sm-5 col-6 btn-secondary" type="button" id="save_order">Pay later</button> -->
+                    </div>
                 </div>
             </div>
-            </div>      			
         </div>
-          <div class="col-lg-4">
-           <div class="card">
+        <div class="col-lg-4 col-md-12">
+            <div class="card">
                 <div class="card-header text-dark">
-                    <b>Order List</b>
-                <span class="float:right"><a class="btn btn-secondary btn-sm col-sm-3 float-right" href="../index.php" id="">
-                    <i class="fa fa-home"></i> Home 
-                </a></span>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6><b>Order List</b></h6>
+                        <a class="btn btn-secondary btn-sm" href="../index.php">
+                            <i class="fa fa-home"></i> Home
+                        </a>
+                    </div>
                 </div>
-               <div class="card-body">
-            <form action="" id="manage-order">
-                <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : '' ?>">
-                <div class="receipt" id='o-list'>
-                            <div class="d-flex w-100 mb-1">
-                                <label for="" class="text-dark"><b>Order No.</b></label>
-                                <input type="number" class="form-control-sm" name="order_number" value="<?php echo isset($order_number) ? $order_number : '' ?>" required>
+                <div class="card-body">
+                    <form action="" id="manage-order">
+                        <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : '' ?>">
+                        <div class="receipt" id='o-list'>
+                            <div class="d-flex w-100 mb-2">
+                                <label for="order_number" class="text-dark"><b>Order Number: </b></label>
+                                <input type="number" class="form-control-sm ml-2" name="order_number" value="<?php echo isset($order_number) ? $order_number : '' ?>" required>
                             </div>
-                   <table class="table mb-5" >
-                        <colgroup>
-                            <col width="20%">
-                            <col width="40%">
-                            <col width="40%">
-                            <col width="5%">
-                        </colgroup>
-                       <thead>
-                           <tr>
-                               <th>QTY</th>
-                               <th>Order</th>
-                               <th>Amount</th>
-                               <th></th>
-                           </tr>
-                       </thead>
-                       <tbody>
-                           <?php 
-                                if(isset($items)):
-                           while($row=$items->fetch_assoc()):
-                           ?>
-                           <tr>
-                               <td>
-                                   <div class="d-flex align-items-center justify-content-center">
-                                        <span class=   " btn-minus"><b> </b></span>
-                                        <input type="number" name="qty[]" id="" value="<?php echo $row['qty'] ?>">
-                                        <span class="btn-plus"><b></b></span>
-                                   </div>
-                                </td>
-                                <td>
-                                    <input type="hidden" name="item_id[]" id="" value="<?php echo $row['id'] ?>">
-                                    <input type="hidden" name="product_id[]" id="" value="<?php echo $row['product_id'] ?>"><?php echo ucwords($row['name']) ?>
-                                    <small class="psmall"> (<?php echo number_format($row['price'],2) ?>)</small>
-                                </td>
-                                <td class="text-right">
-                                    <input type="hidden" name="price[]" id="" value="<?php echo $row['price'] ?>">
-                                    <input type="hidden" name="amount[]" id="" value="<?php echo $row['amount'] ?>">
-                                    <span class="amount"><?php echo number_format($row['amount'],2) ?></span>
-                                </td>
-                                <td>
-                                    <span class=" btn-rem"><b><i class="fa fa-trash-alt"></i></b></span>
-                                </td>
-                           </tr>
-                           <script>
-                               $(document).ready(function(){
-                                 qty_func()
-                                    calc()
-                                    cat_func();
-                               })
-                           </script>
-                       <?php endwhile; ?>
-                       <?php endif; ?>
-                       </tbody>
-                   </table>
+                            <table class="table mb-5">
+                                <colgroup>
+                                    <col width="20%">
+                                    <col width="40%">
+                                    <col width="40%">
+                                    <col width="5%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>QTY</th>
+                                        <th>Order</th>
+                                        <th>Amount</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    if (isset($items)) :
+                                        while ($row = $items->fetch_assoc()) :
+                                    ?>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center justify-content-center">
+                                                        <span class=" btn-minus"><b> </b></span>
+                                                        <input type="number" name="qty[]" class="form-control-sm" value="<?php echo $row['qty'] ?>">
+                                                        <span class="btn-plus"><b></b></span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="item_id[]" value="<?php echo $row['id'] ?>">
+                                                    <input type="hidden" name="product_id[]" value="<?php echo $row['product_id'] ?>"><?php echo ucwords($row['name']) ?>
+                                                    <small class="psmall"> (<?php echo number_format($row['price'], 2) ?>)</small>
+                                                </td>
+                                                <td class="text-right">
+                                                    <input type="hidden" name="price[]" value="<?php echo $row['price'] ?>">
+                                                    <input type="hidden" name="amount[]" value="<?php echo $row['amount'] ?>">
+                                                    <span class="amount"><?php echo number_format($row['amount'], 2) ?></span>
+                                                </td>
+                                                <td>
+                                                    <span class="delete"><b><i class="fa fa-trash-alt"></i></b></span>
+                                                </td>
+                                                <input type="hidden" id="formModified" value="0">
+                                            </tr>
+                                            <script>
+                                                $(document).ready(function() {
+                                                    qty_func()
+                                                    calc()
+                                                    cat_func();
+                                                })
+                                            </script>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-block" id="calc">
+                            <table class="table" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td><b>
+                                                <h6>Total</h6>
+                                            </b></td>
+                                        <td class="text-right">
+                                            <input type="hidden" name="total_amount" value="0">
+                                            <input type="hidden" name="total_tendered" value="0">
+                                            <span class="mt-5">
+                                                <h6><b id="total_amount">0.00</b></h6>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
                 </div>
-                   <div class="d-block" id="calc">
-                       <table class="" width="100%">
-                           <tbody>
-                                <tr>
-                                   <td><b><h6>Total</h6></b></td>
-                                   <td class="text-right">
-                                       <input type="hidden" name="total_amount" value="0">
-                                       <input type="hidden" name="total_tendered" value="0">
-                                       <span class=""><h6><b id="total_amount">0.00</b></h6></span>
-                                   </td>
-                               </tr>
-                           </tbody>
-                       </table>
-                   </div>
-            </form>
-               </div>
-           </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="pay_modal" role='dialog'>
-    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title"><b>Pay</b></h5>
-         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
-            <div class="form-group">
-                <label for="">Amount Payable</label>
-                <input type="number" class="form-control text-right" id="apayable" readonly="" value="">
-            </div>
-            <div class="form-group">
-                <label for="">Amount Tendered</label>
-                <input type="text" class="form-control text-right" id="tendered" value="" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label for="">Change</label>
-                <input type="text" class="form-control text-right" id="change" value="0.00" readonly="">
+
+
+    <!-- Pay Modal -->
+    <div class="modal fade" id="pay_modal" role='dialog'>
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>Pay</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="">Amount Payable</label>
+                            <input type="number" class="form-control text-right" id="apayable" readonly="" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Amount Tendered</label>
+                            <input type="text" class="form-control text-right" id="tendered" value="" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Change</label>
+                            <input type="text" class="form-control text-right" id="change" value="0.00" readonly="">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-secondary btn-sm" form="manage-order">Pay</button>
+                    <button type="button" class="btn btn-sm" data-dismiss="modal">Cancel</button>
+                </div>
             </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-secondary btn-sm"  form="manage-order">Pay</button>
-        <button type="button" class="btn btn-sm" data-dismiss="modal">Cancel</button>
-      </div>
-      </div>
-      
     </div>
-  </div>
-<script>
-    var total;
-    cat_func();
-   $('#prod-list .prod-item').click(function(){
-        var data = $(this).attr('data-json')
-            data = JSON.parse(data)
-        if($('#o-list tr[data-id="'+data.id+'"]').length > 0){
-            var tr = $('#o-list tr[data-id="'+data.id+'"]')
-            var qty = tr.find('[name="qty[]"]').val();
-                qty = parseInt(qty) + 1;
-                qty = tr.find('[name="qty[]"]').val(qty).trigger('change')
-                calc()
-            return false;
-        }
-        var tr = $('<tr class="o-item"></tr>')
-        tr.attr('data-id',data.id)
-        tr.append('<td><div class="d-flex align-items-center"><span class="btn-minus"><b></i></b></span><input type="number" name="qty[]" id="" value="1"><span class=" btn-plus"><b></b></span></div></td>') 
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="delete_modal" role='dialog'>
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>Delete Product</b></h5>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this product?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" id="confirm_delete">Delete</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-        tr.append('<td><input type="hidden" name="item_id[]" id="" value=""><input type="hidden" name="product_id[]" id="" value="'+data.id+'">'+data.name+' <small class="psmall">('+(parseFloat(data.price).toLocaleString("en-US",{style:'decimal',minimumFractionDigits:2,maximumFractionDigits:2}))+')</small></td>') 
+    <!-- Discount Modal -->
+    <div class="modal fade" id="discount_modal" role='dialog'>
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>Apply Discount</b></h5>
+                </div>
+                <div class="modal-body">
+                    <p>Enter discount code to apply:</p>
+                    <input type="text" id="discount_code" class="form-control" placeholder="Enter discount code">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" id="proceed_discount">Proceed</button>
+                    <button type="button" class="btn btn-sm" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Discard Modal -->
+    <div class="modal fade" id="discard_modal" role='dialog'>
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>Discard Transaction</b></h5>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to discard the transaction?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" id="confirm_discard">Discard</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-        tr.append('<td class="text-right"><input type="hidden" name="price[]" id="" value="'+data.price+'"><input type="hidden" name="amount[]" id="" value="'+data.price+'"><span class="amount">'+(parseFloat(data.price).toLocaleString("en-US",{style:'decimal',minimumFractionDigits:2,maximumFractionDigits:2}))+'</span></td>') 
-
-        
-        tr.append('<td><span class="btn-rem"><b><i class="fa fa-trash-alt text"></i></b></span></td>')
-        $('#o-list tbody').append(tr)
-        qty_func()
-        calc()
+    <script>
+        var total;
+        var selectedProduct;
         cat_func();
-   })
-    function qty_func(){
-         $('#o-list .btn-minus').click(function(){
-            var qty = $(this).siblings('input').val()
-                qty = qty > 1 ? parseInt(qty) - 1 : 1;
-                $(this).siblings('input').val(qty).trigger('change')
-                calc()
-         })
-         $('#o-list .btn-plus').click(function(){
-            var qty = $(this).siblings('input').val()
+
+        $('#prod-list .prod-item').click(function() {
+            var data = $(this).attr('data-json');
+            data = JSON.parse(data);
+            if ($('#o-list tr[data-id="' + data.id + '"]').length > 0) {
+                var tr = $('#o-list tr[data-id="' + data.id + '"]');
+                var qty = tr.find('[name="qty[]"]').val();
                 qty = parseInt(qty) + 1;
-                $(this).siblings('input').val(qty).trigger('change')
-                calc()
-         })
-         $('#o-list .btn-rem').click(function(){
-            $(this).closest('tr').remove()
-            calc()
-         })
-         
-    }
-    function calc(){
-         $('[name="qty[]"]').each(function(){
-            $(this).change(function(){
-                var tr = $(this).closest('tr');
-                var qty = $(this).val();
-                var price = tr.find('[name="price[]"]').val()
-                var amount = parseFloat(qty) * parseFloat(price);
-                    tr.find('[name="amount[]"]').val(amount)
-                    tr.find('.amount').text(parseFloat(amount).toLocaleString("en-US",{style:'decimal',minimumFractionDigits:2,maximumFractionDigits:2}))
-                
-            })
-         })
-         var total = 0;
-         $('[name="amount[]"]').each(function(){
-            total = parseFloat(total) + parseFloat($(this).val()) 
-         })
-            console.log(total)
-        $('[name="total_amount"]').val(total)
-        $('#total_amount').text(parseFloat(total).toLocaleString("en-US",{style:'decimal',minimumFractionDigits:2,maximumFractionDigits:2}))
-    }
-   function cat_func(){
-    $('.cat-item').click(function(){
-            var id = $(this).attr('data-id')
-            console.log(id)
-            if(id == 'all'){
-                $('.prod-item').parent().toggle(true)
-            }else{
-                $('.prod-item').each(function(){
-                    if($(this).attr('data-category-id') == id){
-                        $(this).parent().toggle(true)
-                    }else{
-                        $(this).parent().toggle(false)
-                    }
-                })
+                qty = tr.find('[name="qty[]"]').val(qty).trigger('change');
+                calc();
+                return false;
             }
-    })
-   }
-   $('#save_order').click(function(){
-    $('#tendered').val('').trigger('change')
-    $('[name="total_tendered"]').val('')
-    $('#manage-order').submit()
-   })
-   $("#pay").click(function(){
-    start_load()
-    var amount = $('[name="total_amount"]').val()
-    if($('#o-list tbody tr').length <= 0){
-        alert_toast("Please add atleast 1 product first.",'danger')
-        end_load()
-        return false;
-    }
-    $('#apayable').val(parseFloat(amount).toLocaleString("en-US",{style:'decimal',minimumFractionDigits:2,maximumFractionDigits:2}))
-    $('#pay_modal').modal('show')
-    setTimeout(function(){
-        $('#tendered').val('').trigger('change')
-        $('#tendered').focus()
-        end_load()
-    },500)
-    
-   })
-   $('#tendered').keyup('input',function(e){
-        if(e.which == 13){
-            $('#manage-order').submit();
-            return false;
+            var tr = $('<tr class="o-item"></tr>');
+            tr.attr('data-id', data.id);
+            tr.append('<td><div class="d-flex align-items-center"><span class="btn-minus"><b></i></b></span><input type="number" name="qty[]" id="" value="1"><span class="btn-plus"><b></b></span></div></td>');
+
+            tr.append('<td><input type="hidden" name="item_id[]" id=""><input type="hidden" name="product_id[]" id="" value="' + data.id + '">' + data.name + ' <small class="psmall">(' + (parseFloat(data.price).toLocaleString("en-US", {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })) + ')</small></td>');
+
+            tr.append('<td class="text-right"><input type="hidden" name="price[]" id="" value="' + data.price + '"><input type="hidden" name="amount[]" id="" value="' + data.price + '"><span class="amount">' + (parseFloat(data.price).toLocaleString("en-US", {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })) + '</span></td>');
+
+            tr.append('<td><span class="delete"><b><i class="fa fa-trash-alt text"></i></b></span></td>');
+            $('#o-list tbody').append(tr);
+            qty_func();
+            calc();
+            cat_func();
+        });
+
+        function qty_func() {
+            $('#o-list .btn-minus').click(function() {
+                var qty = $(this).siblings('input').val();
+                qty = qty > 1 ? parseInt(qty) - 1 : 1;
+                $(this).siblings('input').val(qty).trigger('change');
+                calc();
+            });
+            $('#o-list .btn-plus').click(function() {
+                var qty = $(this).siblings('input').val();
+                qty = parseInt(qty) + 1;
+                $(this).siblings('input').val(qty).trigger('change');
+                calc();
+            });
+            $('#o-list .btn-rem').click(function() {
+                $(this).closest('tr').remove();
+                calc();
+            });
         }
-        var tend = $(this).val()
-            tend =tend.replace(/,/g,'') 
-        $('[name="total_tendered"]').val(tend)
-        if(tend == '')
-            $(this).val('')
-        else
-            $(this).val((parseFloat(tend).toLocaleString("en-US")))
-        tend = tend > 0 ? tend : 0;
-        var amount=$('[name="total_amount"]').val()
-        var change = parseFloat(tend) - parseFloat(amount)
-        $('#change').val(parseFloat(change).toLocaleString("en-US",{style:'decimal',minimumFractionDigits:2,maximumFractionDigits:2}))
-   })
-   
-    $('#tendered').on('input',function(){
-        var val = $(this).val()
-        val = val.replace(/[^0-9 \,]/, '');
-        $(this).val(val)
-    })
-    $('#manage-order').submit(function(e){
-        e.preventDefault();
-        start_load()
-        $.ajax({
-            url:'../ajax.php?action=save_order',
-            method:'POST',
-            data:$(this).serialize(),
-            success:function(resp){
-                if(resp > 0){
-                    if($('[name="total_tendered"]').val() > 0){
-                        alert_toast("Data successfully saved.",'success')
-                        setTimeout(function(){
-                            var nw = window.open('../receipt.php?id='+resp,"_blank","width=900,height=600")
-                            setTimeout(function(){
-                                nw.print()
-                                setTimeout(function(){
-                                    nw.close()
-                                    location.reload()
-                                },500)
-                            },500)
-                        },500)
-                    }else{
-                        alert_toast("Data successfully saved.",'success')
-                        setTimeout(function(){
-                            location.reload()
-                        },500)
+
+        function calc() {
+            $('[name="qty[]"]').each(function() {
+                $(this).change(function() {
+                    var tr = $(this).closest('tr');
+                    var qty = $(this).val();
+                    var price = tr.find('[name="price[]"]').val();
+                    var amount = parseFloat(qty) * parseFloat(price);
+                    tr.find('[name="amount[]"]').val(amount);
+                    tr.find('.amount').text(parseFloat(amount).toLocaleString("en-US", {
+                        style: 'decimal',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }));
+                    if (tr.find('.discounted-amount').length) {
+                        var discount = tr.find('.discounted-amount').data('discount');
+                        var discountedAmount = amount - discount;
+                        tr.find('.discounted-amount').text(discountedAmount.toLocaleString("en-US", {
+                            style: 'decimal',
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }));
+                    }
+                });
+            });
+            var total = 0;
+            $('[name="amount[]"]').each(function() {
+                total = parseFloat(total) + parseFloat($(this).val());
+            });
+            $('[name="total_amount"]').val(total);
+            $('#total_amount').text(parseFloat(total).toLocaleString("en-US", {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
+        }
+
+        function cat_func() {
+            $('.cat-item').click(function() {
+                var id = $(this).attr('data-id');
+                if (id == 'all') {
+                    $('.prod-item').parent().toggle(true);
+                } else {
+                    $('.prod-item').each(function() {
+                        if ($(this).attr('data-category-id') == id) {
+                            $(this).parent().toggle(true);
+                        } else {
+                            $(this).parent().toggle(false);
+                        }
+                    });
+                }
+            });
+        }
+
+        $('#save_order').click(function() {
+            $('#tendered').val('').trigger('change');
+            $('[name="total_tendered"]').val('');
+            $('#manage-order').submit();
+        });
+
+        $("#pay").click(function() {
+            start_load();
+            var amount = $('[name="total_amount"]').val();
+            if ($('#o-list tbody tr').length <= 0) {
+                alert_toast("Please add at least 1 product first.", 'danger');
+                end_load();
+                return false;
+            }
+            $('#apayable').val(parseFloat(amount).toLocaleString("en-US", {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
+            $('#pay_modal').modal('show');
+            setTimeout(function() {
+                $('#tendered').val('').trigger('change');
+                $('#tendered').focus();
+                end_load();
+            }, 500);
+        });
+
+        $('#tendered').keyup('input', function(e) {
+            if (e.which == 13) {
+                $('#manage-order').submit();
+                return false;
+            }
+            var tend = $(this).val();
+            tend = tend.replace(/,/g, '');
+            $('[name="total_tendered"]').val(tend);
+            if (tend == '')
+                $(this).val('');
+            else
+                $(this).val((parseFloat(tend).toLocaleString("en-US")));
+            tend = tend > 0 ? tend : 0;
+            var amount = $('[name="total_amount"]').val();
+            var change = parseFloat(tend) - parseFloat(amount);
+            $('#change').val(parseFloat(change).toLocaleString("en-US", {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
+        });
+
+        $('#tendered').on('input', function() {
+            var val = $(this).val();
+            val = val.replace(/[^0-9 \,]/, '');
+            $(this).val(val);
+        });
+
+        $('#manage-order').submit(function(e) {
+            e.preventDefault();
+            start_load();
+            $.ajax({
+                url: '../ajax.php?action=save_order',
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(resp) {
+                    if (resp > 0) {
+
+                        discountApplied = false;
+
+                        if ($('[name="total_tendered"]').val() > 0) {
+                            alert_toast("Order placed.", 'success');
+                            setTimeout(function() {
+                                var nw = window.open('../receipt.php?id=' + resp, "_blank", "width=900,height=600");
+                                setTimeout(function() {
+                                    nw.print();
+                                    setTimeout(function() {
+                                        nw.close();
+                                        location.reload();
+                                    }, 500);
+                                }, 500);
+                            }, 500);
+                        } else {
+                            alert_toast("Order placed.", 'success');
+                            setTimeout(function() {
+                                location.reload();
+                            }, 500);
+                        }
                     }
                 }
-            }
-        })
-    })
+            });
+        });
 
-</script>
+        // discount function
+        var discountApplied = false;
+
+        $('.discount').click(function() {
+            if (!discountApplied) {
+                $('#discount_modal').modal('show');
+            } else {
+                alert_toast('1 discount per transaction only');
+            }
+        });
+
+        $('.prod-item').hover(function() {
+            $(this).addClass('hovered');
+        }, function() {
+            $(this).removeClass('hovered');
+        });
+
+        $(document).on('click', '.o-item td:nth-child(2)', function() {
+            selectedProduct = $(this).closest('.o-item');
+            $('#discount_modal').modal('show');
+        });
+        $('#proceed_discount').click(function() {
+            var code = $('#discount_code').val();
+            if (code === 'EMPLOYEE_20' || code === 'CUSTOMER_20') { // Replace YOUR_DISCOUNT_CODE with your actual discount code
+                var amountElement = selectedProduct.find('.amount');
+                var amount = parseFloat(amountElement.text().replace(/,/g, ''));
+                var qty = parseInt(selectedProduct.find('[name="qty[]"]').val());
+                alert_toast('Discount applied!', 'success');
+
+                if (qty !== 1) {
+                    alert_toast('Discount can only be applied to products with a quantity of 1.', 'danger');
+                    return;
+                }
+
+                if (selectedProduct.hasClass('discount-active')) {
+                    alert_toast('Discount has already been applied to this product.', 'danger');
+                    return;
+                }
+
+                var discount = 0.20 * amount;
+                var discountedAmount = amount - discount;
+
+                // Add the discount indication beside the amount
+                if (!selectedProduct.find('.discounted-amount').length) {
+                    selectedProduct.find('td').eq(2).append('<span class="discounted-amount" data-discount="' + discount + '"> (' + discount.toLocaleString("en-US", {
+                        style: 'decimal',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }) + ')</span>');
+                } else {
+                    selectedProduct.find('.discounted-amount').text(' (' + discountedAmount.toLocaleString("en-US", {
+                        style: 'decimal',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }) + ')');
+                    selectedProduct.find('.discounted-amount').data('discount', discount);
+                }
+
+                amountElement.text(discountedAmount.toLocaleString("en-US", {
+                    style: 'decimal',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }));
+                selectedProduct.find('[name="amount[]"]').val(discountedAmount);
+                selectedProduct.find(discount).css('color', 'red');
+                selectedProduct.addClass('discount-active');
+                calc();
+                $('#discount_modal').modal('hide');
+            } else {
+                alert_toast('Incorrect discount code.', 'danger');
+            }
+            discountApplied = true;
+
+            $('#discount_modal').modal('hide');
+        });
+
+
+        $('#discount_modal').on('hidden.bs.modal', function() {
+            $('#discount_code').val('');
+        });
+
+        $(document).on('click', '.delete', function() {
+            var tr = $(this).closest('tr');
+            $('#delete_modal').modal('show');
+            $('#confirm_delete').off('click').on('click', function() {
+                tr.remove();
+                calc();
+                $('#delete_modal').modal('hide');
+            });
+        });
+        // Function to show the discard modal
+        function showDiscardModal() {
+            $('#discard_modal').modal('show');
+            // Remove the beforeunload event listener
+            window.removeEventListener('beforeunload', beforeUnloadHandler);
+        }
+
+        // Function to hide the discard modal
+        function hideDiscardModal() {
+            $('#discard_modal').modal('hide');
+            // Re-add the beforeunload event listener
+            window.addEventListener('beforeunload', beforeUnloadHandler);
+        }
+
+        // Event handler for beforeunload
+        function beforeUnloadHandler(e) {
+            if ($('#formModified').val() == '1') {
+                var confirmationMessage = 'You have unsaved changes. Are you sure you want to leave this page?';
+                (e || window.event).returnValue = confirmationMessage;
+                return confirmationMessage;
+            }
+        }
+
+        // Add the beforeunload event listener
+        window.addEventListener('beforeunload', beforeUnloadHandler);
+
+        // Event listener for clicking on links and buttons
+        $(document).on('click', 'a[href^="../"], a[href^="/"], a:not([href]), button[type="submit"]', function(e) {
+            if ($('#formModified').val() == '1') {
+                e.preventDefault();
+                showDiscardModal();
+                return false;
+            }
+        });
+
+        // Event listener for confirming discard
+        $(document).on('click', '#confirm_discard', function() {
+            hideDiscardModal();
+            $('#formModified').val('0');
+            window.location.href = '../index.php'; // Redirect to home or desired page
+        });
+    </script>
