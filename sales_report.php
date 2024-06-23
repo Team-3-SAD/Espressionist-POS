@@ -4,7 +4,7 @@
 ?>
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="card">
+        <div class="card mb-5 mt-3">
             <div class="card_body">
             <div class="row justify-content-center pt-4">
                 <label for="" class="mt-2">Month</label>

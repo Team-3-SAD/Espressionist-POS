@@ -1,5 +1,33 @@
 <?php include 'db_connect.php'; ?>
 
+<?php
+$year = "2024"; // Example year for filtering
+$data = []; // Initialize an array to hold data for the chart
+
+// Query to fetch monthly total sales with month names
+$query = "SELECT YEAR(date_created) AS year, MONTH(date_created) AS month, SUM(total_amount) AS total_sales 
+          FROM orders 
+          WHERE amount_tendered > 0 AND YEAR(date_created) = '$year' 
+          GROUP BY YEAR(date_created), MONTH(date_created) 
+          ORDER BY YEAR(date_created), MONTH(date_created)";
+
+$sales = $conn->query($query);
+
+if ($sales->num_rows > 0) {
+    while ($row = $sales->fetch_array()) {
+        // Get month name from month number
+        $month_name = date("F", mktime(0, 0, 0, $row['month'], 1));
+        
+        // Prepare data for the chart
+        $data[] = [
+            "year" => $row['year'],
+            "month" => $month_name,
+            "total_sales" => floatval($row['total_sales'])
+        ];
+    }
+}
+?>
+
 <div class="container-fluid1 mr-5 ml-5">
     <div class="row mt-3 ml-5 mr-5 dashcard">
         <div class="col-lg-12">
@@ -14,7 +42,7 @@
                         <div class="col-md-12 mb-5">
                             <div class="card border-0">
                                 <div class="card-body">
-                                    <h6 class="text-center mt-1 mb-2"><b>Favorite Orders for the Month</b></h6>
+                                    <h6 class="text-center mt-1 mb-2"><b>Total Sales for each Month</b></h6>
                                     <!-- Styles -->
                                     <style>
                                     #chartdiv1 {
@@ -29,128 +57,102 @@
                                     <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
                                     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
-                                    <!-- Chart code -->
                                     <script>
-                                    am5.ready(function() {
-                                        var root = am5.Root.new("chartdiv1");
-                                        root.setThemes([
-                                            am5themes_Animated.new(root)
-                                        ]);
+                                        am5.ready(function() {
+                                            var root = am5.Root.new("chartdiv1");
+                                            root.setThemes([
+                                                am5themes_Animated.new(root)
+                                            ]);
 
-                                        var chart = root.container.children.push(am5xy.XYChart.new(root, {
-                                            panX: false,
-                                            panY: false,
-                                            paddingLeft: 0,
-                                            wheelX: "panX",
-                                            wheelY: "zoomX",
-                                            layout: root.verticalLayout
-                                        }));
-
-                                        var legend = chart.children.push(
-                                            am5.Legend.new(root, {
-                                                centerX: am5.p50,
-                                                x: am5.p50
-                                            })
-                                        );
-
-                                        var data = [{
-                                            "year": "2022",
-                                            "chinese": 2.5,
-                                            "mexican": 2.5,
-                                            "pizza": 2.1,
-                                            "japanese": 1,
-                                            "korean": 0.8,
-                                            "thai": 0.4
-                                        }, {
-                                            "year": "2023",
-                                            "chinese": 2.6,
-                                            "mexican": 2.7,
-                                            "pizza": 2.2,
-                                            "japanese": 0.5,
-                                            "korean": 0.4,
-                                            "thai": 0.3
-                                        }, {
-                                            "year": "2024",
-                                            "chinese": 2.8,
-                                            "mexican": 2.9,
-                                            "pizza": 2.4,
-                                            "japanese": 0.3,
-                                            "korean": 0.9,
-                                            "thai": 0.5
-                                        }];
-
-                                        var xRenderer = am5xy.AxisRendererX.new(root, {
-                                            cellStartLocation: 0.1,
-                                            cellEndLocation: 0.9,
-                                            minorGridEnabled: true
-                                        });
-
-                                        var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-                                            categoryField: "year",
-                                            renderer: xRenderer,
-                                            tooltip: am5.Tooltip.new(root, {})
-                                        }));
-
-                                        xRenderer.grid.template.setAll({
-                                            location: 1
-                                        });
-
-                                        xAxis.data.setAll(data);
-
-                                        var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-                                            renderer: am5xy.AxisRendererY.new(root, {
-                                                strokeOpacity: 0.1
-                                            })
-                                        }));
-
-                                        function makeSeries(name, fieldName, color) {
-                                            var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-                                                name: name,
-                                                xAxis: xAxis,
-                                                yAxis: yAxis,
-                                                valueYField: fieldName,
-                                                categoryXField: "year",
-                                                fill: color,
-                                                stroke: color
+                                            var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                                                panX: false,
+                                                panY: false,
+                                                paddingLeft: 0,
+                                                wheelX: "panX",
+                                                wheelY: "zoomX",
+                                                layout: root.verticalLayout
                                             }));
 
-                                            series.columns.template.setAll({
-                                                tooltipText: "{name}, {categoryX}:{valueY}",
-                                                width: am5.percent(90),
-                                                tooltipY: 0,
-                                                strokeOpacity: 0
+                                            var legend = chart.children.push(
+                                                am5.Legend.new(root, {
+                                                    centerX: am5.p50,
+                                                    x: am5.p50
+                                                })
+                                            );
+
+                                            // JavaScript Chart Configuration
+                                            var data = <?php echo json_encode($data); ?>;
+
+                                            var xRenderer = am5xy.AxisRendererX.new(root, {
+                                                cellStartLocation: 0.1,
+                                                cellEndLocation: 0.9,
+                                                minorGridEnabled: true
                                             });
 
-                                            series.data.setAll(data);
+                                            var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+                                                categoryField: "month",
+                                                renderer: xRenderer,
+                                                tooltip: am5.Tooltip.new(root, {})
+                                            }));
 
-                                            series.appear();
+                                            xRenderer.grid.template.setAll({
+                                                location: 1
+                                            });
 
-                                            series.bullets.push(function () {
-                                                return am5.Bullet.new(root, {
-                                                    locationY: 0,
-                                                    sprite: am5.Label.new(root, {
-                                                        text: "{valueY}",
-                                                        fill: root.interfaceColors.get("alternativeText"),
-                                                        centerY: 0,
-                                                        centerX: am5.p50,
-                                                        populateText: true
-                                                    })
+                                            xAxis.data.setAll(data);
+
+                                            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                                                renderer: am5xy.AxisRendererY.new(root, {
+                                                    strokeOpacity: 0.1
+                                                })
+                                            }));
+
+                                            // Adjust series creation to use 'total_sales' field
+                                            function makeSeries(name, fieldName, color) {
+                                                var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+                                                    name: name,
+                                                    xAxis: xAxis,
+                                                    yAxis: yAxis,
+                                                    valueYField: fieldName,
+                                                    categoryXField: "month",
+                                                    fill: color,
+                                                    stroke: color
+                                                }));
+
+                                                series.columns.template.setAll({
+                                                    tooltipText: "{categoryX}:{valueY}",
+                                                    width: am5.percent(90),
+                                                    tooltipY: 0,
+                                                    strokeOpacity: 0
                                                 });
-                                            });
 
-                                            legend.data.push(series);
-                                        }
+                                                series.data.setAll(data);
 
-                                        makeSeries("Chinese", "chinese", am5.color(0x73556E));
-                                        makeSeries("Mexican", "mexican", am5.color(0x9FA1A6));
-                                        makeSeries("Pizza", "pizza", am5.color(0xF2AA6B));
-                                        makeSeries("Japanese", "japanese", am5.color(0xF28F6B));
-                                        makeSeries("Korean", "korean", am5.color(0xA95A52));
-                                        makeSeries("Thai", "thai", am5.color(0xE35B5D));
+                                                series.appear();
 
-                                        chart.appear(1000, 100);
-                                    });
+                                                series.bullets.push(function() {
+                                                    return am5.Bullet.new(root, {
+                                                        locationY: 0,
+                                                        sprite: am5.Label.new(root, {
+                                                            text: "{valueY}",
+                                                            fill: root.interfaceColors.get("alternativeText"),
+                                                            centerY: 0,
+                                                            centerX: am5.p50,
+                                                            populateText: true
+                                                        })
+                                                    });
+                                                });
+
+                                                legend.data.push(series);
+                                            }
+
+                                            // Call makeSeries for each category
+                                            makeSeries("Total Sales for the Month", "total_sales", am5.color(0x191922)); // Adjust color as needed
+
+                                            chart.appear(1000, 100);
+                                        });
                                     </script>
+
 
                                     <!-- HTML -->
                                     <div id="chartdiv1"></div>
@@ -166,7 +168,7 @@
                         <div class="col-md-12 mb-5">
                             <div class="card border-0">
                                 <div class="card-body">
-                                    <h6 class="text-center mt-1 mb-2"><b>List of Products for the Month</b></h6>
+                                    <h6 class="text-center mt-1 mb-2"><b>Number of Product Sales in Each Category</b></h6>
                                     <div id="doughnut"></div> <!-- Ensure height has 'px' -->
                                     <!-- Styles -->
                                     <style>
@@ -224,7 +226,7 @@
 
                                         var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
                                             maxDeviation: 0.3,
-                                            categoryField: "country",
+                                            categoryField: "category",
                                             renderer: xRenderer,
                                             tooltip: am5.Tooltip.new(root, {})
                                         }));
@@ -241,8 +243,8 @@
                                             name: "Series 1",
                                             xAxis: xAxis,
                                             yAxis: yAxis,
-                                            valueYField: "value",
-                                            categoryXField: "country",
+                                            valueYField: "order_count",
+                                            categoryXField: "category",
                                             tooltip: am5.Tooltip.new(root, {
                                                 labelText: "{valueY}"
                                             })
@@ -250,7 +252,7 @@
 
                                         series.columns.template.setAll({
                                             tooltipY: 0,
-                                            tooltipText: "{categoryX}: {valueY}",
+                                            tooltipText: "{category}: {valueY}",
                                             shadowOpacity: 0.1,
                                             shadowOffsetX: 2,
                                             shadowOffsetY: 2,
@@ -284,22 +286,14 @@
                                             return chart.get("colors").getIndex(series.columns.indexOf(target));
                                         });
 
-                                        var data = [{
-                                            country: "Chinese",
-                                            value: 24
-                                        }, {
-                                            country: "Mexican",
-                                            value: 22
-                                        }, {
-                                            country: "Pizza",
-                                            value: 13
-                                        }, {
-                                            country: "Japanese",
-                                            value: 12
-                                        }, {
-                                            country: "Thai",
-                                            value: 10
-                                        }];
+                                        // Replace with actual data fetched from the database
+                                        var data = [
+                                            { category: "Espresso-Based", order_count: 24 },
+                                            { category: "Ice-Blended", order_count: 22 },
+                                            { category: "Non-Caffeinated", order_count: 13 },
+                                            { category: "Iced Teas", order_count: 12 },
+                                            { category: "Foods", order_count: 10 }
+                                        ];
 
                                         xAxis.data.setAll(data);
                                         series.data.setAll(data);

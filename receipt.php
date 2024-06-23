@@ -34,7 +34,7 @@ $items = $conn->query("SELECT o.*,p.name FROM order_items o inner join products 
 
 </style>
 <div class="container-fluid">
-	<p class="text-center"><b><?php echo $amount_tendered > 0 ? "Receipt" : "Bill" ?></b></p>
+	<p class="text-center"><b><?php echo $amount_tendered > 0 ? " Espressionist Official Receipt" : "Bill" ?></b></p>
 	<hr>
 	<div class="flex">
 		<div class="w-100">
