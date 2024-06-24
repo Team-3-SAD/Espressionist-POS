@@ -307,7 +307,7 @@ Class Action {
 		extract($_POST);
 		$delete = $this->db->query("DELETE FROM orders where id = ".$id);
 		$delete2 = $this->db->query("DELETE FROM order_items where order_id = ".$id);
-		if($delete){
+		if($delete && $delete2){
 			return 1;
 		}
 	}

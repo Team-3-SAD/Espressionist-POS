@@ -1,47 +1,60 @@
-<?php 
+<?php
 include 'db_connect.php';
 $order = $conn->query("SELECT * FROM orders where id = {$_GET['id']}");
-foreach($order->fetch_array() as $k => $v){
-	$$k= $v;
+foreach ($order->fetch_array() as $k => $v) {
+	$$k = $v;
 }
 $items = $conn->query("SELECT o.*,p.name FROM order_items o inner join products p on p.id = o.product_id where o.order_id = $id ");
+
+$order_items = [];
+$total_discounted_amount = 0;
+while ($row = $items->fetch_assoc()) {
+	$order_items[] = $row;
+	$total_discounted_amount += ($row['price'] - $row['amount']); // Adjust calculation as needed
+}
 ?>
 
 <style>
-	.flex{
+	.flex {
 		display: inline-flex;
 		width: 100%;
 	}
-	.w-50{
+
+	.w-50 {
 		width: 50%;
 	}
-	.text-center{
-		text-align:center;
+
+	.text-center {
+		text-align: center;
 	}
-	.text-right{
-		text-align:right;
+
+	.text-right {
+		text-align: right;
 	}
-	table.wborder{
+
+	table.wborder {
 		width: 100%;
 		border-collapse: collapse;
 	}
-	table.wborder>tbody>tr, table.wborder>tbody>tr>td{
-		border:1px solid;
-	}
-	p{
-		margin:unset;
+
+	table.wborder>tbody>tr,
+	table.wborder>tbody>tr>td {
+		border: 1px solid;
 	}
 
+	p {
+		margin: unset;
+	}
 </style>
 <div class="container-fluid">
 	<p class="text-center"><b><?php echo $amount_tendered > 0 ? " Espressionist Official Receipt" : "Bill" ?></b></p>
 	<hr>
 	<div class="flex">
 		<div class="w-100">
-			<?php if($amount_tendered > 0): ?>
-			<p>Invoice Number: <b><?php echo $ref_no ?></b></p>
-		<?php endif; ?>
-			<p>Date: <b><?php echo date("M d, Y",strtotime($date_created)) ?></b></p>
+			<?php if ($amount_tendered > 0) : ?>
+				<p>Invoice Number: <b><?php echo $ref_no ?></b></p>
+			<?php endif; ?>
+			<p>Date: <b><?php echo date("M d, Y", strtotime($date_created)) ?></b></p>
 		</div>
 	</div>
 	<hr>
@@ -55,15 +68,18 @@ $items = $conn->query("SELECT o.*,p.name FROM order_items o inner join products 
 			</tr>
 		</thead>
 		<tbody>
-			<?php 
-			while($row = $items->fetch_assoc()):
+			<?php
+			foreach ($order_items as $row) :
 			?>
-			<tr>
-				<td><?php echo $row['qty'] ?></td>
-				<td><p><?php echo $row['name'] ?></p><?php if($row['qty'] > 0): ?><small>(<?php echo number_format($row['price'],2) ?>)</small> <?php endif; ?></td>
-				<td class="text-right"><?php echo number_format($row['amount'],2) ?></td>
-			</tr>
-			<?php endwhile; ?>
+				<tr>
+					<td><?php echo $row['qty'] ?></td>
+					<td>
+						<p><?php echo $row['name'] ?></p><?php if ($row['qty'] > 0) : ?><small>(<?php echo number_format($row['price'], 2) ?>)</small> <?php endif; ?>
+					</td>
+					<td class="text-right"><?php echo number_format($row['amount'], 2) ?></td>
+					<td class="text-right color"></td>
+				</tr>
+			<?php endforeach; ?>
 		</tbody>
 	</table>
 	<hr>
@@ -71,21 +87,26 @@ $items = $conn->query("SELECT o.*,p.name FROM order_items o inner join products 
 		<tbody>
 			<tr>
 				<td><b>Total Amount</b></td>
-				<td class="text-right"><b><?php echo number_format($total_amount,2) ?></b></td>
+				<td class="text-right"><b><?php echo number_format($total_amount, 2) ?></b></td>
 			</tr>
-			<?php if($amount_tendered > 0): ?>
+			<?php if ($amount_tendered > 0) : ?>
 
 
-			<tr>
-				<td><b>Amount Tendered</b></td>
-				<td class="text-right"><b><?php echo number_format($amount_tendered,2) ?></b></td>
-			</tr>
-			<tr>
-				<td><b>Change</b></td>
-				<td class="text-right"><b><?php echo number_format($amount_tendered - $total_amount,2) ?></b></td>
-			</tr>
-		<?php endif; ?>
-			
+				<tr>
+					<td><b>Amount Tendered</b></td>
+					<td class="text-right"><b><?php echo number_format($amount_tendered, 2) ?></b></td>
+				</tr>
+				<tr>
+					<td><b>Change</b></td>
+					<td class="text-right"><b><?php echo number_format($amount_tendered - $total_amount, 2) ?></b></td>
+				</tr>
+				<tr>
+					<td><b>Discounted Amount</b></td>
+					<td class="text-right"><b><?php echo number_format($total_discounted_amount, 2) ?></b></td>
+				</tr>
+
+			<?php endif; ?>
+
 		</tbody>
 	</table>
 	<hr>

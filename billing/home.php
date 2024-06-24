@@ -1,78 +1,96 @@
 <?php include '../db_connect.php' ?>
 <style>
-   span.float-right.summary_icon {
-    font-size: 3rem;
-    position: absolute;
-    right: 1rem;
-    top: 0;
-}
-    .bg-gradient-primary{
-        background: rgb(119,172,233);
-        background: linear-gradient(149deg, rgba(119,172,233,1) 5%, rgba(83,163,255,1) 10%, rgba(46,51,227,1) 41%, rgba(40,51,218,1) 61%, rgba(75,158,255,1) 93%, rgba(124,172,227,1) 98%);
+    span.float-right.summary_icon {
+        font-size: 3rem;
+        position: absolute;
+        right: 1rem;
+        top: 0;
     }
-    .btn-primary-gradient{
+
+    .bg-gradient-primary {
+        background: rgb(119, 172, 233);
+        background: linear-gradient(149deg, rgba(119, 172, 233, 1) 5%, rgba(83, 163, 255, 1) 10%, rgba(46, 51, 227, 1) 41%, rgba(40, 51, 218, 1) 61%, rgba(75, 158, 255, 1) 93%, rgba(124, 172, 227, 1) 98%);
+    }
+
+    .btn-primary-gradient {
         background: linear-gradient(to right, #1e85ff 0%, #00a5fa 80%, #00e2fa 100%);
     }
-    .btn-danger-gradient{
+
+    .btn-danger-gradient {
         background: linear-gradient(to right, #f25858 7%, #ff7840 50%, #ff5140 105%);
     }
-    main .card{
-        height:calc(100%);
+
+    main .card {
+        height: calc(100%);
     }
-    main .card-body{
-        height:calc(100%);
+
+    main .card-body {
+        height: calc(100%);
         overflow: auto;
         padding: 5px;
         position: relative;
     }
-    main .card-footer{
+
+    main .card-footer {
         background-color: none;
     }
-    
-    main .container-fluid, main .container-fluid>.row,main .container-fluid>.row>div{
+
+    main .container-fluid,
+    main .container-fluid>.row,
+    main .container-fluid>.row>div {
         /*height:calc(100%);*/
     }
-    #o-list{
+
+    #o-list {
         height: calc(87%);
         overflow: auto;
     }
-    #calc{
+
+    #calc {
         position: absolute;
         bottom: 1rem;
         height: calc(10%);
         width: calc(98%);
     }
-    .prod-item{
+
+    .prod-item {
         min-height: 12vh;
         cursor: pointer;
     }
-    .prod-item:hover{
+
+    .prod-item:hover {
         opacity: .8;
     }
+
     .prod-item .card-body {
         display: flex;
         justify-content: center;
         align-items: center;
 
     }
-    input[name="qty[]"]{
+
+    input[name="qty[]"] {
         width: 30px;
         text-align: center
     }
+
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+        -webkit-appearance: none;
+        margin: 0;
     }
-    #cat-list{
+
+    #cat-list {
         /*height: calc(100%)*/
     }
-    .cat-item{
+
+    .cat-item {
         cursor: pointer;
     }
-    .cat-item:hover{
+
+    .cat-item:hover {
         opacity: .8;
-    } 
+    }
 
     .discount {
         border-radius: 4px;
@@ -141,10 +159,10 @@ endif;
                                     <h5>No products available</h5>
                                     <a href="#" class="btn btn-primary" id="add_product_btn">Add Product</a>
                                 </div>
-                            <?php
+                                <?php
                             } else {
                                 while ($row = $prod->fetch_assoc()) :
-                            ?>
+                                ?>
                                     <div class="col-lg-2 col-md-4 col-6 mb-2">
                                         <div class="prod-item text-center mx-auto" data-json='<?php echo json_encode($row) ?>' data-category-id="<?php echo $row['category_id'] ?>">
                                             <img src="../assets/uploads/espression.jpg" class="rounded img-fluid" alt="<?php echo $row['name'] ?>">
@@ -183,7 +201,7 @@ endif;
                         <div class="receipt" id='o-list'>
                             <div class="d-flex w-100 mb-2">
                                 <label for="order_number" class="text-dark"><b>Order Number: </b></label>
-                                <input type="number" class="form-control-sm ml-2" name="order_number" value="<?php echo isset($order_number) ? $order_number : '' ?>" required>
+                                <input type="number" id="order_number" class="form-control-sm ml-2" name="order_number" regex="^(?=\d{5}$)1?2?3?4?5?6?7?8?9?0?$" value="<?php echo isset($order_number) ? $order_number : '' ?>" required>
                             </div>
                             <table class="table mb-5">
                                 <colgroup>
@@ -210,7 +228,7 @@ endif;
                                                     <div class="d-flex align-items-center justify-content-center">
                                                         <span class=" btn-minus"><b> </b></span>
                                                         <input type="number" name="qty[]" class="form-control-sm" value="<?php echo $row['qty'] ?>">
-                                                        <span class="btn-plus"><b></b></span>
+                                                        <span class="btn-plus"><b></b></span>       
                                                     </div>
                                                 </td>
                                                 <td>
@@ -266,427 +284,424 @@ endif;
 </div>
 
 
-    <!-- Pay Modal -->
-    <div class="modal fade" id="pay_modal" role='dialog'>
-        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><b>Pay</b></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="form-group">
-                            <label for="">Amount Payable</label>
-                            <input type="number" class="form-control text-right" id="apayable" readonly="" value="">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Amount Tendered</label>
-                            <input type="text" class="form-control text-right" id="tendered" value="" autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Change</label>
-                            <input type="text" class="form-control text-right" id="change" value="0.00" readonly="">
-                        </div>
+<!-- Pay Modal -->
+<div class="modal fade" id="pay_modal" role='dialog'>
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><b>Pay</b></h5>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <label for="">Amount Payable</label>
+                        <input type="number" class="form-control text-right" id="apayable" readonly="" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Amount Tendered</label>
+                        <input type="text" class="form-control text-right" id="tendered" value="" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Change</label>
+                        <input type="text" class="form-control text-right" id="change" value="0.00" readonly="">
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-secondary btn-sm" form="manage-order">Pay</button>
-                    <button type="button" class="btn btn-sm" data-dismiss="modal">Cancel</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-secondary btn-sm" form="manage-order">Pay</button>
+                <button type="button" class="btn btn-sm" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="delete_modal" role='dialog'>
-        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><b>Delete Product</b></h5>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this product?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" id="confirm_delete">Delete</button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                </div>
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="delete_modal" role='dialog'>
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><b>Delete Product</b></h5>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this product?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" id="confirm_delete">Delete</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
+</div>
 
 
-    <!-- Discount Modal -->
-    <div class="modal fade" id="discount_modal" role='dialog'>
-        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><b>Apply Discount</b></h5>
-                </div>
-                <div class="modal-body">
-                    <p>Enter discount code to apply:</p>
-                    <input type="text" id="discount_code" class="form-control" placeholder="Enter discount code">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" id="proceed_discount">Proceed</button>
-                    <button type="button" class="btn btn-sm" data-dismiss="modal">Cancel</button>
-                </div>
+<!-- Discount Modal -->
+<div class="modal fade" id="discount_modal" role='dialog'>
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><b>Apply Discount</b></h5>
+            </div>
+            <div class="modal-body">
+                <p>Enter discount code to apply:</p>
+                <input type="text" id="discount_code" class="form-control" placeholder="Enter discount code">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" id="proceed_discount">Proceed</button>
+                <button type="button" class="btn btn-sm" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Discard Modal -->
-    <div class="modal fade" id="discard_modal" role='dialog'>
-        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><b>Discard Transaction</b></h5>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to discard the transaction?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" id="confirm_discard">Discard</button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                </div>
+<!-- Discard Modal -->
+<div class="modal fade" id="discard_modal" role='dialog'>
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><b>Discard Transaction</b></h5>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to discard the transaction?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" id="confirm_discard">Discard</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
+</div>
 
 
-    <script>
-        var total;
-        var selectedProduct;
-        cat_func();
+<script>
+    var total;
+    var selectedProduct;
+    cat_func();
 
-        $('#prod-list .prod-item').click(function() {
-            var data = $(this).attr('data-json');
-            data = JSON.parse(data);
-            if ($('#o-list tr[data-id="' + data.id + '"]').length > 0) {
-                var tr = $('#o-list tr[data-id="' + data.id + '"]');
-                var qty = tr.find('[name="qty[]"]').val();
-                qty = parseInt(qty) + 1;
-                qty = tr.find('[name="qty[]"]').val(qty).trigger('change');
-                calc();
-                return false;
-            }
-            var tr = $('<tr class="o-item"></tr>');
-            tr.attr('data-id', data.id);
-            tr.append('<td><div class="d-flex align-items-center"><span class="btn-minus"><b></i></b></span><input type="number" name="qty[]" id="" value="1"><span class="btn-plus"><b></b></span></div></td>');
-
-            tr.append('<td><input type="hidden" name="item_id[]" id=""><input type="hidden" name="product_id[]" id="" value="' + data.id + '">' + data.name + ' <small class="psmall">(' + (parseFloat(data.price).toLocaleString("en-US", {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            })) + ')</small></td>');
-
-            tr.append('<td class="text-right"><input type="hidden" name="price[]" id="" value="' + data.price + '"><input type="hidden" name="amount[]" id="" value="' + data.price + '"><span class="amount">' + (parseFloat(data.price).toLocaleString("en-US", {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            })) + '</span></td>');
-
-            tr.append('<td><span class="delete"><b><i class="fa fa-trash-alt text"></i></b></span></td>');
-            $('#o-list tbody').append(tr);
-            qty_func();
+    $('#prod-list .prod-item').click(function() {
+        var data = $(this).attr('data-json');
+        data = JSON.parse(data);
+        if ($('#o-list tr[data-id="' + data.id + '"]').length > 0) {
+            var tr = $('#o-list tr[data-id="' + data.id + '"]');
+            var qty = tr.find('[name="qty[]"]').val();
+            qty = parseInt(qty) + 1;
+            qty = tr.find('[name="qty[]"]').val(qty).trigger('change');
             calc();
-            cat_func();
-        });
-
-        function qty_func() {
-            $('#o-list .btn-minus').click(function() {
-                var qty = $(this).siblings('input').val();
-                qty = qty > 1 ? parseInt(qty) - 1 : 1;
-                $(this).siblings('input').val(qty).trigger('change');
-                calc();
-            });
-            $('#o-list .btn-plus').click(function() {
-                var qty = $(this).siblings('input').val();
-                qty = parseInt(qty) + 1;
-                $(this).siblings('input').val(qty).trigger('change');
-                calc();
-            });
-            $('#o-list .btn-rem').click(function() {
-                $(this).closest('tr').remove();
-                calc();
-            });
+            return false;
         }
+        var tr = $('<tr class="o-item"></tr>');
+        tr.attr('data-id', data.id);
+        tr.append('<td><div class="d-flex align-items-center"><span class="btn-minus"><b></i></b></span><input type="number" name="qty[]" id="" value="1"><span class="btn-plus"><b></b></span></div></td>');
 
-        function calc() {
-            $('[name="qty[]"]').each(function() {
-                $(this).change(function() {
-                    var tr = $(this).closest('tr');
-                    var qty = $(this).val();
-                    var price = tr.find('[name="price[]"]').val();
-                    var amount = parseFloat(qty) * parseFloat(price);
-                    tr.find('[name="amount[]"]').val(amount);
-                    tr.find('.amount').text(parseFloat(amount).toLocaleString("en-US", {
-                        style: 'decimal',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }));
-                    if (tr.find('.discounted-amount').length) {
-                        var discount = tr.find('.discounted-amount').data('discount');
-                        var discountedAmount = amount - discount;
-                        tr.find('.discounted-amount').text(discountedAmount.toLocaleString("en-US", {
-                            style: 'decimal',
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }));
-                    }
-                });
-            });
-            var total = 0;
-            $('[name="amount[]"]').each(function() {
-                total = parseFloat(total) + parseFloat($(this).val());
-            });
-            $('[name="total_amount"]').val(total);
-            $('#total_amount').text(parseFloat(total).toLocaleString("en-US", {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }));
-        }
+        tr.append('<td><input type="hidden" name="item_id[]" id=""><input type="hidden" name="product_id[]" id="" value="' + data.id + '">' + data.name + ' <small class="psmall">(' + (parseFloat(data.price).toLocaleString("en-US", {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })) + ')</small></td>');
 
-        function cat_func() {
-            $('.cat-item').click(function() {
-                var id = $(this).attr('data-id');
-                if (id == 'all') {
-                    $('.prod-item').parent().toggle(true);
-                } else {
-                    $('.prod-item').each(function() {
-                        if ($(this).attr('data-category-id') == id) {
-                            $(this).parent().toggle(true);
-                        } else {
-                            $(this).parent().toggle(false);
-                        }
-                    });
-                }
-            });
-        }
+        tr.append('<td class="text-right"><input type="hidden" name="price[]" id="" value="' + data.price + '"><input type="hidden" name="amount[]" id="" value="' + data.price + '"><span class="amount">' + (parseFloat(data.price).toLocaleString("en-US", {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })) + '</span></td>');
 
-        $('#save_order').click(function() {
-            $('#tendered').val('').trigger('change');
-            $('[name="total_tendered"]').val('');
-            $('#manage-order').submit();
+        tr.append('<td><span class="delete"><b><i class="fa fa-trash-alt text"></i></b></span></td>');
+        $('#o-list tbody').append(tr);
+        qty_func();
+        calc();
+        cat_func();
+    });
+
+    function qty_func() {
+        $('#o-list .btn-minus').click(function() {
+            var qty = $(this).siblings('input').val();
+            qty = qty > 1 ? parseInt(qty) - 1 : 1;
+            $(this).siblings('input').val(qty).trigger('change');
+            calc();
         });
-
-        $("#pay").click(function() {
-            start_load();
-            var amount = $('[name="total_amount"]').val();
-            if ($('#o-list tbody tr').length <= 0) {
-                alert_toast("Please add at least 1 product first.", 'danger');
-                end_load();
-                return false;
-            }
-            $('#apayable').val(parseFloat(amount).toLocaleString("en-US", {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }));
-            $('#pay_modal').modal('show');
-            setTimeout(function() {
-                $('#tendered').val('').trigger('change');
-                $('#tendered').focus();
-                end_load();
-            }, 500);
+        $('#o-list .btn-plus').click(function() {
+            var qty = $(this).siblings('input').val();
+            qty = parseInt(qty) + 1;
+            $(this).siblings('input').val(qty).trigger('change');
+            calc();
         });
-
-        $('#tendered').keyup('input', function(e) {
-            if (e.which == 13) {
-                $('#manage-order').submit();
-                return false;
-            }
-            var tend = $(this).val();
-            tend = tend.replace(/,/g, '');
-            $('[name="total_tendered"]').val(tend);
-            if (tend == '')
-                $(this).val('');
-            else
-                $(this).val((parseFloat(tend).toLocaleString("en-US")));
-            tend = tend > 0 ? tend : 0;
-            var amount = $('[name="total_amount"]').val();
-            var change = parseFloat(tend) - parseFloat(amount);
-            $('#change').val(parseFloat(change).toLocaleString("en-US", {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }));
+        $('#o-list .btn-rem').click(function() {
+            $(this).closest('tr').remove();
+            calc();
         });
+    }
 
-        $('#tendered').on('input', function() {
-            var val = $(this).val();
-            val = val.replace(/[^0-9 \,]/, '');
-            $(this).val(val);
-        });
-
-        $('#manage-order').submit(function(e) {
-            e.preventDefault();
-            start_load();
-            $.ajax({
-                url: '../ajax.php?action=save_order',
-                method: 'POST',
-                data: $(this).serialize(),
-                success: function(resp) {
-                    if (resp > 0) {
-
-                        discountApplied = false;
-
-                        if ($('[name="total_tendered"]').val() > 0) {
-                            alert_toast("Order placed.", 'success');
-                            setTimeout(function() {
-                                var nw = window.open('../receipt.php?id=' + resp, "_blank", "width=900,height=600");
-                                setTimeout(function() {
-                                    nw.print();
-                                    setTimeout(function() {
-                                        nw.close();
-                                        location.reload();
-                                    }, 500);
-                                }, 500);
-                            }, 500);
-                        } else {
-                            alert_toast("Order placed.", 'success');
-                            setTimeout(function() {
-                                location.reload();
-                            }, 500);
-                        }
-                    }
-                }
-            });
-        });
-
-        // discount function
-        var discountApplied = false;
-
-        $('.discount').click(function() {
-            if (!discountApplied) {
-                $('#discount_modal').modal('show');
-            } else {
-                alert_toast('1 discount per transaction only');
-            }
-        });
-
-        $('.prod-item').hover(function() {
-            $(this).addClass('hovered');
-        }, function() {
-            $(this).removeClass('hovered');
-        });
-
-        $(document).on('click', '.o-item td:nth-child(2)', function() {
-            selectedProduct = $(this).closest('.o-item');
-            $('#discount_modal').modal('show');
-        });
-        $('#proceed_discount').click(function() {
-            var code = $('#discount_code').val();
-            if (code === 'EMPLOYEE_20' || code === 'CUSTOMER_20') { // Replace YOUR_DISCOUNT_CODE with your actual discount code
-                var amountElement = selectedProduct.find('.amount');
-                var amount = parseFloat(amountElement.text().replace(/,/g, ''));
-                var qty = parseInt(selectedProduct.find('[name="qty[]"]').val());
-                alert_toast('Discount applied!', 'success');
-
-                if (qty !== 1) {
-                    alert_toast('Discount can only be applied to products with a quantity of 1.', 'danger');
-                    return;
-                }
-
-                if (selectedProduct.hasClass('discount-active')) {
-                    alert_toast('Discount has already been applied to this product.', 'danger');
-                    return;
-                }
-
-                var discount = 0.20 * amount;
-                var discountedAmount = amount - discount;
-
-                // Add the discount indication beside the amount
-                if (!selectedProduct.find('.discounted-amount').length) {
-                    selectedProduct.find('td').eq(2).append('<span class="discounted-amount" data-discount="' + discount + '"> (' + discount.toLocaleString("en-US", {
-                        style: 'decimal',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }) + ')</span>');
-                } else {
-                    selectedProduct.find('.discounted-amount').text(' (' + discountedAmount.toLocaleString("en-US", {
-                        style: 'decimal',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }) + ')');
-                    selectedProduct.find('.discounted-amount').data('discount', discount);
-                }
-
-                amountElement.text(discountedAmount.toLocaleString("en-US", {
+    function calc() {
+        $('[name="qty[]"]').each(function() {
+            $(this).change(function() {
+                var tr = $(this).closest('tr');
+                var qty = $(this).val();
+                var price = tr.find('[name="price[]"]').val();
+                var amount = parseFloat(qty) * parseFloat(price);
+                tr.find('[name="amount[]"]').val(amount);
+                tr.find('.amount').text(parseFloat(amount).toLocaleString("en-US", {
                     style: 'decimal',
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 }));
-                selectedProduct.find('[name="amount[]"]').val(discountedAmount);
-                selectedProduct.find(discount).css('color', 'red');
-                selectedProduct.addClass('discount-active');
-                calc();
-                $('#discount_modal').modal('hide');
-            } else {
-                alert_toast('Incorrect discount code.', 'danger');
-            }
-            discountApplied = true;
-
-            $('#discount_modal').modal('hide');
-        });
-
-
-        $('#discount_modal').on('hidden.bs.modal', function() {
-            $('#discount_code').val('');
-        });
-
-        $(document).on('click', '.delete', function() {
-            var tr = $(this).closest('tr');
-            $('#delete_modal').modal('show');
-            $('#confirm_delete').off('click').on('click', function() {
-                tr.remove();
-                calc();
-                $('#delete_modal').modal('hide');
+                if (tr.find('.discounted-amount').length) {
+                    var discount = tr.find('.discounted-amount').data('discount');
+                    var discountedAmount = amount - discount;
+                    tr.find('.discounted-amount').text(discountedAmount.toLocaleString("en-US", {
+                        style: 'decimal',   
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }));
+                }
             });
         });
-        // Function to show the discard modal
-        function showDiscardModal() {
-            $('#discard_modal').modal('show');
-            // Remove the beforeunload event listener
-            window.removeEventListener('beforeunload', beforeUnloadHandler);
-        }
+        var total = 0;
+        $('[name="amount[]"]').each(function() {
+            total = parseFloat(total) + parseFloat($(this).val());
+        });
+        $('[name="total_amount"]').val(total);
+        $('#total_amount').text(parseFloat(total).toLocaleString("en-US", {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }));
+    }
 
-        // Function to hide the discard modal
-        function hideDiscardModal() {
-            $('#discard_modal').modal('hide');
-            // Re-add the beforeunload event listener
-            window.addEventListener('beforeunload', beforeUnloadHandler);
-        }
-
-        // Event handler for beforeunload
-        function beforeUnloadHandler(e) {
-            if ($('#formModified').val() == '1') {
-                var confirmationMessage = 'You have unsaved changes. Are you sure you want to leave this page?';
-                (e || window.event).returnValue = confirmationMessage;
-                return confirmationMessage;
-            }
-        }
-
-        // Add the beforeunload event listener
-        window.addEventListener('beforeunload', beforeUnloadHandler);
-
-        // Event listener for clicking on links and buttons
-        $(document).on('click', 'a[href^="../"], a[href^="/"], a:not([href]), button[type="submit"]', function(e) {
-            if ($('#formModified').val() == '1') {
-                e.preventDefault();
-                showDiscardModal();
-                return false;
+    function cat_func() {
+        $('.cat-item').click(function() {
+            var id = $(this).attr('data-id');
+            if (id == 'all') {
+                $('.prod-item').parent().toggle(true);
+            } else {
+                $('.prod-item').each(function() {
+                    if ($(this).attr('data-category-id') == id) {
+                        $(this).parent().toggle(true);
+                    } else {
+                        $(this).parent().toggle(false);
+                    }
+                });
             }
         });
+    }
 
-        // Event listener for confirming discard
-        $(document).on('click', '#confirm_discard', function() {
-            hideDiscardModal();
-            $('#formModified').val('0');
-            window.location.href = '../index.php'; // Redirect to home or desired page
+    $('#save_order').click(function() {
+        $('#tendered').val('').trigger('change');
+        $('[name="total_tendered"]').val('');
+        $('#manage-order').submit();
+    });
+
+    $("#pay").click(function() {
+        start_load();
+
+        var amount = $('[name="total_amount"]').val();
+        if ($('#o-list tbody tr').length <= 0) {
+            alert_toast("Please add at least 1 product first.", 'danger');
+            end_load();
+            return false;
+        }
+
+        // Check if order number is empty
+        var orderNumber = $('[name="order_number"]').val().trim();
+        if (orderNumber === '') {
+            alert_toast("Please enter the order number.", 'danger');
+            end_load();
+            return false;
+        }
+
+        $('#apayable').val(parseFloat(amount).toLocaleString("en-US", {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }));
+
+        $('#pay_modal').modal('show');
+
+        setTimeout(function() {
+            $('#tendered').val('').trigger('change');
+            $('#tendered').focus();
+            end_load();
+        }, 500);
+    });
+
+    $('#tendered').keyup('input', function(e) {
+        if (e.which == 13) {
+            $('#manage-order').submit();
+            return false;
+        }
+        var tend = $(this).val();
+        tend = tend.replace(/,/g, '');
+        $('[name="total_tendered"]').val(tend);
+        if (tend == '')
+            $(this).val('');
+        else
+            $(this).val((parseFloat(tend).toLocaleString("en-US")));
+        tend = tend > 0 ? tend : 0;
+        var amount = $('[name="total_amount"]').val();
+        var change = parseFloat(tend) - parseFloat(amount);
+        $('#change').val(parseFloat(change).toLocaleString("en-US", {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }));
+    });
+
+    $('#tendered').on('input', function() {
+        var val = $(this).val();
+        val = val.replace(/[^0-9 \,]/, '');
+        $(this).val(val);
+    });
+
+    $('#manage-order').submit(function(e) {
+        e.preventDefault();
+        start_load();
+        $.ajax({
+            url: '../ajax.php?action=save_order',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(resp) {
+                if (resp > 0) {
+                    if ($('[name="total_tendered"]').val() > $('[name="total_amount"]').val()) {
+                        alert_toast("Order placed.", 'success');
+                        setTimeout(function() {
+                            var nw = window.open('../receipt.php?id=' + resp, "_blank", "width=900,height=600");
+                            setTimeout(function() {
+                                nw.print();
+                                setTimeout(function() {
+                                    nw.close();
+                                    location.reload();
+                                }, 500);
+                            }, 500);
+                        }, 500);
+                    } else {
+                        alert_toast("Invalid Tendered Amount.", 'danger');
+                        setTimeout(function() {
+                        }, 500);
+                    }
+                }
+            }
         });
-    </script>
+    });
+
+    $('.prod-item').hover(function() {
+        $(this).addClass('hovered');
+    }, function() {
+        $(this).removeClass('hovered');
+    });
+
+    $(document).on('click', '.o-item td:nth-child(2)', function() {
+        selectedProduct = $(this).closest('.o-item');
+        $('#discount_modal').modal('show');
+    });
+    $('#proceed_discount').click(function() {
+    var code = $('#discount_code').val();
+    if (code === 'EMPLOYEE_20' || code === 'CUSTOMER_20') {
+        var amountElement = selectedProduct.find('.amount');
+        var amount = parseFloat(amountElement.text().replace(/,/g, ''));
+        var qty = parseInt(selectedProduct.find('[name="qty[]"]').val());
+        alert_toast('Discount applied!', 'success');
+
+        if (qty !== 1) {
+            alert_toast('Discount can only be applied to products with a quantity of 1.', 'danger');
+            return;
+        }
+
+        if (selectedProduct.hasClass('discount-active')) {
+            alert_toast('Discount has already been applied to this product.', 'danger');
+            return;
+        }
+
+        var discount = 0.20 * amount;
+        var discountedAmount = amount - discount;
+
+        if (!selectedProduct.find('.discounted-amount').length) {
+            selectedProduct.find('td').eq(2).append('<span class="discounted-amount" data-discount="' + discount + '"> (' + discount.toLocaleString("en-US", { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ')</span>');
+        } else {
+            selectedProduct.find('.discounted-amount').text(' (' + discountedAmount.toLocaleString("en-US", { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ')');
+            selectedProduct.find('.discounted-amount').data('discount', discount);
+        }
+
+        amountElement.text(discountedAmount.toLocaleString("en-US", { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        selectedProduct.find('[name="amount[]"]').val(discountedAmount);
+        selectedProduct.find(discount).css('color', 'red');
+        selectedProduct.addClass('discount-active');
+        calc();
+        $('#discount_modal').modal('hide');
+    } else {
+        alert_toast('Incorrect discount code.', 'danger');
+    }
+    discountApplied = true;
+    $('#discount_modal').modal('hide');
+});
+
+$('#discount_modal').on('hidden.bs.modal', function() {
+    $('#discount_code').val('');
+});
+
+$(document).on('click', '.delete', function() {
+    var tr = $(this).closest('tr');
+    $('#delete_modal').modal('show');
+    $('#confirm_delete').off('click').on('click', function() {
+        tr.remove();
+        calc();
+        $('#delete_modal').modal('hide');
+    });
+});
+
+
+    $('#discount_modal').on('hidden.bs.modal', function() {
+        $('#discount_code').val('');
+    });
+
+    $('.discount').click(function() {
+        if (!discountApplied) {
+            $('#discount_modal').modal('show');
+        } else {
+            alert_toast('1 discount per transaction only');
+        }
+    });
+
+
+// Function to show the discard modal
+function showDiscardModal() {
+    $('#discard_modal').modal('show');
+}
+
+// Function to hide the discard modal
+function hideDiscardModal() {
+    $('#discard_modal').modal('hide');
+}
+
+// Event handler for beforeunload
+function beforeUnloadHandler(e) {
+    if ($('#formModified').val() == '1') {
+        var confirmationMessage = 'You have unsaved changes. Are you sure you want to leave this page?';
+        (e || window.event).returnValue = confirmationMessage;
+        return confirmationMessage;
+    }
+}
+
+// Add the beforeunload event listener
+$(window).on('beforeunload', beforeUnloadHandler);
+
+// Event listener for clicking on links and buttons
+$(document).on('click', 'a[href^="../"], a[href^="/"], a:not([href]), button[type="submit"]', function(e) {
+    if ($('#formModified').val() == '1') {
+        e.preventDefault();
+        showDiscardModal();
+        return false;
+    }
+});
+
+// Event listener for confirming discard action
+$('#confirm_discard').click(function() {
+    hideDiscardModal();
+    $('#formModified').val('0'); // Reset formModified flag
+    // Optionally, redirect the user after discarding changes
+    window.location.href = '../index.php'; // Redirect to desired URL
+});
+
+// Event listener for canceling discard action
+$('#discard_modal').on('hidden.bs.modal', function() {
+    $(window).on('beforeunload', beforeUnloadHandler); // Re-add the beforeunload event listener
+});
+
+</script>             
