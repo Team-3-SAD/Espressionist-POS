@@ -201,8 +201,9 @@ endif;
                         <div class="receipt" id='o-list'>
                             <div class="d-flex w-100 mb-2">
                                 <label for="order_number" class="text-dark"><b>Order Number: </b></label>
-                                <input type="number" id="order_number" class="form-control-sm ml-2" name="order_number" regex="^(?=\d{5}$)1?2?3?4?5?6?7?8?9?0?$" value="<?php echo isset($order_number) ? $order_number : '' ?>" required>
+                                <input type="number" id="order_number" class="form-control-sm ml-2" name="order_number" pattern="^\d{1,2}$" max="99" value="<?php echo isset($order_number) ? $order_number : '' ?>" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2);">
                             </div>
+
                             <table class="table mb-5">
                                 <colgroup>
                                     <col width="20%">
@@ -228,7 +229,7 @@ endif;
                                                     <div class="d-flex align-items-center justify-content-center">
                                                         <span class=" btn-minus"><b> </b></span>
                                                         <input type="number" name="qty[]" class="form-control-sm" value="<?php echo $row['qty'] ?>">
-                                                        <span class="btn-plus"><b></b></span>       
+                                                        <span class="btn-plus"><b></b></span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -240,6 +241,7 @@ endif;
                                                     <input type="hidden" name="price[]" value="<?php echo $row['price'] ?>">
                                                     <input type="hidden" name="amount[]" value="<?php echo $row['amount'] ?>">
                                                     <span class="amount"><?php echo number_format($row['amount'], 2) ?></span>
+                                                    <span class="discounted-amount" style="color: green;"></span>
                                                 </td>
                                                 <td>
                                                     <span class="delete"><b><i class="fa fa-trash-alt"></i></b></span>
@@ -371,7 +373,6 @@ endif;
     </div>
 </div>
 
-
 <script>
     var total;
     var selectedProduct;
@@ -431,40 +432,66 @@ endif;
     }
 
     function calc() {
-        $('[name="qty[]"]').each(function() {
-            $(this).change(function() {
-                var tr = $(this).closest('tr');
-                var qty = $(this).val();
-                var price = tr.find('[name="price[]"]').val();
-                var amount = parseFloat(qty) * parseFloat(price);
-                tr.find('[name="amount[]"]').val(amount);
-                tr.find('.amount').text(parseFloat(amount).toLocaleString("en-US", {
+        // Attach change event listener to quantity inputs
+        $('[name="qty[]"]').off('change').on('change', function() {
+            var tr = $(this).closest('tr');
+            var qty = parseFloat($(this).val());
+
+            // Validate qty to be between 1 and 10
+            if (qty < 1 || qty > 10 || isNaN(qty)) {
+                alert_toast('Quantity must be between 1 and 10.', 'danger');
+                $(this).val(1); // Set default value to 1 if out of range
+                qty = 1;
+            }
+
+            var price = parseFloat(tr.find('[name="price[]"]').val());
+            var amount = qty * price;
+
+            tr.find('[name="amount[]"]').val(amount);
+            tr.find('.amount').text(amount.toLocaleString("en-US", {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
+
+            if (tr.find('.discounted-amount').length) {
+                var discount = tr.find('.discounted-amount').data('discount');
+                var discountedAmount = amount - discount;
+                tr.find('.discounted-amount').text('(' + discountedAmount.toLocaleString("en-US", {
                     style: 'decimal',
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
-                }));
-                if (tr.find('.discounted-amount').length) {
-                    var discount = tr.find('.discounted-amount').data('discount');
-                    var discountedAmount = amount - discount;
-                    tr.find('.discounted-amount').text(discountedAmount.toLocaleString("en-US", {
-                        style: 'decimal',   
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }));
-                }
+                }) + ')');
+                amount = discountedAmount;
+            }
+            tr.find('[name="amount[]"]').val(amount); // Ensure discounted amount is stored
+            updateTotal();
+        });
+
+        // Update the total amount
+        function updateTotal() {
+            var total = 0;
+            $('[name="amount[]"]').each(function() {
+                total += parseFloat($(this).val());
             });
-        });
-        var total = 0;
-        $('[name="amount[]"]').each(function() {
-            total = parseFloat(total) + parseFloat($(this).val());
-        });
-        $('[name="total_amount"]').val(total);
-        $('#total_amount').text(parseFloat(total).toLocaleString("en-US", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }));
+
+            $('[name="total_amount"]').val(total);
+            $('#total_amount').text(total.toLocaleString("en-US", {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
+        }
+
+        // Initial calculation to set initial values
+        $('[name="qty[]"]').trigger('change');
     }
+
+    // Call calc() to ensure initial setup
+    $(document).ready(function() {
+        calc();
+    });
+
 
     function cat_func() {
         $('.cat-item').click(function() {
@@ -502,7 +529,7 @@ endif;
         // Check if order number is empty
         var orderNumber = $('[name="order_number"]').val().trim();
         if (orderNumber === '') {
-            alert_toast("Please enter the order number.", 'danger');
+            alert_toast("Please enter an order number.", 'danger');
             end_load();
             return false;
         }
@@ -573,8 +600,7 @@ endif;
                         }, 500);
                     } else {
                         alert_toast("Invalid Tendered Amount.", 'danger');
-                        setTimeout(function() {
-                        }, 500);
+                        setTimeout(function() {}, 500);
                     }
                 }
             }
@@ -591,61 +617,72 @@ endif;
         selectedProduct = $(this).closest('.o-item');
         $('#discount_modal').modal('show');
     });
+
     $('#proceed_discount').click(function() {
-    var code = $('#discount_code').val();
-    if (code === 'EMPLOYEE_20' || code === 'CUSTOMER_20') {
-        var amountElement = selectedProduct.find('.amount');
-        var amount = parseFloat(amountElement.text().replace(/,/g, ''));
-        var qty = parseInt(selectedProduct.find('[name="qty[]"]').val());
-        alert_toast('Discount applied!', 'success');
+        var code = $('#discount_code').val();
+        if (code === 'EMPLOYEE_20' || code === 'CUSTOMER_20') {
+            var amountElement = selectedProduct.find('.amount');
+            var amount = parseFloat(amountElement.text().replace(/,/g, ''));
+            var qty = parseInt(selectedProduct.find('[name="qty[]"]').val());
+            alert_toast('Discount applied!', 'success');
 
-        if (qty !== 1) {
-            alert_toast('Discount can only be applied to products with a quantity of 1.', 'danger');
-            return;
-        }
+            if (qty !== 1) {
+                alert_toast('Discount can only be applied to products with a quantity of 1.', 'danger');
+                return;
+            }
 
-        if (selectedProduct.hasClass('discount-active')) {
-            alert_toast('Discount has already been applied to this product.', 'danger');
-            return;
-        }
+            if (selectedProduct.hasClass('discount-active')) {
+                alert_toast('Discount has already been applied to this product.', 'danger');
+                return;
+            }
 
-        var discount = 0.20 * amount;
-        var discountedAmount = amount - discount;
+            var discount = 0.20 * amount;
+            var discountedAmount = amount - discount;
 
-        if (!selectedProduct.find('.discounted-amount').length) {
-            selectedProduct.find('td').eq(2).append('<span class="discounted-amount" data-discount="' + discount + '"> (' + discount.toLocaleString("en-US", { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ')</span>');
+            if (!selectedProduct.find('.discounted-amount').length) {
+                selectedProduct.find('td').eq(2).append('<span class="discounted-amount" data-discount="' + discount + '" style="color: green;">(' + discountedAmount.toLocaleString("en-US", {
+                    style: 'decimal',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }) + ')</span>');
+            } else {
+                selectedProduct.find('.discounted-amount').text('(' + discountedAmount.toLocaleString("en-US", {
+                    style: 'decimal',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }) + ')').css('color', 'green');
+                selectedProduct.find('.discounted-amount').data('discount', discount);
+            }
+
+            amountElement.text(discountedAmount.toLocaleString("en-US", {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
+            selectedProduct.find('[name="amount[]"]').val(discountedAmount);
+            selectedProduct.addClass('discount-active');
+            calc();
+            $('#discount_modal').modal('hide');
         } else {
-            selectedProduct.find('.discounted-amount').text(' (' + discountedAmount.toLocaleString("en-US", { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ')');
-            selectedProduct.find('.discounted-amount').data('discount', discount);
+            alert_toast('Incorrect discount code.', 'danger');
         }
-
-        amountElement.text(discountedAmount.toLocaleString("en-US", { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-        selectedProduct.find('[name="amount[]"]').val(discountedAmount);
-        selectedProduct.find(discount).css('color', 'red');
-        selectedProduct.addClass('discount-active');
-        calc();
+        discountApplied = true;
         $('#discount_modal').modal('hide');
-    } else {
-        alert_toast('Incorrect discount code.', 'danger');
-    }
-    discountApplied = true;
-    $('#discount_modal').modal('hide');
-});
-
-$('#discount_modal').on('hidden.bs.modal', function() {
-    $('#discount_code').val('');
-});
-
-$(document).on('click', '.delete', function() {
-    var tr = $(this).closest('tr');
-    $('#delete_modal').modal('show');
-    $('#confirm_delete').off('click').on('click', function() {
-        tr.remove();
-        calc();
-        $('#delete_modal').modal('hide');
     });
-});
 
+    $('#discount_modal').on('hidden.bs.modal', function() {
+        $('#discount_code').val('');
+    });
+
+    $(document).on('click', '.delete', function() {
+        var tr = $(this).closest('tr');
+        $('#delete_modal').modal('show');
+        $('#confirm_delete').off('click').on('click', function() {
+            tr.remove();
+            calc();
+            $('#delete_modal').modal('hide');
+        });
+    });
 
     $('#discount_modal').on('hidden.bs.modal', function() {
         $('#discount_code').val('');
@@ -659,49 +696,52 @@ $(document).on('click', '.delete', function() {
         }
     });
 
-
-// Function to show the discard modal
-function showDiscardModal() {
-    $('#discard_modal').modal('show');
-}
-
-// Function to hide the discard modal
-function hideDiscardModal() {
-    $('#discard_modal').modal('hide');
-}
-
-// Event handler for beforeunload
-function beforeUnloadHandler(e) {
-    if ($('#formModified').val() == '1') {
-        var confirmationMessage = 'You have unsaved changes. Are you sure you want to leave this page?';
-        (e || window.event).returnValue = confirmationMessage;
-        return confirmationMessage;
+    // Event handler for beforeunload
+    function beforeUnloadHandler(e) {
+        if ($('#formModified').val() == '1' && $('#o-list tbody tr').length > 0) {
+            var confirmationMessage = 'You have unsaved changes. Are you sure you want to leave this page?';
+            console.log(confirmationMessage); // Log confirmation message
+            (e || window.event).returnValue = confirmationMessage;
+            return confirmationMessage;
+        }
     }
-}
 
-// Add the beforeunload event listener
-$(window).on('beforeunload', beforeUnloadHandler);
+    // Add the beforeunload event listener
+    $(window).on('beforeunload', beforeUnloadHandler);
 
-// Event listener for clicking on links and buttons
-$(document).on('click', 'a[href^="../"], a[href^="/"], a:not([href]), button[type="submit"]', function(e) {
-    if ($('#formModified').val() == '1') {
-        e.preventDefault();
-        showDiscardModal();
-        return false;
+    // Event listener for clicking on links and buttons
+    $(document).on('click', 'a[href^="../"], a[href^="/"], a:not([href]), button[type="submit"]', function(e) {
+        if ($('#formModified').val() == '1' && $('#o-list tbody tr').length > 0) {
+            e.preventDefault();
+            showDiscardModal();
+            return false;
+        }
+    });
+
+    // Function to show the discard modal
+    function showDiscardModal() {
+        console.log('Showing discard modal'); // Log when discard modal is shown
+        $('#discard_modal').modal('show');
     }
-});
 
-// Event listener for confirming discard action
-$('#confirm_discard').click(function() {
-    hideDiscardModal();
-    $('#formModified').val('0'); // Reset formModified flag
-    // Optionally, redirect the user after discarding changes
-    window.location.href = '../index.php'; // Redirect to desired URL
-});
+    // Function to hide the discard modal
+    function hideDiscardModal() {
+        console.log('Hiding discard modal'); // Log when discard modal is hidden
+        $('#discard_modal').modal('hide');
+    }
 
-// Event listener for canceling discard action
-$('#discard_modal').on('hidden.bs.modal', function() {
-    $(window).on('beforeunload', beforeUnloadHandler); // Re-add the beforeunload event listener
-});
+    // Event listener for confirming discard action
+    $('#confirm_discard').click(function() {
+        console.log('Confirmed discard action'); // Log when discard action is confirmed
+        hideDiscardModal();
+        $('#formModified').val('0'); // Reset formModified flag
+        // Optionally, redirect the user after discarding changes
+        window.location.href = '../index.php'; // Redirect to desired URL
+    });
 
-</script>             
+    // Event listener for canceling discard action
+    $('#discard_modal').on('hidden.bs.modal', function() {
+        console.log('Discard modal hidden'); // Log when discard modal is hidden
+        $(window).on('beforeunload', beforeUnloadHandler); // Re-add the beforeunload event listener
+    });
+</script>
