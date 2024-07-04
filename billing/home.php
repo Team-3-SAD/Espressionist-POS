@@ -516,60 +516,96 @@ endif;
         $('#manage-order').submit();
     });
 
-    $("#pay").click(function() {
-        start_load();
+$('#pay').click(function() {
+    start_load();
 
-        var amount = $('[name="total_amount"]').val();
-        if ($('#o-list tbody tr').length <= 0) {
-            alert_toast("Please add at least 1 product first.", 'danger');
-            end_load();
-            return false;
-        }
+    var amount = $('[name="total_amount"]').val();
+    if ($('#o-list tbody tr').length <= 0) {
+        alert_toast("Please add at least 1 product first.", 'danger');
+        end_load();
+        return false;
+    }
 
-        // Check if order number is empty
-        var orderNumber = $('[name="order_number"]').val().trim();
-        if (orderNumber === '') {
-            alert_toast("Please enter an order number.", 'danger');
-            end_load();
-            return false;
-        }
+    // Check if order number is empty
+    var orderNumber = $('[name="order_number"]').val().trim();
+    if (orderNumber === '') {
+        alert_toast("Please enter an order number.", 'danger');
+        end_load();
+        return false;
+    }
 
-        $('#apayable').val(parseFloat(amount).toLocaleString("en-US", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }));
+    $('#apayable').val(parseFloat(amount).toLocaleString("en-US", {
+        style: 'decimal',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }));
 
-        $('#pay_modal').modal('show');
+    // Set maximum tendered amount based on amount payable
+    var payableAmount = parseFloat(amount);
+    var maxTenderedAmount = 0;
 
-        setTimeout(function() {
-            $('#tendered').val('').trigger('change');
-            $('#tendered').focus();
-            end_load();
-        }, 500);
-    });
+    // Define limits based on payable amount
+    if (payableAmount <= 1000) {
+        maxTenderedAmount = 1000;
+    } else if (payableAmount <= 1999) {
+        maxTenderedAmount = 2000;
+    } else if (payableAmount <= 2999) {
+        maxTenderedAmount = 30008
+    } else if (payableAmount <= 3999) {
+        maxTenderedAmount = 4000;
+    } else if (payableAmount <= 4999) {
+        maxTenderedAmount = 5000;
+    } else if (payableAmount <= 5999) {
+        maxTenderedAmount = 6000;
+    } else if (payableAmount <= 6999) {
+        maxTenderedAmount = 7000;
+    } else if (payableAmount <= 7999) {
+        maxTenderedAmount = 8000;
+    } else if (payableAmount <= 8999) {
+        maxTenderedAmount = 9000;
+    } else if (payableAmount <= 9999) {
+        maxTenderedAmount = 10000;
+    } else {
+        maxTenderedAmount = 99999;
+    } 
 
-    $('#tendered').keyup('input', function(e) {
-        if (e.which == 13) {
-            $('#manage-order').submit();
-            return false;
-        }
-        var tend = $(this).val();
-        tend = tend.replace(/,/g, '');
-        $('[name="total_tendered"]').val(tend);
-        if (tend == '')
-            $(this).val('');
-        else
-            $(this).val((parseFloat(tend).toLocaleString("en-US")));
-        tend = tend > 0 ? tend : 0;
-        var amount = $('[name="total_amount"]').val();
-        var change = parseFloat(tend) - parseFloat(amount);
-        $('#change').val(parseFloat(change).toLocaleString("en-US", {
-            style: 'decimal',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }));
-    });
+    $('#tendered').data('max', maxTenderedAmount);
+
+    $('#pay_modal').modal('show');
+
+    setTimeout(function() {
+        $('#tendered').val('').trigger('change');
+        $('#tendered').focus();
+        end_load();
+    }, 500);
+});
+
+$('#tendered').keyup('input', function(e) {
+    if (e.which == 13) {
+        $('#manage-order').submit();
+        return false;
+    }
+    var tend = $(this).val();
+    tend = tend.replace(/,/g, '');
+    var maxTendered = parseFloat($(this).data('max'));
+    tend = tend > maxTendered ? maxTendered : tend; // Limit tendered amount
+    $('[name="total_tendered"]').val(tend);
+
+    if (tend == '')
+        $(this).val('');
+    else
+        $(this).val((parseFloat(tend).toLocaleString("en-US")));
+
+    tend = tend > 0 ? tend : 0;
+    var amount = $('[name="total_amount"]').val();
+    var change = parseFloat(tend) - parseFloat(amount);
+    $('#change').val(parseFloat(change).toLocaleString("en-US", {
+        style: 'decimal',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }));
+});
+
 
     $('#tendered').on('input', function() {
         var val = $(this).val();
@@ -696,52 +732,59 @@ endif;
         }
     });
 
-    // Event handler for beforeunload
-    function beforeUnloadHandler(e) {
-        if ($('#formModified').val() == '1' && $('#o-list tbody tr').length > 0) {
-            var confirmationMessage = 'You have unsaved changes. Are you sure you want to leave this page?';
-            console.log(confirmationMessage); // Log confirmation message
-            (e || window.event).returnValue = confirmationMessage;
-            return confirmationMessage;
-        }
-    }
-
-    // Add the beforeunload event listener
-    $(window).on('beforeunload', beforeUnloadHandler);
-
-    // Event listener for clicking on links and buttons
-    $(document).on('click', 'a[href^="../"], a[href^="/"], a:not([href]), button[type="submit"]', function(e) {
-        if ($('#formModified').val() == '1' && $('#o-list tbody tr').length > 0) {
-            e.preventDefault();
-            showDiscardModal();
-            return false;
-        }
-    });
+    var formModified = false;
+    var navigateAway = false;
+    var targetHref = "";
 
     // Function to show the discard modal
     function showDiscardModal() {
-        console.log('Showing discard modal'); // Log when discard modal is shown
         $('#discard_modal').modal('show');
     }
 
     // Function to hide the discard modal
     function hideDiscardModal() {
-        console.log('Hiding discard modal'); // Log when discard modal is hidden
         $('#discard_modal').modal('hide');
     }
 
-    // Event listener for confirming discard action
-    $('#confirm_discard').click(function() {
-        console.log('Confirmed discard action'); // Log when discard action is confirmed
-        hideDiscardModal();
-        $('#formModified').val('0'); // Reset formModified flag
-        // Optionally, redirect the user after discarding changes
-        window.location.href = '../index.php'; // Redirect to desired URL
+    // Event handler for beforeunload
+    function beforeUnloadHandler(e) {
+        if (formModified && $('#o-list tbody tr').length > 0 && !navigateAway) {
+            var confirmationMessage = 'You have unsaved changes. Are you sure you want to leave this page?';
+            e.returnValue = confirmationMessage; // For modern browsers
+            return confirmationMessage; // For old browsers
+        }
+    }
+
+    // Add the beforeunload event listener
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+
+    // Event listener for clicking on links
+    $(document).on('click', 'a[href]', function(e) {
+        if (formModified && $('#o-list tbody tr').length > 0) {
+            e.preventDefault();
+            targetHref = $(this).attr('href');
+            showDiscardModal();
+        }
     });
 
-    // Event listener for canceling discard action
-    $('#discard_modal').on('hidden.bs.modal', function() {
-        console.log('Discard modal hidden'); // Log when discard modal is hidden
-        $(window).on('beforeunload', beforeUnloadHandler); // Re-add the beforeunload event listener
+    // On confirmation, proceed with the navigation
+    $('#confirm_discard').off('click').on('click', function() {
+        formModified = false; // Allow navigation
+        navigateAway = true; // Indicate that the user has confirmed navigation
+        hideDiscardModal();
+        window.removeEventListener('beforeunload', beforeUnloadHandler); // Temporarily remove beforeunload
+        if (targetHref) {
+            window.location.href = targetHref;
+        }
+    });
+
+    // On cancel, just hide the modal
+    $('#discard_modal').off('hidden.bs.modal').on('hidden.bs.modal', function() {
+        window.addEventListener('beforeunload', beforeUnloadHandler); // Re-add beforeunload
+    });
+
+    // Mark form as modified when there are changes
+    $('#o-list').on('change', 'input, select, textarea', function() {
+        formModified = true;
     });
 </script>
