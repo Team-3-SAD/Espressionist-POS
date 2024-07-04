@@ -352,6 +352,14 @@ if ($sales->num_rows > 0) {
                                         </div>
                                     </div>
                                     <center><a href="billing/index.php" class="btn col-md-3 btn-secondary mt-3 mb-4">Order</a></center>';
+                            } else {
+                                echo '<div class="text-center mb-5">
+                                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <img src="assets/uploads/empty state.jpg" class="rounded" width="30%">
+                                            <span style="font-size: 18px;"><b>No Data Available</b></span>
+                                            <span>No content has been added yet. Get started by adding orders.</span>
+                                        </div>
+                                    </div>';
                             }
 
                             $conn->close();

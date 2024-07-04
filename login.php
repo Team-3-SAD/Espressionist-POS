@@ -73,7 +73,7 @@ ob_end_flush();
                                         <div class="input-group-prepend">
                                             <div class="input-group-text border-0"><i class="fa fa-user"></i></div>
                                         </div>
-                                        <input type="text" id="username" name="username" class="form-control border-0" placeholder="Username" required>
+                                        <input type="text" id="username" name="username" class="form-control border-0" placeholder="Username *" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -81,7 +81,7 @@ ob_end_flush();
                                         <div class="input-group-prepend">
                                             <div class="input-group-text border-0"><i class="fa fa-lock"></i></div>
                                         </div>
-                                        <input type="password" id="passwordInput" name="password" class="form-control border-0" placeholder="Password" required>
+                                        <input type="password" id="passwordInput" name="password" class="form-control border-0" placeholder="Password *" required>
                                     </div>
                                 </div>
                                 <div class="ShowPass mb-4 mx-4" style="display: none;">
