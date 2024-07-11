@@ -16,7 +16,6 @@ if (isset($_GET['id'])) {
 ?>
 
 <div class="container-fluid">
-
     <div class="col-lg-12">
         <div class="row">
             <!-- FORM Panel -->
@@ -30,19 +29,18 @@ if (isset($_GET['id'])) {
                             <input type="hidden" name="id" value="<?php echo isset($categories_id) ? $categories_id : ''; ?>">
                             <div class="form-group">
                                 <label class="control-label">Name</label>
-                                <input type="text" class="form-control" name="name" value="<?php echo isset($category_name) ? $category_name : ''; ?>">
+                                <input type="text" class="form-control" name="name" value="<?php echo isset($category_name) ? $category_name : ''; ?>" required>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Description</label>
-                                <input name="description" id="description" cols="30" rows="4" class="form-control" value="<?php echo isset($category_description) ? $category_description : ''; ?>"></input>
+                                <input name="description" id="description" cols="30" rows="4" class="form-control" value="<?php echo isset($category_description) ? $category_description : ''; ?>" required></input>
                             </div>
                         </div>
-
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <button class="btn btn-secondary"> Save</button>
-                                    <a class="btn btn-default" type="button" href="index.php?page=categories"> Back to Category Forms</a>
+                                <div class="col-md-12 text-left">
+                                    <button class="btn btn-success"> Save</button>
+                                    <a class="btn btn-secondary" type="button" href="index.php?page=categories"> Back</a>
                                 </div>
                             </div>
                         </div>
@@ -52,8 +50,8 @@ if (isset($_GET['id'])) {
             <!-- FORM Panel -->
         </div>
     </div>
-
 </div>
+
 <style>
     td {
         vertical-align: middle !important;
@@ -64,11 +62,11 @@ if (isset($_GET['id'])) {
     }
 </style>
 <script>
-    $('#manage-category').on('reset', function() {
+    $('#edit-category').on('reset', function() {
         $('input:hidden').val('')
     })
 
-    $('#manage-category').submit(function(e) {
+    $('#edit-category').submit(function(e) {
         e.preventDefault()
         start_load()
         $.ajax({
@@ -83,19 +81,18 @@ if (isset($_GET['id'])) {
                 if (resp == 1) {
                     alert_toast("Data successfully added", 'success')
                     setTimeout(function() {
-                        location.reload()
+                        window.location.href = "index.php?page=categories";
                     }, 1500)
-
                 } else if (resp == 2) {
                     alert_toast("Data successfully updated", 'success')
                     setTimeout(function() {
-                        location.reload()
+                        window.location.href = "index.php?page=categories";
                     }, 1500)
-
                 }
             }
         })
     })
+
     $('.edit_category').click(function() {
         start_load()
         var cat = $('#manage-category')
@@ -105,6 +102,7 @@ if (isset($_GET['id'])) {
         cat.find("[name='description']").val($(this).attr('data-description'))
         end_load()
     })
+
     $('.delete_category').click(function() {
         _conf("Are you sure to delete this category?", "delete_category", [$(this).attr('data-id')])
     })
@@ -123,10 +121,10 @@ if (isset($_GET['id'])) {
                     setTimeout(function() {
                         location.reload()
                     }, 1500)
-
                 }
             }
         })
     }
+
     $('table').dataTable()
 </script>

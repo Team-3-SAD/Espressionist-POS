@@ -64,8 +64,8 @@
 				<div class="card mb-5 mt-3">
 					<div class="card-header">
 						<b>Product List</b>
-						<!-- <span class="float:right"><a class="btn btn-secondary btn-block btn-sm col-sm-2 float-right" href="index.php?page=add-product" id="new_order">
-						<i class="fa fa-plus"></i> Add Product </a></span> -->
+						<span class="float:right"><a class="btn btn-secondary btn-block btn-sm col-sm-2 float-right" href="index.php?page=add-product" id="new_order">
+						<i class="fa fa-plus"></i> Add Product </a></span>
 					</div>
 					<div class="card-body2 ">
 						<table class="table table-hover">
@@ -100,7 +100,6 @@
 									<?php echo number_format($row['price'],2) ?></td>
 									</td>
 									<td class="">
-										
 										 <?php echo $row['status'] == 1 ? " Available" : "Unavailable" ?>
 									</td>
 									<td class="text-left">
@@ -172,7 +171,7 @@
 	})
 	$('.edit_product').click(function(){
 		start_load()
-		var cat = $('#manage-product')
+		var cat = $('#edit-product')
 		cat.get(0).reset()
 		cat.find("[name='id']").val($(this).attr('data-id'))
 		cat.find("[name='name']").val($(this).attr('data-name'))

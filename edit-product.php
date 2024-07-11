@@ -3,28 +3,27 @@ include('db_connect.php');
 
 // Check if the 'id' parameter is set in the URL
 if (isset($_GET['id'])) {
-    $products_id = $_GET['id'];
+	$products_id = $_GET['id'];
 
-    // Fetch the product details from the database
-    $result = $conn->query("SELECT * FROM products WHERE id = $products_id");
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $product_category_id = $row['category_id'];
-        $product_name = $row['name'];
-        $product_description = $row['description'];
-        $product_price = $row['price'];
-        $product_status = $row['status'];
-    }
+	// Fetch the product details from the database
+	$result = $conn->query("SELECT * FROM products WHERE id = $products_id");
+	if ($result->num_rows > 0) {
+		$row = $result->fetch_assoc();
+		$product_category_id = $row['category_id'];
+		$product_name = $row['name'];
+		$product_description = $row['description'];
+		$product_price = $row['price'];
+		$product_status = $row['status'];
+		$status = isset($_POST['status']) ? 1 : 0;
+	}
 }
 ?>
 
 <div class="container-fluid">
-
 	<div class="col-lg-12">
 		<div class="row">
-			<!-- FORM Panel -->
 			<div class="col-md-12">
-				<form action="" id="edit-product">
+				<form action="" id="edit-product"> <!-- Ensure the form ID is correct -->
 					<div class="card">
 						<div class="card-header">
 							<b>Edit Product Form</b>
@@ -59,32 +58,27 @@ if (isset($_GET['id'])) {
 							</div>
 							<div class="form-group">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="status" name="status" <?php echo isset($product_status) && $product_status == 1 ? 'checked' : ''; ?> value="1" required>
+									<input type="checkbox" class="custom-control-input" id="status" name="status" <?php echo isset($product_status) && $product_status == 1 ? 'checked' : ''; ?> value="1">
 									<label class="custom-control-label" for="status">Available</label>
 								</div>
 							</div>
+
 						</div>
-
-
 						<div class="card-footer">
 							<div class="row">
 								<div class="col-md-12 text-left">
-									<button class="btn btn-secondary"> Save</button>
-									<a class="btn btn-default" type="button" href="index.php?page=products"> Back to Product Forms</a>
+									<button class="btn btn-success"> Save</button>
+									<a class="btn btn-secondary" type="button" href="index.php?page=products"> Back</a>
 								</div>
 							</div>
 						</div>
 					</div>
+				</form>
 			</div>
-			</form>
 		</div>
-		<!-- FORM Panel -->
-
-		<!-- Table Panel -->
 	</div>
 </div>
 
-</div>
 <style>
 	td {
 		vertical-align: middle !important;
@@ -103,14 +97,17 @@ if (isset($_GET['id'])) {
 	}
 </style>
 <script>
-	$('#manage-product').on('reset', function() {
-		$('input:hidden').val('')
-		$('.select2').val('').trigger('change')
-	})
+	$('#edit-product').on('reset', function() {
+		$('input:hidden').val('');
+		$('.select2').val('').trigger('change');
+	});
 
-	$('#manage-product').submit(function(e) {
-		e.preventDefault()
-		start_load()
+	$('#edit-product').submit(function(e) {
+		e.preventDefault();
+		start_load();
+		if (!$('#status').is(':checked')) {
+			$('#status').prop('checked', false).val('0');
+		}
 		$.ajax({
 			url: 'ajax.php?action=save_product',
 			data: new FormData($(this)[0]),
@@ -119,36 +116,61 @@ if (isset($_GET['id'])) {
 			processData: false,
 			method: 'POST',
 			type: 'POST',
+			
 			success: function(resp) {
 				if (resp == 1) {
-					alert_toast("Data successfully added", 'success')
+					alert_toast("Data successfully added", 'success');
 					setTimeout(function() {
-						location.reload('index.php?page=orders')
-					}, 1500)
-
+						window.location.href = "index.php?page=products";
+					}, 1500);
 				} else if (resp == 2) {
-					alert_toast("Data successfully updated", 'success')
+					alert_toast("Data successfully updated", 'success');
 					setTimeout(function() {
-						location.reload('index.php?page=orders')
-					}, 1500)
-
+						window.location.href = "index.php?page=products";
+					}, 1500);
 				}
 			}
-		})
-	})
+		});
+	});
+
 	$('.edit_product').click(function() {
-		start_load()
-		var cat = $('#manage-product')
-		cat.get(0).reset()
-		cat.find("[name='id']").val($(this).attr('data-id'))
-		cat.find("[name='name']").val($(this).attr('data-name'))
-		cat.find("[name='description']").val($(this).attr('data-description'))
-		cat.find("[name='price']").val($(this).attr('data-price'))
-		cat.find("[name='category_id']").val($(this).attr('data-category_id')).trigger('change')
+		start_load();
+		var cat = $('#edit-product'); // Changed to #edit-product
+		cat.get(0).reset();
+		cat.find("[name='id']").val($(this).attr('data-id'));
+		cat.find("[name='name']").val($(this).attr('data-name'));
+		cat.find("[name='description']").val($(this).attr('data-description'));
+		cat.find("[name='price']").val($(this).attr('data-price'));
+		cat.find("[name='category_id']").val($(this).attr('data-category_id')).trigger('change');
 		if ($(this).attr('data-status') == 1)
-			$('#status').prop('checked', true)
+			$('#status').prop('checked', true);
 		else
-			$('#status').prop('checked', false)
-		end_load()
-	})
+			$('#status').prop('checked', false);
+		end_load();
+	});
+
+	$('.delete_product').click(function() {
+		_conf("Are you sure to delete this product?", "delete_product", [$(this).attr('data-id')]);
+	});
+
+	function delete_product($id) {
+		start_load();
+		$.ajax({
+			url: 'ajax.php?action=delete_product',
+			method: 'POST',
+			data: {
+				id: $id
+			},
+			success: function(resp) {
+				if (resp == 1) {
+					alert_toast("Data successfully deleted", 'success');
+					setTimeout(function() {
+						location.reload();
+					}, 1500);
+				}
+			}
+		});
+	}
+
+	$('table').dataTable();
 </script>
