@@ -45,20 +45,19 @@ while ($row = $items->fetch_assoc()) {
 	p {
 		margin: unset;
 	}
+
+	.receipt-header {
+		font-weight: 900;
+	}
 </style>
 <div class="container-fluid">
-	<p class="text-center"><b><?php echo $amount_tendered > 0 ? " Espressionist Official Receipt" : "Bill" ?></b></p>
+	<h2 class="text-center receipt-header"><b><?php echo $amount_tendered > 0 ? "Espressionist Acknowledgement Receipt" : "Bill" ?></b></h2>
+	<p>espressionist.ph@gmail.com</p>
+	<p>linktr.ee/espressionist.ph</p>
 	<hr>
-	<div class="flex">
-		<div class="w-100">
-			<?php if ($amount_tendered > 0) : ?>
-				<p>Invoice Number: <b><?php echo $ref_no ?></b></p>
-			<?php endif; ?>
-			<p>Date: <b><?php echo date("M d, Y", strtotime($date_created)) ?></b></p>
-		</div>
-	</div>
+	<p class="text-center"><b>Served by EspressoInsights</b></p>
+	<h4 class="text-center"><b><?php echo $order_number ?></b></h4>
 	<hr>
-	<p><b>Order List</b></p>
 	<table width="100%">
 		<thead>
 			<tr>
@@ -91,7 +90,10 @@ while ($row = $items->fetch_assoc()) {
 			</tr>
 			<?php if ($amount_tendered > 0) : ?>
 
-
+				<tr>
+					<td>Discounted Amount</td>
+					<td class="text-right"><b><?php echo number_format($total_discounted_amount, 2) ?></b></td>
+				</tr>
 				<tr>
 					<td><b>Amount Tendered</b></td>
 					<td class="text-right"><b><?php echo number_format($amount_tendered, 2) ?></b></td>
@@ -100,16 +102,21 @@ while ($row = $items->fetch_assoc()) {
 					<td><b>Change</b></td>
 					<td class="text-right"><b><?php echo number_format($amount_tendered - $total_amount, 2) ?></b></td>
 				</tr>
-				<tr>
-					<td><b>Discounted Amount</b></td>
-					<td class="text-right"><b><?php echo number_format($total_discounted_amount, 2) ?></b></td>
-				</tr>
+
 
 			<?php endif; ?>
 
 		</tbody>
 	</table>
 	<hr>
-	<p class="text-center"><b>Order No.</b></p>
-	<h4 class="text-center"><b><?php echo $order_number ?></b></h4>
+
+
+	<div class="flex">
+		<div class="w-100">
+			<?php if ($amount_tendered > 0) : ?>
+				<p>Invoice Number: <b><?php echo $ref_no ?></b></p>
+			<?php endif; ?>
+			<p><b><?php echo date("M d, Y H:i:s", strtotime($date_created)) ?></b></p>
+		</div>
+	</div>
 </div>
