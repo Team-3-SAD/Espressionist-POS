@@ -177,12 +177,7 @@ endif;
                         </div>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <div class="row justify-content-center">
-                        <button class="btn btn-sm col-md-4 col-sm-5 col-6 btn-secondary mr-2" type="button" id="pay">Pay</button>
-                        <!-- <button class="btn btn-sm col-md-4 col-sm-5 col-6 btn-secondary" type="button" id="save_order">Pay later</button> -->
-                    </div>
-                </div>
+
             </div>
         </div>
         <div class="col-lg-4 col-md-12">
@@ -227,20 +222,21 @@ endif;
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center justify-content-center">
-                                                        <span class=" btn-minus"><b> </b></span>
+                                                        <span class="btn-minus"><b></b></span>
                                                         <input type="number" name="qty[]" class="form-control-sm" value="<?php echo $row['qty'] ?>">
                                                         <span class="btn-plus"><b></b></span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <input type="hidden" name="item_id[]" value="<?php echo $row['id'] ?>">
-                                                    <input type="hidden" name="product_id[]" value="<?php echo $row['product_id'] ?>"><?php echo ucwords($row['name']) ?>
-                                                    <small class="psmall"> (<?php echo number_format($row['price'], 2) ?>)</small>
+                                                    <input type="hidden" name="product_id[]" value="<?php echo $row['product_id'] ?>">
+                                                    <?php echo ucwords($row['name']) ?>
+                                                    <small class="psmall"> (₱<?php echo number_format($row['price'], 2) ?>)</small>
                                                 </td>
                                                 <td class="text-right">
                                                     <input type="hidden" name="price[]" value="<?php echo $row['price'] ?>">
                                                     <input type="hidden" name="amount[]" value="<?php echo $row['amount'] ?>">
-                                                    <span class="amount"><?php echo number_format($row['amount'], 2) ?></span>
+                                                    <span class="amount">₱<?php echo number_format($row['amount'], 2) ?></span>
                                                     <span class="discounted-amount" style="color: green;"></span>
                                                 </td>
                                                 <td>
@@ -248,6 +244,7 @@ endif;
                                                 </td>
                                                 <input type="hidden" id="formModified" value="0">
                                             </tr>
+
                                             <script>
                                                 $(document).ready(function() {
                                                     qty_func()
@@ -264,15 +261,19 @@ endif;
                             <table class="table" width="100%">
                                 <tbody>
                                     <tr>
-                                        <td><b>
+                                        <td>
+                                            <b>
                                                 <h6>Total</h6>
-                                            </b></td>
-                                        <td class="text-right">
+                                            </b>
                                             <input type="hidden" name="total_amount" value="0">
                                             <input type="hidden" name="total_tendered" value="0">
-                                            <span class="mt-5">
-                                                <h6><b id="total_amount">0.00</b></h6>
-                                            </span>
+                                            <h5><b id="total_amount">₱0.00</b></h5>
+                                        </td>
+                                        <td>
+                                            <div class="row justify-content-center">
+                                                <button class="btn btn-secondary col-md-12 col-sm-12 mr-2" type="button" id="pay">Pay</button>
+                                                <!-- <button class="btn btn-sm col-md-4 col-sm-5 col-6 btn-secondary" type="button" id="save_order">Pay later</button> -->
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -448,7 +449,7 @@ endif;
             var amount = qty * price;
 
             tr.find('[name="amount[]"]').val(amount);
-            tr.find('.amount').text(amount.toLocaleString("en-US", {
+            tr.find('.amount').text('₱' + amount.toLocaleString("en-US", {
                 style: 'decimal',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -457,11 +458,11 @@ endif;
             if (tr.find('.discounted-amount').length) {
                 var discount = tr.find('.discounted-amount').data('discount');
                 var discountedAmount = amount - discount;
-                tr.find('.discounted-amount').text('(' + discountedAmount.toLocaleString("en-US", {
+                tr.find('.discounted-amount').text('₱' + discountedAmount.toLocaleString("en-US", {
                     style: 'decimal',
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
-                }) + ')');
+                }));
                 amount = discountedAmount;
             }
             tr.find('[name="amount[]"]').val(amount); // Ensure discounted amount is stored
@@ -476,7 +477,7 @@ endif;
             });
 
             $('[name="total_amount"]').val(total);
-            $('#total_amount').text(total.toLocaleString("en-US", {
+            $('#total_amount').text('₱' + total.toLocaleString("en-PH", {
                 style: 'decimal',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -516,95 +517,96 @@ endif;
         $('#manage-order').submit();
     });
 
-$('#pay').click(function() {
-    start_load();
+    $('#pay').click(function() {
+        start_load();
 
-    var amount = $('[name="total_amount"]').val();
-    if ($('#o-list tbody tr').length <= 0) {
-        alert_toast("Please add at least 1 product first.", 'danger');
-        end_load();
-        return false;
-    }
+        var amount = $('[name="total_amount"]').val();
+        if ($('#o-list tbody tr').length <= 0) {
+            alert_toast("Please add at least 1 product first.", 'danger');
+            end_load();
+            return false;
+        }
 
-    // Check if order number is empty
-    var orderNumber = $('[name="order_number"]').val().trim();
-    if (orderNumber === '') {
-        alert_toast("Please enter an order number.", 'danger');
-        end_load();
-        return false;
-    }
+        // Check if order number is empty
+        var orderNumber = $('[name="order_number"]').val().trim();
+        if (orderNumber === '') {
+            alert_toast("Please enter an order number.", 'danger');
+            end_load();
+            return false;
+        }
 
-    $('#apayable').val(parseFloat(amount).toLocaleString("en-US", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }));
+        $('#apayable').val('₱' + parseFloat(amount).toLocaleString("en-US", {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }));
 
-    // Set maximum tendered amount based on amount payable
-    var payableAmount = parseFloat(amount);
-    var maxTenderedAmount = 0;
+        // Set maximum tendered amount based on amount payable
+        var payableAmount = parseFloat(amount);
+        var maxTenderedAmount = 0;
 
-    // Define limits based on payable amount
-    if (payableAmount <= 1000) {
-        maxTenderedAmount = 1000;
-    } else if (payableAmount <= 1999) {
-        maxTenderedAmount = 2000;
-    } else if (payableAmount <= 2999) {
-        maxTenderedAmount = 30008
-    } else if (payableAmount <= 3999) {
-        maxTenderedAmount = 4000;
-    } else if (payableAmount <= 4999) {
-        maxTenderedAmount = 5000;
-    } else if (payableAmount <= 5999) {
-        maxTenderedAmount = 6000;
-    } else if (payableAmount <= 6999) {
-        maxTenderedAmount = 7000;
-    } else if (payableAmount <= 7999) {
-        maxTenderedAmount = 8000;
-    } else if (payableAmount <= 8999) {
-        maxTenderedAmount = 9000;
-    } else if (payableAmount <= 9999) {
-        maxTenderedAmount = 10000;
-    } else {
-        maxTenderedAmount = 99999;
-    } 
+        // Define limits based on payable amount
+        if (payableAmount <= 1000) {
+            maxTenderedAmount = 1000;
+        } else if (payableAmount <= 1999) {
+            maxTenderedAmount = 2000;
+        } else if (payableAmount <= 2999) {
+            maxTenderedAmount = 3000;
+        } else if (payableAmount <= 3999) {
+            maxTenderedAmount = 4000;
+        } else if (payableAmount <= 4999) {
+            maxTenderedAmount = 5000;
+        } else if (payableAmount <= 5999) {
+            maxTenderedAmount = 6000;
+        } else if (payableAmount <= 6999) {
+            maxTenderedAmount = 7000;
+        } else if (payableAmount <= 7999) {
+            maxTenderedAmount = 8000;
+        } else if (payableAmount <= 8999) {
+            maxTenderedAmount = 9000;
+        } else if (payableAmount <= 9999) {
+            maxTenderedAmount = 10000;
+        } else {
+            maxTenderedAmount = 99999;
+        }
 
-    $('#tendered').data('max', maxTenderedAmount);
+        $('#tendered').data('max', maxTenderedAmount);
 
-    $('#pay_modal').modal('show');
+        $('#pay_modal').modal('show');
 
-    setTimeout(function() {
-        $('#tendered').val('').trigger('change');
-        $('#tendered').focus();
-        end_load();
-    }, 500);
-});
+        setTimeout(function() {
+            $('#tendered').val('').trigger('change');
+            $('#tendered').focus();
+            end_load();
+        }, 500);
+    });
 
-$('#tendered').keyup('input', function(e) {
-    if (e.which == 13) {
-        $('#manage-order').submit();
-        return false;
-    }
-    var tend = $(this).val();
-    tend = tend.replace(/,/g, '');
-    var maxTendered = parseFloat($(this).data('max'));
-    tend = tend > maxTendered ? maxTendered : tend; // Limit tendered amount
-    $('[name="total_tendered"]').val(tend);
+    $('#tendered').keyup('input', function(e) {
+        if (e.which == 13) {
+            $('#manage-order').submit();
+            return false;
+        }
+        var tend = $(this).val();
+        tend = tend.replace(/,/g, '');
+        var maxTendered = parseFloat($(this).data('max'));
+        tend = tend > maxTendered ? maxTendered : tend; // Limit tendered amount
+        $('[name="total_tendered"]').val(tend);
 
-    if (tend == '')
-        $(this).val('');
-    else
-        $(this).val((parseFloat(tend).toLocaleString("en-US")));
+        if (tend == '')
+            $(this).val('');
+        else
+            $(this).val((parseFloat(tend).toLocaleString("en-US")));
 
-    tend = tend > 0 ? tend : 0;
-    var amount = $('[name="total_amount"]').val();
-    var change = parseFloat(tend) - parseFloat(amount);
-    $('#change').val(parseFloat(change).toLocaleString("en-US", {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }));
-});
+        tend = tend > 0 ? tend : 0;
+        var amount = $('[name="total_amount"]').val();
+        var change = parseFloat(tend) - parseFloat(amount);
+        $('#change').val('₱' + parseFloat(change).toLocaleString("en-US", {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }));
+    });
+
 
 
     $('#tendered').on('input', function() {

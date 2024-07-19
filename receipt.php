@@ -73,9 +73,9 @@ while ($row = $items->fetch_assoc()) {
 				<tr>
 					<td><?php echo $row['qty'] ?></td>
 					<td>
-						<p><?php echo $row['name'] ?></p><?php if ($row['qty'] > 0) : ?><small>(<?php echo number_format($row['price'], 2) ?>)</small> <?php endif; ?>
+						<p><?php echo $row['name'] ?></p><?php if ($row['qty'] > 0) : ?><small>(<?php echo '₱' . number_format($row['price'], 2) ?>)</small> <?php endif; ?>
 					</td>
-					<td class="text-right"><?php echo number_format($row['amount'], 2) ?></td>
+					<td class="text-right"><?php echo '₱' . number_format($row['amount'], 2) ?></td>
 					<td class="text-right color"></td>
 				</tr>
 			<?php endforeach; ?>
@@ -86,23 +86,22 @@ while ($row = $items->fetch_assoc()) {
 		<tbody>
 			<tr>
 				<td><b>Total Amount</b></td>
-				<td class="text-right"><b><?php echo number_format($total_amount, 2) ?></b></td>
+				<td class="text-right"><b><?php echo '₱' . number_format($total_amount, 2) ?></b></td>
 			</tr>
 			<?php if ($amount_tendered > 0) : ?>
 
 				<tr>
 					<td>Discounted Amount</td>
-					<td class="text-right"><b><?php echo number_format($total_discounted_amount, 2) ?></b></td>
+					<td class="text-right"><b><?php echo '₱' . number_format($total_discounted_amount, 2) ?></b></td>
 				</tr>
 				<tr>
 					<td><b>Amount Tendered</b></td>
-					<td class="text-right"><b><?php echo number_format($amount_tendered, 2) ?></b></td>
+					<td class="text-right"><b><?php echo '₱' . number_format($amount_tendered, 2) ?></b></td>
 				</tr>
 				<tr>
 					<td><b>Change</b></td>
-					<td class="text-right"><b><?php echo number_format($amount_tendered - $total_amount, 2) ?></b></td>
+					<td class="text-right"><b><?php echo '₱' . number_format($amount_tendered - $total_amount, 2) ?></b></td>
 				</tr>
-
 
 			<?php endif; ?>
 
@@ -110,13 +109,13 @@ while ($row = $items->fetch_assoc()) {
 	</table>
 	<hr>
 
-
 	<div class="flex">
 		<div class="w-100">
 			<?php if ($amount_tendered > 0) : ?>
 				<p>Invoice Number: <b><?php echo $ref_no ?></b></p>
 			<?php endif; ?>
-			<p><b><?php echo date("M d, Y H:i:s", strtotime($date_created)) ?></b></p>
+				<p><b>WIFI Password: 3xXPQ5%a</b></p>
+				<p><b><?php echo date("M d, Y H:i:s", strtotime($date_created)) ?></b></p>
 		</div>
 	</div>
 </div>
