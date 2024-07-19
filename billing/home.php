@@ -449,7 +449,7 @@ endif;
             var amount = qty * price;
 
             tr.find('[name="amount[]"]').val(amount);
-            tr.find('.amount').text('₱' + amount.toLocaleString("en-US", {
+            tr.find('.amount').text(amount.toLocaleString("en-US", {
                 style: 'decimal',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -458,11 +458,11 @@ endif;
             if (tr.find('.discounted-amount').length) {
                 var discount = tr.find('.discounted-amount').data('discount');
                 var discountedAmount = amount - discount;
-                tr.find('.discounted-amount').text('₱' + discountedAmount.toLocaleString("en-US", {
+                tr.find('.discounted-amount').text('(' + discountedAmount.toLocaleString("en-US", {
                     style: 'decimal',
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
-                }));
+                }) + ')');
                 amount = discountedAmount;
             }
             tr.find('[name="amount[]"]').val(amount); // Ensure discounted amount is stored
@@ -477,7 +477,7 @@ endif;
             });
 
             $('[name="total_amount"]').val(total);
-            $('#total_amount').text('₱' + total.toLocaleString("en-PH", {
+            $('#total_amount').text('₱' + total.toLocaleString("en-US", {
                 style: 'decimal',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
